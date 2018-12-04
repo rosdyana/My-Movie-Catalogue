@@ -9,7 +9,7 @@ public class SimiliarMovieModel {
     @SerializedName("page")
     @Expose
     private Integer page;
-    @SerializedName("similiarResults")
+    @SerializedName("results")
     @Expose
     private List<SimiliarResult> similiarResults = null;
     @SerializedName("total_pages")

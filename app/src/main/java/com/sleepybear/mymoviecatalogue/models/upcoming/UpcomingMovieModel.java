@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class UpcomingMovieModel {
 
-    @SerializedName("upcomingResults")
+    @SerializedName("results")
     @Expose
     private List<UpcomingResult> upcomingResults = null;
     @SerializedName("page")

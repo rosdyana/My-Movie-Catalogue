@@ -9,7 +9,7 @@ public class TrendingMovieModel {
     @SerializedName("page")
     @Expose
     private Integer page;
-    @SerializedName("trendingResults")
+    @SerializedName("results")
     @Expose
     private List<TrendingResult> trendingResults = null;
     @SerializedName("total_pages")

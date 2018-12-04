@@ -17,7 +17,7 @@ public class PopularMovieModel {
     @SerializedName("total_pages")
     @Expose
     private Integer totalPages;
-    @SerializedName("popularResults")
+    @SerializedName("results")
     @Expose
     private List<PopularResult> popularResults = null;
 

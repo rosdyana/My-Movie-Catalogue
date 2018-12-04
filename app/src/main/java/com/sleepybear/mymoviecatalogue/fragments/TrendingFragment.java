@@ -84,7 +84,7 @@ public class TrendingFragment extends Fragment {
 
     private void fetchTrendingMovieItems() {
         APIService service = NetworkInstance.getRetrofitInstance().create(APIService.class);
-        Call<TrendingMovieModel> trendingMovieModelCall = service.getTrendingMovie(1);
+        Call<TrendingMovieModel> trendingMovieModelCall = service.getTrendingMovie();
         trendingMovieModelCall.enqueue(new Callback<TrendingMovieModel>() {
             @Override
             public void onResponse(Call<TrendingMovieModel> call, Response<TrendingMovieModel> response) {
@@ -92,10 +92,7 @@ public class TrendingFragment extends Fragment {
                     int totalpage = response.body().getTotalPages();
                     Log.d("ROS",String.valueOf(totalpage));
                     List<TrendingResult> items = response.body().getTrendingResults();
-                    for(int i=0;i < items.size();i++){
-                        Log.d("ROS", items.get(i).getName());
-                    }
-
+                    mAdapter.updateData(items);
                 }
             }
 

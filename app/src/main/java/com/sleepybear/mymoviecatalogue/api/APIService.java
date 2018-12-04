@@ -28,7 +28,7 @@ public interface APIService {
     Call<PopularMovieModel> getPopularMovie(@Query(value = "page") int page);
 
     @GET("trending/all/day")
-    Call<TrendingMovieModel> getTrendingMovie(@Query(value = "page") int page);
+    Call<TrendingMovieModel> getTrendingMovie();
 
     @GET("search/movie")
     Call<SearchMovieModel> searchMovie(@Query(value = "query") String query,

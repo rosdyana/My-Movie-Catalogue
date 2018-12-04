@@ -15,7 +15,7 @@ public class SearchMovieModel {
     @SerializedName("total_pages")
     @Expose
     private Integer totalPages;
-    @SerializedName("searchResults")
+    @SerializedName("results")
     @Expose
     private List<SearchResult> searchResults = null;
 
