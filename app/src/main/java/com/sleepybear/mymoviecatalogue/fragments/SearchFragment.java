@@ -1,65 +1,126 @@
 package com.sleepybear.mymoviecatalogue.fragments;
 
-import android.content.Context;
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.sleepybear.mymoviecatalogue.MovieDetail;
 import com.sleepybear.mymoviecatalogue.R;
+import com.sleepybear.mymoviecatalogue.adapter.SearchAdapter;
+import com.sleepybear.mymoviecatalogue.api.APIService;
+import com.sleepybear.mymoviecatalogue.api.NetworkInstance;
+import com.sleepybear.mymoviecatalogue.listener.RecycleTouchListener;
+import com.sleepybear.mymoviecatalogue.models.search.SearchMovieModel;
+import com.sleepybear.mymoviecatalogue.models.search.SearchResult;
+import com.sleepybear.mymoviecatalogue.models.trending.TrendingResult;
+import com.sleepybear.mymoviecatalogue.utils.utils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
-public class SearchFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+    private String searchQuery;
+    SearchAdapter mAdapter;
+    private List<SearchResult> list = new ArrayList<>();
+    @BindView(R.id.search_recycler_view)
+    RecyclerView recyclerView;
+    @BindView(R.id.swipe_refresh_container)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     public SearchFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SearchFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SearchFragment newInstance(String param1, String param2) {
-        SearchFragment fragment = new SearchFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        String myValue = this.getArguments().getString("search_query");
-        Log.d("ROS search ",myValue);
-        return inflater.inflate(R.layout.fragment_search, container, false);
+        searchQuery = this.getArguments().getString("search_query");
+        Log.d("ROS search ",searchQuery);
+        View view = inflater.inflate(R.layout.fragment_search, container, false);
+        ButterKnife.bind(this, view);
+        mAdapter = new SearchAdapter();
+
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setAdapter(mAdapter);
+        recyclerView.setNestedScrollingEnabled(false);
+
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.post(new Runnable() {
+
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(true);
+                fetchSearchMovieItems();
+            }
+        });
+
+        recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new RecycleTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                SearchResult obj = list.get(position);
+                Intent intent = new Intent(getActivity(), MovieDetail.class);
+                intent.putExtra(MovieDetail.MOVIE_RESULT, obj);
+                intent.putExtra(MovieDetail.FRAGMENT_NAME, SearchFragment.class.getSimpleName());
+                startActivity(intent);
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
+        return view;
     }
 
+    private void fetchSearchMovieItems() {
+        swipeRefreshLayout.setRefreshing(true);
+        APIService service = NetworkInstance.getRetrofitInstance().create(APIService.class);
+        String currentLanguage = utils.getDeviceLang(Locale.getDefault().getDisplayLanguage());
+        Call<SearchMovieModel> searchMovieModelCall = service.searchMovie(searchQuery,currentLanguage);
+        searchMovieModelCall.enqueue(new Callback<SearchMovieModel>() {
+            @Override
+            public void onResponse(Call<SearchMovieModel> call, Response<SearchMovieModel> response) {
+                if (response.isSuccessful()) {
+                    List<SearchResult> items = response.body().getSearchResults();
+                    list.addAll(items);
+                    mAdapter.clearAll();
+                    mAdapter.updateData(items);
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SearchMovieModel> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    @Override
+    public void onRefresh() {
+
+    }
 }

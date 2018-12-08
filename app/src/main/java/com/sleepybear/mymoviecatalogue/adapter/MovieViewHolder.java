@@ -10,6 +10,7 @@ import com.sleepybear.mymoviecatalogue.BuildConfig;
 import com.sleepybear.mymoviecatalogue.R;
 import com.sleepybear.mymoviecatalogue.models.nowplaying.NowplayingResult;
 import com.sleepybear.mymoviecatalogue.models.popular.PopularResult;
+import com.sleepybear.mymoviecatalogue.models.search.SearchResult;
 import com.sleepybear.mymoviecatalogue.models.trending.TrendingResult;
 import com.sleepybear.mymoviecatalogue.models.upcoming.UpcomingResult;
 
@@ -53,6 +54,20 @@ class MovieViewHolder extends RecyclerView.ViewHolder {
         txtMovieTitle.setText(nowplayingResult.getTitle());
         Glide.with(itemView.getContext())
                 .load(BuildConfig.BASE_URL_IMG + nowplayingResult.getPosterPath())
+                .into(imgThumbnail);
+
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+    }
+
+    public void bind(SearchResult searchResult) {
+        txtMovieTitle.setText(searchResult.getTitle());
+        Glide.with(itemView.getContext())
+                .load(BuildConfig.BASE_URL_IMG + searchResult.getPosterPath())
                 .into(imgThumbnail);
 
         itemView.setOnClickListener(new View.OnClickListener() {

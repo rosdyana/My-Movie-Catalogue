@@ -11,10 +11,12 @@ import android.widget.Toolbar;
 import com.bumptech.glide.Glide;
 import com.sleepybear.mymoviecatalogue.fragments.NowPlayingFragment;
 import com.sleepybear.mymoviecatalogue.fragments.PopularFragment;
+import com.sleepybear.mymoviecatalogue.fragments.SearchFragment;
 import com.sleepybear.mymoviecatalogue.fragments.TrendingFragment;
 import com.sleepybear.mymoviecatalogue.fragments.UpcomingFragment;
 import com.sleepybear.mymoviecatalogue.models.nowplaying.NowplayingResult;
 import com.sleepybear.mymoviecatalogue.models.popular.PopularResult;
+import com.sleepybear.mymoviecatalogue.models.search.SearchResult;
 import com.sleepybear.mymoviecatalogue.models.trending.TrendingResult;
 import com.sleepybear.mymoviecatalogue.models.upcoming.UpcomingResult;
 
@@ -55,9 +57,23 @@ public class MovieDetail extends AppCompatActivity {
         } else if (fragmentName.equals(UpcomingFragment.class.getSimpleName())){
             UpcomingResult upcomingResult = getIntent().getParcelableExtra(MOVIE_RESULT);
             loadData(upcomingResult);
+        } else if (fragmentName.equals(SearchFragment.class.getSimpleName())){
+            SearchResult searchResult = getIntent().getParcelableExtra(MOVIE_RESULT);
+            loadData(searchResult);
         }
 
 
+    }
+
+    private void loadData(SearchResult searchResult) {
+        movieTitle.setText(searchResult.getTitle());
+        movieDescription.setText(searchResult.getOverview());
+        movieRating.setText(searchResult.getVoteAverage().toString());
+        Glide.with(getApplicationContext())
+                .load(BuildConfig.BASE_URL_IMG + searchResult.getPosterPath())
+                .into(moviePoster);
+
+        getSupportActionBar().setTitle(searchResult.getTitle());
     }
 
     private void loadData(UpcomingResult upcomingResult) {

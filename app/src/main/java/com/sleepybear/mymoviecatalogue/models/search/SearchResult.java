@@ -1,11 +1,15 @@
 package com.sleepybear.mymoviecatalogue.models.search;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class SearchResult {
+public class SearchResult implements Parcelable {
 
     @SerializedName("vote_count")
     @Expose
@@ -162,4 +166,59 @@ public class SearchResult {
         this.releaseDate = releaseDate;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.voteCount);
+        dest.writeValue(this.id);
+        dest.writeValue(this.video);
+        dest.writeValue(this.voteAverage);
+        dest.writeString(this.title);
+        dest.writeValue(this.popularity);
+        dest.writeString(this.posterPath);
+        dest.writeString(this.originalLanguage);
+        dest.writeString(this.originalTitle);
+        dest.writeList(this.genreIds);
+        dest.writeString(this.backdropPath);
+        dest.writeValue(this.adult);
+        dest.writeString(this.overview);
+        dest.writeString(this.releaseDate);
+    }
+
+    public SearchResult() {
+    }
+
+    protected SearchResult(Parcel in) {
+        this.voteCount = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.id = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.video = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.voteAverage = (Double) in.readValue(Double.class.getClassLoader());
+        this.title = in.readString();
+        this.popularity = (Double) in.readValue(Double.class.getClassLoader());
+        this.posterPath = in.readString();
+        this.originalLanguage = in.readString();
+        this.originalTitle = in.readString();
+        this.genreIds = new ArrayList<Integer>();
+        in.readList(this.genreIds, Integer.class.getClassLoader());
+        this.backdropPath = in.readString();
+        this.adult = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.overview = in.readString();
+        this.releaseDate = in.readString();
+    }
+
+    public static final Parcelable.Creator<SearchResult> CREATOR = new Parcelable.Creator<SearchResult>() {
+        @Override
+        public SearchResult createFromParcel(Parcel source) {
+            return new SearchResult(source);
+        }
+
+        @Override
+        public SearchResult[] newArray(int size) {
+            return new SearchResult[size];
+        }
+    };
 }
