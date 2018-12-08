@@ -2,6 +2,7 @@ package com.sleepybear.mymoviecatalogue.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,14 +24,18 @@ import com.sleepybear.mymoviecatalogue.models.trending.TrendingResult;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TrendingFragment extends Fragment {
-    RecyclerView recyclerView;
-    private List<TrendingResult> list = new ArrayList<>();
+public class TrendingFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     TrendingAdapter mAdapter;
+    @BindView(R.id.trending_recycler_view)
+    RecyclerView recyclerView;
+    @BindView(R.id.swipe_refresh_container)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     public TrendingFragment() {
         // Required empty public constructor
@@ -52,37 +57,31 @@ public class TrendingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_trending, container, false);
-        recyclerView = view.findViewById(R.id.trending_recycler_view);
-//        trendingMovieModelsList = new ArrayList<>();
+        ButterKnife.bind(this,view);
         mAdapter = new TrendingAdapter();
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(8),true));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
         recyclerView.setNestedScrollingEnabled(false);
 
-        fetchTrendingMovieItems();
-//        loadDummyData();
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.post(new Runnable() {
+
+            @Override
+            public void run() {
+
+                swipeRefreshLayout.setRefreshing(true);
+                fetchTrendingMovieItems();
+            }
+        });
+
+
 
         return view;
     }
-
-    private void loadDummyData() {
-        list.clear();
-        for (int i = 0; i <= 10; i++) {
-            TrendingResult item = new TrendingResult();
-            item.setPosterPath("/vSNxAJTlD0r02V9sPYpOjqDZXUK.jpg");
-            item.setTitle("This is very very very long movie title that you can read " + i);
-//            item.setOverview("This is very very very long movie overview that you can read " + i);
-//            item.setReleaseDate(DateTime.getLongDate("2016-04-1" + i));
-            list.add(item);
-        }
-        mAdapter.replaceAll(list);
-    }
-
     private void fetchTrendingMovieItems() {
+        swipeRefreshLayout.setRefreshing(true);
         APIService service = NetworkInstance.getRetrofitInstance().create(APIService.class);
         Call<TrendingMovieModel> trendingMovieModelCall = service.getTrendingMovie();
         trendingMovieModelCall.enqueue(new Callback<TrendingMovieModel>() {
@@ -92,58 +91,22 @@ public class TrendingFragment extends Fragment {
                     int totalpage = response.body().getTotalPages();
                     Log.d("ROS",String.valueOf(totalpage));
                     List<TrendingResult> items = response.body().getTrendingResults();
+                    mAdapter.clearAll();
                     mAdapter.updateData(items);
+                    swipeRefreshLayout.setRefreshing(false);
                 }
             }
 
             @Override
             public void onFailure(Call<TrendingMovieModel> call, Throwable t) {
-
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
 
     }
 
-    public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
-
-        private int spanCount;
-        private int spacing;
-        private boolean includeEdge;
-
-        public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
-            this.spanCount = spanCount;
-            this.spacing = spacing;
-            this.includeEdge = includeEdge;
-        }
-
-        @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            int position = parent.getChildAdapterPosition(view); // item position
-            int column = position % spanCount; // item column
-
-            if (includeEdge) {
-                outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
-                outRect.right = (column + 1) * spacing / spanCount; // (column + 1) * ((1f / spanCount) * spacing)
-
-                if (position < spanCount) { // top edge
-                    outRect.top = spacing;
-                }
-                outRect.bottom = spacing; // item bottom
-            } else {
-                outRect.left = column * spacing / spanCount; // column * ((1f / spanCount) * spacing)
-                outRect.right = spacing - (column + 1) * spacing / spanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
-                if (position >= spanCount) {
-                    outRect.top = spacing; // item top
-                }
-            }
-        }
-    }
-
-    /**
-     * Converting dp to pixel
-     */
-    private int dpToPx(int dp) {
-        Resources r = getResources();
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
+    @Override
+    public void onRefresh() {
+        fetchTrendingMovieItems();
     }
 }

@@ -26,7 +26,7 @@ class TrendingViewHolder extends RecyclerView.ViewHolder{
     }
 
     public void bind(final TrendingResult item){
-        txtMovieTitle.setText(item.getTitle());
+        txtMovieTitle.setText(item.getTitle() == null ? item.getName() : item.getTitle());
         Glide.with(itemView.getContext())
                 .load(BuildConfig.BASE_URL_IMG+item.getPosterPath())
                 .into(imgThumbnail);

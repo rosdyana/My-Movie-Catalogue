@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import com.sleepybear.mymoviecatalogue.R;
 
 
-public class PopularFragment extends Fragment {
+public class SearchFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -22,8 +22,7 @@ public class PopularFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-
-    public PopularFragment() {
+    public SearchFragment() {
         // Required empty public constructor
     }
 
@@ -33,11 +32,11 @@ public class PopularFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment PopularFragment.
+     * @return A new instance of fragment SearchFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static PopularFragment newInstance(String param1, String param2) {
-        PopularFragment fragment = new PopularFragment();
+    public static SearchFragment newInstance(String param1, String param2) {
+        SearchFragment fragment = new SearchFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -58,8 +57,9 @@ public class PopularFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_popular, container, false);
+        String myValue = this.getArguments().getString("search_query");
+        Log.d("ROS search ",myValue);
+        return inflater.inflate(R.layout.fragment_search, container, false);
     }
-
 
 }
