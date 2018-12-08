@@ -1,5 +1,6 @@
 package com.sleepybear.mymoviecatalogue.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -10,14 +11,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.sleepybear.mymoviecatalogue.MovieDetail;
 import com.sleepybear.mymoviecatalogue.R;
 import com.sleepybear.mymoviecatalogue.adapter.UpcomingAdapter;
 import com.sleepybear.mymoviecatalogue.api.APIService;
 import com.sleepybear.mymoviecatalogue.api.NetworkInstance;
+import com.sleepybear.mymoviecatalogue.listener.RecycleTouchListener;
 import com.sleepybear.mymoviecatalogue.models.upcoming.UpcomingMovieModel;
 import com.sleepybear.mymoviecatalogue.models.upcoming.UpcomingResult;
 import com.sleepybear.mymoviecatalogue.utils.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -30,6 +34,7 @@ import retrofit2.Response;
 
 public class UpcomingFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     UpcomingAdapter mAdapter;
+    private List<UpcomingResult> list = new ArrayList<>();
     @BindView(R.id.upcoming_recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.swipe_refresh_container)
@@ -72,6 +77,22 @@ public class UpcomingFragment extends Fragment implements SwipeRefreshLayout.OnR
                 fetchUpcomingMovieItems();
             }
         });
+
+        recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new RecycleTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                UpcomingResult obj = list.get(position);
+                Intent intent = new Intent(getActivity(), MovieDetail.class);
+                intent.putExtra(MovieDetail.MOVIE_RESULT, obj);
+                intent.putExtra(MovieDetail.FRAGMENT_NAME, UpcomingFragment.class.getSimpleName());
+                startActivity(intent);
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
         return view;
     }
 
@@ -85,6 +106,7 @@ public class UpcomingFragment extends Fragment implements SwipeRefreshLayout.OnR
             public void onResponse(Call<UpcomingMovieModel> call, Response<UpcomingMovieModel> response) {
                 if (response.isSuccessful()) {
                     List<UpcomingResult> items = response.body().getResults();
+                    list.addAll(items);
                     mAdapter.clearAll();
                     mAdapter.updateData(items);
                     swipeRefreshLayout.setRefreshing(false);

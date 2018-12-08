@@ -1,5 +1,6 @@
 package com.sleepybear.mymoviecatalogue.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -11,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.sleepybear.mymoviecatalogue.MainActivity;
+import com.sleepybear.mymoviecatalogue.MovieDetail;
 import com.sleepybear.mymoviecatalogue.R;
 import com.sleepybear.mymoviecatalogue.adapter.TrendingAdapter;
 import com.sleepybear.mymoviecatalogue.api.APIService;
@@ -72,7 +75,11 @@ public class TrendingFragment extends Fragment implements SwipeRefreshLayout.OnR
         recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new RecycleTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Toast.makeText(getContext(), list.get(position).getId().toString(),Toast.LENGTH_SHORT).show();
+                TrendingResult obj = list.get(position);
+                Intent intent = new Intent(getActivity(), MovieDetail.class);
+                intent.putExtra(MovieDetail.MOVIE_RESULT, obj);
+                intent.putExtra(MovieDetail.FRAGMENT_NAME, TrendingFragment.class.getSimpleName());
+                startActivity(intent);
             }
 
             @Override

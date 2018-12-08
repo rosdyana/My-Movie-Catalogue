@@ -1,5 +1,6 @@
 package com.sleepybear.mymoviecatalogue.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -10,14 +11,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.sleepybear.mymoviecatalogue.MovieDetail;
 import com.sleepybear.mymoviecatalogue.R;
 import com.sleepybear.mymoviecatalogue.adapter.PopularAdapter;
 import com.sleepybear.mymoviecatalogue.api.APIService;
 import com.sleepybear.mymoviecatalogue.api.NetworkInstance;
+import com.sleepybear.mymoviecatalogue.listener.RecycleTouchListener;
 import com.sleepybear.mymoviecatalogue.models.popular.PopularMovieModel;
 import com.sleepybear.mymoviecatalogue.models.popular.PopularResult;
 import com.sleepybear.mymoviecatalogue.utils.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -30,6 +34,7 @@ import retrofit2.Response;
 
 public class PopularFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     PopularAdapter mAdapter;
+    private List<PopularResult> list = new ArrayList<>();
     @BindView(R.id.popular_recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.swipe_refresh_container)
@@ -65,6 +70,21 @@ public class PopularFragment extends Fragment implements SwipeRefreshLayout.OnRe
                 fetchPopularMovieItems();
             }
         });
+        recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new RecycleTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                PopularResult obj = list.get(position);
+                Intent intent = new Intent(getActivity(), MovieDetail.class);
+                intent.putExtra(MovieDetail.MOVIE_RESULT, obj);
+                intent.putExtra(MovieDetail.FRAGMENT_NAME, PopularFragment.class.getSimpleName());
+                startActivity(intent);
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
         return view;
     }
 
@@ -78,6 +98,7 @@ public class PopularFragment extends Fragment implements SwipeRefreshLayout.OnRe
             public void onResponse(Call<PopularMovieModel> call, Response<PopularMovieModel> response) {
                 if (response.isSuccessful()) {
                     List<PopularResult> popularResultList = response.body().getResults();
+                    list.addAll(popularResultList);
                     mAdapter.clearAll();
                     mAdapter.updateData(popularResultList);
                     swipeRefreshLayout.setRefreshing(false);

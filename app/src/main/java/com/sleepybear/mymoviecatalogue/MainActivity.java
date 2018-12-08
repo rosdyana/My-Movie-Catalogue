@@ -1,10 +1,14 @@
 package com.sleepybear.mymoviecatalogue;
 
+import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.os.ConfigurationCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,6 +28,8 @@ import com.sleepybear.mymoviecatalogue.fragments.SearchFragment;
 import com.sleepybear.mymoviecatalogue.fragments.TrendingFragment;
 import com.sleepybear.mymoviecatalogue.fragments.UpcomingFragment;
 import com.sleepybear.mymoviecatalogue.utils.ActivityUtils;
+
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -79,7 +85,8 @@ public class MainActivity extends AppCompatActivity {
         mBtnSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "SETTING", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(Settings.ACTION_LOCALE_SETTINGS);
+                startActivity(intent);
             }
         });
 
