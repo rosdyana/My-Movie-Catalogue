@@ -1,15 +1,14 @@
-package com.sleepybear.mymoviecatalogue.models.upcoming;
+package com.sleepybear.mymoviecatalogue.models.nowplaying;
 
 import java.util.List;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class UpcomingMovieModel {
+public class NowplayingModel {
 
     @SerializedName("results")
     @Expose
-    private List<UpcomingResult> results = null;
+    private List<NowplayingResult> results = null;
     @SerializedName("page")
     @Expose
     private Integer page;
@@ -23,11 +22,11 @@ public class UpcomingMovieModel {
     @Expose
     private Integer totalPages;
 
-    public List<UpcomingResult> getResults() {
+    public List<NowplayingResult> getResults() {
         return results;
     }
 
-    public void setResults(List<UpcomingResult> results) {
+    public void setResults(List<NowplayingResult> results) {
         this.results = results;
     }
 

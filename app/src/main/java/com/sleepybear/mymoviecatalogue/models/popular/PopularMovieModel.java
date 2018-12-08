@@ -19,7 +19,7 @@ public class PopularMovieModel {
     private Integer totalPages;
     @SerializedName("results")
     @Expose
-    private List<PopularResult> popularResults = null;
+    private List<PopularResult> results = null;
 
     public Integer getPage() {
         return page;
@@ -45,11 +45,11 @@ public class PopularMovieModel {
         this.totalPages = totalPages;
     }
 
-    public List<PopularResult> getPopularResults() {
-        return popularResults;
+    public List<PopularResult> getResults() {
+        return results;
     }
 
-    public void setPopularResults(List<PopularResult> popularResults) {
-        this.popularResults = popularResults;
+    public void setResults(List<PopularResult> results) {
+        this.results = results;
     }
 }

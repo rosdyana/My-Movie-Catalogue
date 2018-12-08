@@ -5,15 +5,15 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.sleepybear.mymoviecatalogue.R;
-import com.sleepybear.mymoviecatalogue.models.trending.TrendingResult;
+import com.sleepybear.mymoviecatalogue.models.upcoming.UpcomingResult;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TrendingAdapter extends RecyclerView.Adapter<MovieViewHolder> {
-    private List<TrendingResult> list = new ArrayList<>();
+public class UpcomingAdapter extends RecyclerView.Adapter<MovieViewHolder> {
+    private List<UpcomingResult> list = new ArrayList<>();
 
-    public TrendingAdapter() {
+    public UpcomingAdapter() {
 
     }
 
@@ -22,7 +22,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<MovieViewHolder> {
         notifyDataSetChanged();
     }
 
-    public void updateData(List<TrendingResult> items) {
+    public void updateData(List<UpcomingResult> items) {
         list.addAll(items);
         notifyDataSetChanged();
     }

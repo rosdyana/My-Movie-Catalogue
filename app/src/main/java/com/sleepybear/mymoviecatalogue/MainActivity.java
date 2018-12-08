@@ -75,14 +75,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        ImageButton mBtnSearch = view.findViewById(R.id.action_search_menu);
-//        mBtnSearch.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Toast.makeText(MainActivity.this, "SEARCH", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
         ImageButton mBtnSetting = view.findViewById(R.id.action_setting_menu);
         mBtnSetting.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,11 +85,9 @@ public class MainActivity extends AppCompatActivity {
 
         mToolbarTitle = view.findViewById(R.id.toolbar_title);
 
-        mToolbarTitle.setText("Trending");
+        mToolbarTitle.setText(getString(R.string.text_trending));
         mToolbarTitle.setTextColor(getResources().getColor(R.color.white));
         loadFragment(new TrendingFragment());
-
-//        mBottomNav.setItemBackground(getResources().getColor(R.color.white));
 
         mBottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -133,8 +123,8 @@ public class MainActivity extends AppCompatActivity {
         // load fragment
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_container, fragment);
-        Log.d("ROS ",fragment.getClass().getSimpleName());
-        transaction.addToBackStack(fragment.getTag());
+        Log.d("ROS ", fragment.getClass().getSimpleName());
+        transaction.addToBackStack(null);
         transaction.commit();
     }
 

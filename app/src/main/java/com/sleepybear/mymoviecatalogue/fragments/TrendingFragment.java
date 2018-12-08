@@ -3,21 +3,19 @@ package com.sleepybear.mymoviecatalogue.fragments;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.graphics.Rect;
-import android.content.res.Resources;
+import android.widget.Toast;
 
 import com.sleepybear.mymoviecatalogue.R;
 import com.sleepybear.mymoviecatalogue.adapter.TrendingAdapter;
 import com.sleepybear.mymoviecatalogue.api.APIService;
 import com.sleepybear.mymoviecatalogue.api.NetworkInstance;
+import com.sleepybear.mymoviecatalogue.listener.RecycleTouchListener;
 import com.sleepybear.mymoviecatalogue.models.trending.TrendingMovieModel;
 import com.sleepybear.mymoviecatalogue.models.trending.TrendingResult;
 
@@ -32,6 +30,7 @@ import retrofit2.Response;
 
 public class TrendingFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     TrendingAdapter mAdapter;
+    private List<TrendingResult> list = new ArrayList<>();
     @BindView(R.id.trending_recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.swipe_refresh_container)
@@ -39,13 +38,6 @@ public class TrendingFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     public TrendingFragment() {
         // Required empty public constructor
-    }
-
-    public static TrendingFragment newInstance(String param1, String param2) {
-        TrendingFragment fragment = new TrendingFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -57,7 +49,7 @@ public class TrendingFragment extends Fragment implements SwipeRefreshLayout.OnR
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_trending, container, false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
         mAdapter = new TrendingAdapter();
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
@@ -70,16 +62,25 @@ public class TrendingFragment extends Fragment implements SwipeRefreshLayout.OnR
 
             @Override
             public void run() {
-
                 swipeRefreshLayout.setRefreshing(true);
                 fetchTrendingMovieItems();
             }
         });
 
+        recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new RecycleTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Toast.makeText(getContext(), list.get(position).getId().toString(),Toast.LENGTH_SHORT).show();
+            }
 
+            @Override
+            public void onLongClick(View view, int position) {
 
+            }
+        }));
         return view;
     }
+
     private void fetchTrendingMovieItems() {
         swipeRefreshLayout.setRefreshing(true);
         APIService service = NetworkInstance.getRetrofitInstance().create(APIService.class);
@@ -87,10 +88,9 @@ public class TrendingFragment extends Fragment implements SwipeRefreshLayout.OnR
         trendingMovieModelCall.enqueue(new Callback<TrendingMovieModel>() {
             @Override
             public void onResponse(Call<TrendingMovieModel> call, Response<TrendingMovieModel> response) {
-                if(response.isSuccessful()){
-                    int totalpage = response.body().getTotalPages();
-                    Log.d("ROS",String.valueOf(totalpage));
+                if (response.isSuccessful()) {
                     List<TrendingResult> items = response.body().getTrendingResults();
+                    list.addAll(items);
                     mAdapter.clearAll();
                     mAdapter.updateData(items);
                     swipeRefreshLayout.setRefreshing(false);

@@ -42,7 +42,7 @@ dependencies {
     implementation "com.jakewharton:butterknife:$butterknife_version"
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterknife_version"
 
-    implementation 'com.github.ikidou:FragmentBackHandler:2.1'
+    implementation  'com.squareup.okhttp3:logging-interceptor:3.9.1'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
