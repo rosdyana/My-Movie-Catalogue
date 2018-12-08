@@ -18,9 +18,11 @@ import com.sleepybear.mymoviecatalogue.api.NetworkInstance;
 import com.sleepybear.mymoviecatalogue.listener.RecycleTouchListener;
 import com.sleepybear.mymoviecatalogue.models.trending.TrendingMovieModel;
 import com.sleepybear.mymoviecatalogue.models.trending.TrendingResult;
+import com.sleepybear.mymoviecatalogue.utils.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -84,7 +86,8 @@ public class TrendingFragment extends Fragment implements SwipeRefreshLayout.OnR
     private void fetchTrendingMovieItems() {
         swipeRefreshLayout.setRefreshing(true);
         APIService service = NetworkInstance.getRetrofitInstance().create(APIService.class);
-        Call<TrendingMovieModel> trendingMovieModelCall = service.getTrendingMovie();
+        String currentLanguage = utils.getDeviceLang(Locale.getDefault().getDisplayLanguage());
+        Call<TrendingMovieModel> trendingMovieModelCall = service.getTrendingMovie(currentLanguage);
         trendingMovieModelCall.enqueue(new Callback<TrendingMovieModel>() {
             @Override
             public void onResponse(Call<TrendingMovieModel> call, Response<TrendingMovieModel> response) {

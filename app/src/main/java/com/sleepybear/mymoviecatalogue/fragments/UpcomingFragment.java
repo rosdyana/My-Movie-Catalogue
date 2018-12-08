@@ -16,8 +16,10 @@ import com.sleepybear.mymoviecatalogue.api.APIService;
 import com.sleepybear.mymoviecatalogue.api.NetworkInstance;
 import com.sleepybear.mymoviecatalogue.models.upcoming.UpcomingMovieModel;
 import com.sleepybear.mymoviecatalogue.models.upcoming.UpcomingResult;
+import com.sleepybear.mymoviecatalogue.utils.utils;
 
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -76,7 +78,8 @@ public class UpcomingFragment extends Fragment implements SwipeRefreshLayout.OnR
     private void fetchUpcomingMovieItems() {
         swipeRefreshLayout.setRefreshing(true);
         APIService service = NetworkInstance.getRetrofitInstance().create(APIService.class);
-        Call<UpcomingMovieModel> upcomingMovieModelCall = service.getUpcomingMovie();
+        String currentLanguage = utils.getDeviceLang(Locale.getDefault().getDisplayLanguage());
+        Call<UpcomingMovieModel> upcomingMovieModelCall = service.getUpcomingMovie(currentLanguage);
         upcomingMovieModelCall.enqueue(new Callback<UpcomingMovieModel>() {
             @Override
             public void onResponse(Call<UpcomingMovieModel> call, Response<UpcomingMovieModel> response) {

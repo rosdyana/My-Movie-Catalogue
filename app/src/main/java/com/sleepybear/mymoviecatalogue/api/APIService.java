@@ -14,18 +14,18 @@ import com.sleepybear.mymoviecatalogue.models.upcoming.UpcomingMovieModel;
 public interface APIService {
 
     @GET("movie/upcoming")
-    Call<UpcomingMovieModel> getUpcomingMovie();
+    Call<UpcomingMovieModel> getUpcomingMovie(@Query(value = "language") String language);
 
     @GET("movie/popular")
-    Call<PopularMovieModel> getPopularMovie();
+    Call<PopularMovieModel> getPopularMovie(@Query(value = "language") String language);
 
     @GET("trending/all/day")
-    Call<TrendingMovieModel> getTrendingMovie();
+    Call<TrendingMovieModel> getTrendingMovie(@Query(value = "language") String language);
 
     @GET("search/movie")
     Call<SearchMovieModel> searchMovie(@Query(value = "query") String query,
-                                       @Query(value = "include_adult") boolean include_adult);
+                                       @Query(value = "language") String language);
 
     @GET("movie/now_playing")
-    Call<NowplayingModel> getNowplaying();
+    Call<NowplayingModel> getNowplaying(@Query(value = "language") String language);
 }

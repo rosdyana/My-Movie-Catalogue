@@ -16,8 +16,10 @@ import com.sleepybear.mymoviecatalogue.api.APIService;
 import com.sleepybear.mymoviecatalogue.api.NetworkInstance;
 import com.sleepybear.mymoviecatalogue.models.popular.PopularMovieModel;
 import com.sleepybear.mymoviecatalogue.models.popular.PopularResult;
+import com.sleepybear.mymoviecatalogue.utils.utils;
 
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -69,7 +71,8 @@ public class PopularFragment extends Fragment implements SwipeRefreshLayout.OnRe
     private void fetchPopularMovieItems() {
         swipeRefreshLayout.setRefreshing(true);
         APIService apiService = NetworkInstance.getRetrofitInstance().create(APIService.class);
-        Call<PopularMovieModel> popularMovieModelCall = apiService.getPopularMovie();
+        String currentLanguage = utils.getDeviceLang(Locale.getDefault().getDisplayLanguage());
+        Call<PopularMovieModel> popularMovieModelCall = apiService.getPopularMovie(currentLanguage);
         popularMovieModelCall.enqueue(new Callback<PopularMovieModel>() {
             @Override
             public void onResponse(Call<PopularMovieModel> call, Response<PopularMovieModel> response) {
