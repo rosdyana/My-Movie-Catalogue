@@ -7,7 +7,6 @@
     <string name="text_now_playing">Now Playing</string>
     <string name="txtRate">Rating : </string>
     <string name="txtReleaseDate">Release Date : </string>
-    <string name="action_exit">Back once again to exit</string>
     <string name="txtGenre">Genres :</string>
     <string name="twitter_app_not_found">Twitter app isn\'t found</string>
     <string name="share_msg">Let\'s watch %1$s, it\'s movie with rate %2$.2f</string>

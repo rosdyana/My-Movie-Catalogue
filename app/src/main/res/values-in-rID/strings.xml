@@ -8,7 +8,6 @@
     <string name="text_now_playing">Tayang Sekarang</string>
     <string name="txtRate">Rating : </string>
     <string name="txtReleaseDate">Tanggal Rilis : </string>
-    <string name="action_exit">Tekan tombol kembali sekali lagi untuk keluar</string>
     <string name="txtGenre">Genres :</string>
     <string name="twitter_app_not_found">Aplikasi Twitter tidak ditemukan</string>
     <string name="share_msg">Ayo nonton bareng %1$s, ini adalah film dengan penilaian sekitar %2$.2f</string>
