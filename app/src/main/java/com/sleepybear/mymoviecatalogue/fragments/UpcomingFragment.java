@@ -106,9 +106,14 @@ public class UpcomingFragment extends Fragment implements SwipeRefreshLayout.OnR
             public void onResponse(Call<UpcomingMovieModel> call, Response<UpcomingMovieModel> response) {
                 if (response.isSuccessful()) {
                     List<UpcomingResult> items = response.body().getResults();
-                    list.addAll(items);
+                    list.clear();
+                    for(int i = 0;i < items.size(); i++){
+                        if(items.get(i).getReleaseDate().compareTo(utils.getCurrentDate()) > 0){
+                            list.add(items.get(i));
+                        }
+                    }
                     mAdapter.clearAll();
-                    mAdapter.updateData(items);
+                    mAdapter.updateData(list);
                     swipeRefreshLayout.setRefreshing(false);
                 }
             }

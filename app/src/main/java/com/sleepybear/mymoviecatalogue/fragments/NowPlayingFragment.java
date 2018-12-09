@@ -31,7 +31,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class NowPlayingFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
+public class NowPlayingFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     NowplayingAdapter mAdapter;
     private List<NowplayingResult> list = new ArrayList<>();
     @BindView(R.id.nowplaying_recycler_view)
@@ -95,7 +95,7 @@ public class NowPlayingFragment extends Fragment implements SwipeRefreshLayout.O
         nowplayingModelCall.enqueue(new Callback<NowplayingModel>() {
             @Override
             public void onResponse(Call<NowplayingModel> call, Response<NowplayingModel> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     List<NowplayingResult> items = response.body().getResults();
                     list.addAll(items);
                     mAdapter.clearAll();

@@ -56,7 +56,7 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         searchQuery = this.getArguments().getString("search_query");
-        Log.d("ROS search ",searchQuery);
+        Log.d("ROS search ", searchQuery);
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         ButterKnife.bind(this, view);
         mAdapter = new SearchAdapter();
@@ -98,7 +98,7 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
         swipeRefreshLayout.setRefreshing(true);
         APIService service = NetworkInstance.getRetrofitInstance().create(APIService.class);
         String currentLanguage = utils.getDeviceLang(Locale.getDefault().getDisplayLanguage());
-        Call<SearchMovieModel> searchMovieModelCall = service.searchMovie(searchQuery,currentLanguage);
+        Call<SearchMovieModel> searchMovieModelCall = service.searchMovie(searchQuery, currentLanguage);
         searchMovieModelCall.enqueue(new Callback<SearchMovieModel>() {
             @Override
             public void onResponse(Call<SearchMovieModel> call, Response<SearchMovieModel> response) {

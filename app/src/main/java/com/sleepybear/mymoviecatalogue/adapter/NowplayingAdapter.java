@@ -13,16 +13,16 @@ import java.util.List;
 public class NowplayingAdapter extends RecyclerView.Adapter<MovieViewHolder> {
     private List<NowplayingResult> list = new ArrayList<>();
 
-    public NowplayingAdapter(){
+    public NowplayingAdapter() {
 
     }
 
-    public void updateData(List<NowplayingResult> items){
+    public void updateData(List<NowplayingResult> items) {
         list.addAll(items);
         notifyDataSetChanged();
     }
 
-    public void clearAll(){
+    public void clearAll() {
         list.clear();
         notifyDataSetChanged();
     }
@@ -34,7 +34,7 @@ public class NowplayingAdapter extends RecyclerView.Adapter<MovieViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder( MovieViewHolder holder, int i) {
+    public void onBindViewHolder(MovieViewHolder holder, int i) {
         holder.bind(list.get(i));
     }
 

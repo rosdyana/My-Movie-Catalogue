@@ -29,23 +29,73 @@
             android:layout_marginTop="10dp"
             tools:src="@drawable/ic_image_black_24dp"/>
 
-        <TextView
-            android:id="@+id/movie_rating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/thumbnail_poster"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            tools:text="6.6"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/movie_rate_date"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:layout_below="@id/thumbnail_poster">
 
+            <TextView
+                android:id="@+id/movie_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:layout_gravity="center_horizontal"
+                tools:text="Rate : 6.6" />
+
+            <TextView
+                android:id="@+id/release_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_gravity="center_horizontal"
+                tools:text="Date Release : 6/6/6666" />
+        </LinearLayout>
         <TextView
             android:id="@+id/overview_movie"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/movie_rating"
+            android:layout_below="@id/movie_rate_date"
             android:layout_centerHorizontal="true"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:justificationMode="inter_word"
             tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/overview_movie"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp"
+            android:id="@+id/genre_container"
+            android:gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/movie_genres"
+                tools:text="Genre : Drama, Action"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/share_container"
+            android:layout_below="@id/genre_container"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:layout_height="match_parent">
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/facebook_btn"
+                app:srcCompat="@drawable/ic_facebook"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/twitter_btn"
+                app:srcCompat="@drawable/ic_twitter"/>
+        </LinearLayout>
     </RelativeLayout>
 </ScrollView>
