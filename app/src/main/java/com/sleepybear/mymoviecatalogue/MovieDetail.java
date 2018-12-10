@@ -89,9 +89,9 @@ public class MovieDetail extends AppCompatActivity {
     private void loadData(SearchResult searchResult) {
         movieTitle.setText(searchResult.getTitle());
         movieDescription.setText(searchResult.getOverview());
-        movieRating.setText(getString(R.string.txtRate) + searchResult.getVoteAverage().toString());
-        movieReleaseDate.setText(getString(R.string.txtReleaseDate) + searchResult.getReleaseDate());
-        movieGenres.setText(getString(R.string.txtGenre) + getGenre(searchResult.getGenreIds()));
+        movieRating.setText(getString(R.string.txtRate, searchResult.getVoteAverage()));
+        movieReleaseDate.setText(getString(R.string.txtReleaseDate, searchResult.getReleaseDate()));
+        movieGenres.setText(getString(R.string.txtGenre,getGenre(searchResult.getGenreIds())));
         Glide.with(getApplicationContext())
                 .load(BuildConfig.BASE_URL_IMG + searchResult.getPosterPath())
                 .apply(new RequestOptions()
@@ -109,9 +109,9 @@ public class MovieDetail extends AppCompatActivity {
     private void loadData(UpcomingResult upcomingResult) {
         movieTitle.setText(upcomingResult.getTitle());
         movieDescription.setText(upcomingResult.getOverview());
-        movieRating.setText(getString(R.string.txtRate) + upcomingResult.getVoteAverage().toString());
-        movieReleaseDate.setText(getString(R.string.txtReleaseDate) + upcomingResult.getReleaseDate());
-        movieGenres.setText(getString(R.string.txtGenre) + getGenre(upcomingResult.getGenreIds()));
+        movieRating.setText(getString(R.string.txtRate, upcomingResult.getVoteAverage()));
+        movieReleaseDate.setText(getString(R.string.txtReleaseDate, upcomingResult.getReleaseDate()));
+        movieGenres.setText(getString(R.string.txtGenre,getGenre(upcomingResult.getGenreIds())));
         Glide.with(getApplicationContext())
                 .load(BuildConfig.BASE_URL_IMG + upcomingResult.getPosterPath())
                 .apply(new RequestOptions()
@@ -128,9 +128,9 @@ public class MovieDetail extends AppCompatActivity {
     private void loadData(PopularResult popularResult) {
         movieTitle.setText(popularResult.getTitle());
         movieDescription.setText(popularResult.getOverview());
-        movieRating.setText(getString(R.string.txtRate) + popularResult.getVoteAverage().toString());
-        movieReleaseDate.setText(getString(R.string.txtReleaseDate) + popularResult.getReleaseDate());
-        movieGenres.setText(getString(R.string.txtGenre) + getGenre(popularResult.getGenreIds()));
+        movieRating.setText(getString(R.string.txtRate, popularResult.getVoteAverage()));
+        movieReleaseDate.setText(getString(R.string.txtReleaseDate, popularResult.getReleaseDate()));
+        movieGenres.setText(getString(R.string.txtGenre,getGenre(popularResult.getGenreIds())));
         Glide.with(getApplicationContext())
                 .load(BuildConfig.BASE_URL_IMG + popularResult.getPosterPath())
                 .apply(new RequestOptions()
@@ -147,9 +147,9 @@ public class MovieDetail extends AppCompatActivity {
     private void loadData(NowplayingResult nowplayingResult) {
         movieTitle.setText(nowplayingResult.getTitle());
         movieDescription.setText(nowplayingResult.getOverview());
-        movieRating.setText(getString(R.string.txtRate) + nowplayingResult.getVoteAverage().toString());
-        movieReleaseDate.setText(getString(R.string.txtReleaseDate) + nowplayingResult.getReleaseDate());
-        movieGenres.setText(getString(R.string.txtGenre) + getGenre(nowplayingResult.getGenreIds()));
+        movieRating.setText(getString(R.string.txtRate, nowplayingResult.getVoteAverage()));
+        movieReleaseDate.setText(getString(R.string.txtReleaseDate, nowplayingResult.getReleaseDate()));
+        movieGenres.setText(getString(R.string.txtGenre,getGenre(nowplayingResult.getGenreIds())));
         Glide.with(getApplicationContext())
                 .load(BuildConfig.BASE_URL_IMG + nowplayingResult.getPosterPath())
                 .apply(new RequestOptions()
@@ -166,9 +166,9 @@ public class MovieDetail extends AppCompatActivity {
     private void loadData(TrendingResult trendingResult) {
         movieTitle.setText(trendingResult.getTitle().isEmpty() ? trendingResult.getName() : trendingResult.getTitle());
         movieDescription.setText(trendingResult.getOverview());
-        movieRating.setText(getString(R.string.txtRate) + trendingResult.getVoteAverage().toString());
-        movieReleaseDate.setText(getString(R.string.txtReleaseDate) + trendingResult.getReleaseDate());
-        movieGenres.setText(getString(R.string.txtGenre) + getGenre(trendingResult.getGenreIds()));
+        movieRating.setText(getString(R.string.txtRate, trendingResult.getVoteAverage()));
+        movieReleaseDate.setText(getString(R.string.txtReleaseDate, trendingResult.getReleaseDate()));
+        movieGenres.setText(getString(R.string.txtGenre,getGenre(trendingResult.getGenreIds())));
         Glide.with(getApplicationContext())
                 .load(BuildConfig.BASE_URL_IMG + trendingResult.getPosterPath())
                 .apply(new RequestOptions()
