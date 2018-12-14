@@ -3,9 +3,12 @@ package com.sleepybear.mymoviecatalogue;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -46,8 +49,8 @@ public class MovieDetail extends AppCompatActivity {
     TextView movieDescription;
     @BindView(R.id.movie_rating)
     TextView movieRating;
-    @BindView(R.id.thumbnail_poster)
-    ImageView moviePoster;
+//    @BindView(R.id.thumbnail_poster)
+//    ImageView moviePoster;
     @BindView(R.id.release_date)
     TextView movieReleaseDate;
     @BindView(R.id.movie_genres)
@@ -56,6 +59,10 @@ public class MovieDetail extends AppCompatActivity {
     ImageButton btnTwitter;
     @BindView(R.id.facebook_btn)
     ImageButton btnFacebbok;
+    @BindView(R.id.backdrop_poster)
+    ImageView movieBackdrop;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +70,13 @@ public class MovieDetail extends AppCompatActivity {
         setContentView(R.layout.activity_movie_detail);
 
         ButterKnife.bind(this);
+
+//        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
 
         String fragmentName = getIntent().getExtras().getString(FRAGMENT_NAME);
         Log.d("ROS", fragmentName);
@@ -83,7 +97,6 @@ public class MovieDetail extends AppCompatActivity {
             loadData(searchResult);
         }
 
-
     }
 
     private void loadData(SearchResult searchResult) {
@@ -92,13 +105,20 @@ public class MovieDetail extends AppCompatActivity {
         movieRating.setText(getString(R.string.txtRate, searchResult.getVoteAverage()));
         movieReleaseDate.setText(getString(R.string.txtReleaseDate, searchResult.getReleaseDate()));
         movieGenres.setText(getString(R.string.txtGenre,getGenre(searchResult.getGenreIds())));
+//        Glide.with(getApplicationContext())
+//                .load(BuildConfig.BASE_URL_IMG + searchResult.getPosterPath())
+//                .apply(new RequestOptions()
+//                        .placeholder(R.drawable.ic_image_black_24dp)
+//                        .error(R.drawable.ic_image_black_24dp)
+//                        .centerCrop())
+//                .into(moviePoster);
         Glide.with(getApplicationContext())
-                .load(BuildConfig.BASE_URL_IMG + searchResult.getPosterPath())
+                .load(BuildConfig.BASE_URL_IMG_BACKDROP + searchResult.getBackdropPath())
                 .apply(new RequestOptions()
                         .placeholder(R.drawable.ic_image_black_24dp)
                         .error(R.drawable.ic_image_black_24dp)
                         .centerCrop())
-                .into(moviePoster);
+                .into(movieBackdrop);
 
         getSupportActionBar().setTitle(searchResult.getTitle());
 
@@ -112,13 +132,20 @@ public class MovieDetail extends AppCompatActivity {
         movieRating.setText(getString(R.string.txtRate, upcomingResult.getVoteAverage()));
         movieReleaseDate.setText(getString(R.string.txtReleaseDate, upcomingResult.getReleaseDate()));
         movieGenres.setText(getString(R.string.txtGenre,getGenre(upcomingResult.getGenreIds())));
+//        Glide.with(getApplicationContext())
+//                .load(BuildConfig.BASE_URL_IMG + upcomingResult.getPosterPath())
+//                .apply(new RequestOptions()
+//                        .placeholder(R.drawable.ic_image_black_24dp)
+//                        .error(R.drawable.ic_image_black_24dp)
+//                        .centerCrop())
+//                .into(moviePoster);
         Glide.with(getApplicationContext())
-                .load(BuildConfig.BASE_URL_IMG + upcomingResult.getPosterPath())
+                .load(BuildConfig.BASE_URL_IMG_BACKDROP + upcomingResult.getBackdropPath())
                 .apply(new RequestOptions()
                         .placeholder(R.drawable.ic_image_black_24dp)
                         .error(R.drawable.ic_image_black_24dp)
                         .centerCrop())
-                .into(moviePoster);
+                .into(movieBackdrop);
 
         getSupportActionBar().setTitle(upcomingResult.getTitle());
 
@@ -131,13 +158,20 @@ public class MovieDetail extends AppCompatActivity {
         movieRating.setText(getString(R.string.txtRate, popularResult.getVoteAverage()));
         movieReleaseDate.setText(getString(R.string.txtReleaseDate, popularResult.getReleaseDate()));
         movieGenres.setText(getString(R.string.txtGenre,getGenre(popularResult.getGenreIds())));
+//        Glide.with(getApplicationContext())
+//                .load(BuildConfig.BASE_URL_IMG + popularResult.getPosterPath())
+//                .apply(new RequestOptions()
+//                        .placeholder(R.drawable.ic_image_black_24dp)
+//                        .error(R.drawable.ic_image_black_24dp)
+//                        .centerCrop())
+//                .into(moviePoster);
         Glide.with(getApplicationContext())
-                .load(BuildConfig.BASE_URL_IMG + popularResult.getPosterPath())
+                .load(BuildConfig.BASE_URL_IMG_BACKDROP + popularResult.getBackdropPath())
                 .apply(new RequestOptions()
                         .placeholder(R.drawable.ic_image_black_24dp)
                         .error(R.drawable.ic_image_black_24dp)
                         .centerCrop())
-                .into(moviePoster);
+                .into(movieBackdrop);
 
         getSupportActionBar().setTitle(popularResult.getTitle());
 
@@ -150,13 +184,20 @@ public class MovieDetail extends AppCompatActivity {
         movieRating.setText(getString(R.string.txtRate, nowplayingResult.getVoteAverage()));
         movieReleaseDate.setText(getString(R.string.txtReleaseDate, nowplayingResult.getReleaseDate()));
         movieGenres.setText(getString(R.string.txtGenre,getGenre(nowplayingResult.getGenreIds())));
+//        Glide.with(getApplicationContext())
+//                .load(BuildConfig.BASE_URL_IMG + nowplayingResult.getPosterPath())
+//                .apply(new RequestOptions()
+//                        .placeholder(R.drawable.ic_image_black_24dp)
+//                        .error(R.drawable.ic_image_black_24dp)
+//                        .centerCrop())
+//                .into(moviePoster);
         Glide.with(getApplicationContext())
-                .load(BuildConfig.BASE_URL_IMG + nowplayingResult.getPosterPath())
+                .load(BuildConfig.BASE_URL_IMG_BACKDROP + nowplayingResult.getBackdropPath())
                 .apply(new RequestOptions()
                         .placeholder(R.drawable.ic_image_black_24dp)
                         .error(R.drawable.ic_image_black_24dp)
                         .centerCrop())
-                .into(moviePoster);
+                .into(movieBackdrop);
 
         getSupportActionBar().setTitle(nowplayingResult.getTitle());
 
@@ -169,13 +210,20 @@ public class MovieDetail extends AppCompatActivity {
         movieRating.setText(getString(R.string.txtRate, trendingResult.getVoteAverage()));
         movieReleaseDate.setText(getString(R.string.txtReleaseDate, trendingResult.getReleaseDate()));
         movieGenres.setText(getString(R.string.txtGenre,getGenre(trendingResult.getGenreIds())));
+//        Glide.with(getApplicationContext())
+//                .load(BuildConfig.BASE_URL_IMG + trendingResult.getPosterPath())
+//                .apply(new RequestOptions()
+//                        .placeholder(R.drawable.ic_image_black_24dp)
+//                        .error(R.drawable.ic_image_black_24dp)
+//                        .centerCrop())
+//                .into(moviePoster);
         Glide.with(getApplicationContext())
-                .load(BuildConfig.BASE_URL_IMG + trendingResult.getPosterPath())
+                .load(BuildConfig.BASE_URL_IMG_BACKDROP + trendingResult.getBackdropPath())
                 .apply(new RequestOptions()
                         .placeholder(R.drawable.ic_image_black_24dp)
                         .error(R.drawable.ic_image_black_24dp)
                         .centerCrop())
-                .into(moviePoster);
+                .into(movieBackdrop);
 
         getSupportActionBar().setTitle(trendingResult.getTitle().isEmpty() ? trendingResult.getName() : trendingResult.getTitle());
 
