@@ -111,6 +111,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
             mToolbarTitle.setText(getString(R.string.text_trending));
             loadFragment(new TrendingFragment());
+            fragmentState = R.id.action_trending;
+            fragmentName = getString(R.string.text_trending);
         }
         mToolbarTitle.setTextColor(getResources().getColor(R.color.white));
 
