@@ -104,9 +104,13 @@ public class MainActivity extends AppCompatActivity {
 
         if (savedInstanceState != null) {
             fragmentState = savedInstanceState.getInt(FRAGMENT_STATE);
-            mBottomNav.setSelectedItemId(fragmentState);
+            fragmentName = savedInstanceState.getString(FRAGMENT_NAME);
+            mToolbarTitle.setText(fragmentName);
+            view = mBottomNav.findViewById(fragmentState);
+            view.performClick();
         } else {
-            mBottomNav.setSelectedItemId(R.id.action_trending);
+            mToolbarTitle.setText(getString(R.string.text_trending));
+            loadFragment(new TrendingFragment());
         }
         mToolbarTitle.setTextColor(getResources().getColor(R.color.white));
 
@@ -119,24 +123,28 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new PopularFragment();
                         loadFragment(fragment);
                         fragmentState = R.id.action_popular;
+                        fragmentName = getString(R.string.text_popular);
                         break;
                     case R.id.action_now_playing:
                         mToolbarTitle.setText(getString(R.string.text_now_playing));
                         fragment = new NowPlayingFragment();
                         loadFragment(fragment);
                         fragmentState = R.id.action_now_playing;
+                        fragmentName = getString(R.string.text_now_playing);
                         break;
                     case R.id.action_trending:
                         mToolbarTitle.setText(getString(R.string.text_trending));
                         fragment = new TrendingFragment();
                         loadFragment(fragment);
                         fragmentState = R.id.action_trending;
+                        fragmentName = getString(R.string.text_trending);
                         break;
                     case R.id.action_upcoming:
                         mToolbarTitle.setText(getString(R.string.text_upcoming));
                         fragment = new UpcomingFragment();
                         loadFragment(fragment);
                         fragmentState = R.id.action_upcoming;
+                        fragmentName = getString(R.string.text_upcoming);
                         break;
                 }
                 return true;
@@ -149,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
     public void onSaveInstanceState (Bundle outState){
         super.onSaveInstanceState(outState);
         outState.putInt(FRAGMENT_STATE, fragmentState);
+        outState.putString(FRAGMENT_NAME, fragmentName);
     }
 
     private void loadFragment(final Fragment fragment) {
