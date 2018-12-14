@@ -189,7 +189,7 @@ public class MovieDetail extends AppCompatActivity {
                 result.add(MainActivity.ourMovieGenres.get(i).getName());
             }
         }
-        Log.d("ROS", TextUtils.join(",", result));
+//        Log.d("ROS", TextUtils.join(",", result));
         return TextUtils.join(" , ", result);
     }
 
