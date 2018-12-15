@@ -5,25 +5,25 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.sleepybear.mymoviecatalogue.R;
-import com.sleepybear.mymoviecatalogue.models.nowplaying.NowplayingResult;
+import com.sleepybear.mymoviecatalogue.models.Result;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NowplayingAdapter extends RecyclerView.Adapter<MovieViewHolder> {
-    private List<NowplayingResult> list = new ArrayList<>();
+public class MovieAdapter extends RecyclerView.Adapter<MovieViewHolder> {
+    private List<Result> resultList = new ArrayList<>();
 
-    public NowplayingAdapter() {
+    public MovieAdapter() {
 
     }
 
-    public void updateData(List<NowplayingResult> items) {
-        list.addAll(items);
+    public void updateData(List<Result> items) {
+        resultList.addAll(items);
         notifyDataSetChanged();
     }
 
     public void clearAll() {
-        list.clear();
+        resultList.clear();
         notifyDataSetChanged();
     }
 
@@ -34,12 +34,12 @@ public class NowplayingAdapter extends RecyclerView.Adapter<MovieViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(MovieViewHolder holder, int i) {
-        holder.bind(list.get(i));
+    public void onBindViewHolder(MovieViewHolder movieViewHolder, int i) {
+        movieViewHolder.bind(resultList.get(i));
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return resultList.size();
     }
 }

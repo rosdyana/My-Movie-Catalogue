@@ -3,6 +3,7 @@ package com.sleepybear.mymoviecatalogue.models.search;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.sleepybear.mymoviecatalogue.models.Result;
 
 public class SearchMovieModel {
 
@@ -17,7 +18,7 @@ public class SearchMovieModel {
     private Integer totalPages;
     @SerializedName("results")
     @Expose
-    private List<SearchResult> searchResults = null;
+    private List<Result> searchResults = null;
 
     public Integer getPage() {
         return page;
@@ -43,11 +44,11 @@ public class SearchMovieModel {
         this.totalPages = totalPages;
     }
 
-    public List<SearchResult> getSearchResults() {
+    public List<Result> getSearchResults() {
         return searchResults;
     }
 
-    public void setSearchResults(List<SearchResult> searchResults) {
+    public void setSearchResults(List<Result> searchResults) {
         this.searchResults = searchResults;
     }
 

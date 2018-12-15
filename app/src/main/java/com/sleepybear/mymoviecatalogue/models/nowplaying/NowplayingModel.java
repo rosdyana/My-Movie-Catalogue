@@ -3,12 +3,13 @@ package com.sleepybear.mymoviecatalogue.models.nowplaying;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.sleepybear.mymoviecatalogue.models.Result;
 
 public class NowplayingModel {
 
     @SerializedName("results")
     @Expose
-    private List<NowplayingResult> results = null;
+    private List<Result> results = null;
     @SerializedName("page")
     @Expose
     private Integer page;
@@ -22,11 +23,11 @@ public class NowplayingModel {
     @Expose
     private Integer totalPages;
 
-    public List<NowplayingResult> getResults() {
+    public List<Result> getResults() {
         return results;
     }
 
-    public void setResults(List<NowplayingResult> results) {
+    public void setResults(List<Result> results) {
         this.results = results;
     }
 

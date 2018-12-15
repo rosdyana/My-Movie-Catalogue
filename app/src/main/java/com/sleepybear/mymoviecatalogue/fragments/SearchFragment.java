@@ -13,13 +13,12 @@ import android.view.ViewGroup;
 
 import com.sleepybear.mymoviecatalogue.MovieDetail;
 import com.sleepybear.mymoviecatalogue.R;
-import com.sleepybear.mymoviecatalogue.adapter.SearchAdapter;
+import com.sleepybear.mymoviecatalogue.adapter.MovieAdapter;
 import com.sleepybear.mymoviecatalogue.api.APIService;
 import com.sleepybear.mymoviecatalogue.api.NetworkInstance;
 import com.sleepybear.mymoviecatalogue.listener.RecycleTouchListener;
+import com.sleepybear.mymoviecatalogue.models.Result;
 import com.sleepybear.mymoviecatalogue.models.search.SearchMovieModel;
-import com.sleepybear.mymoviecatalogue.models.search.SearchResult;
-import com.sleepybear.mymoviecatalogue.models.trending.TrendingResult;
 import com.sleepybear.mymoviecatalogue.utils.utils;
 
 import java.util.ArrayList;
@@ -35,8 +34,8 @@ import retrofit2.Response;
 
 public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private String searchQuery;
-    SearchAdapter mAdapter;
-    private List<SearchResult> list = new ArrayList<>();
+    MovieAdapter mAdapter;
+    private List<Result> list = new ArrayList<>();
     @BindView(R.id.search_recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.swipe_refresh_container)
@@ -59,7 +58,7 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
         Log.d("ROS search ", searchQuery);
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         ButterKnife.bind(this, view);
-        mAdapter = new SearchAdapter();
+        mAdapter = new MovieAdapter();
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -79,7 +78,7 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
         recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new RecycleTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                SearchResult obj = list.get(position);
+                Result obj = list.get(position);
                 Intent intent = new Intent(getActivity(), MovieDetail.class);
                 intent.putExtra(MovieDetail.MOVIE_RESULT, obj);
                 intent.putExtra(MovieDetail.FRAGMENT_NAME, SearchFragment.class.getSimpleName());
@@ -103,7 +102,7 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
             @Override
             public void onResponse(Call<SearchMovieModel> call, Response<SearchMovieModel> response) {
                 if (response.isSuccessful()) {
-                    List<SearchResult> items = response.body().getSearchResults();
+                    List<Result> items = response.body().getSearchResults();
                     list.addAll(items);
                     mAdapter.clearAll();
                     mAdapter.updateData(items);

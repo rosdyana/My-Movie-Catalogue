@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Movie Catalog</string>
-    <string name="text_trending">Trending</string>
     <string name="text_popular">Popular</string>
     <string name="text_search">Search</string>
     <string name="text_upcoming">Upcoming</string>
@@ -8,7 +7,7 @@
     <string name="txtRate">Rating : %1$.2f</string>
     <string name="txtReleaseDate">Release Date : %1$s</string>
     <string name="txtGenre">Genres : %1$s</string>
-    <string name="twitter_app_not_found">Twitter app isn\'t found</string>
     <string name="share_msg">Let\'s watch %1$s, it\'s movie with rate %2$.2f</string>
-    <string name="fb_app_not_found">Facebook app not found</string>
+    <string name="is_favorite">is_favorite</string>
+    <string name="share_button_text">Share</string>
 </resources>

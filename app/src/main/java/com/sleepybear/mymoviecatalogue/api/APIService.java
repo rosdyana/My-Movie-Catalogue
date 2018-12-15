@@ -9,7 +9,6 @@ import com.sleepybear.mymoviecatalogue.models.genre.GenreModel;
 import com.sleepybear.mymoviecatalogue.models.nowplaying.NowplayingModel;
 import com.sleepybear.mymoviecatalogue.models.popular.PopularMovieModel;
 import com.sleepybear.mymoviecatalogue.models.search.SearchMovieModel;
-import com.sleepybear.mymoviecatalogue.models.trending.TrendingMovieModel;
 import com.sleepybear.mymoviecatalogue.models.upcoming.UpcomingMovieModel;
 
 public interface APIService {
@@ -19,9 +18,6 @@ public interface APIService {
 
     @GET("movie/popular")
     Call<PopularMovieModel> getPopularMovie(@Query(value = "language") String language);
-
-    @GET("trending/all/day")
-    Call<TrendingMovieModel> getTrendingMovie(@Query(value = "language") String language);
 
     @GET("search/movie")
     Call<SearchMovieModel> searchMovie(@Query(value = "query") String query,

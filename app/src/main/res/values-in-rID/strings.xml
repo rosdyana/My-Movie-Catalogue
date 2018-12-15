@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Movie Catalog</string>
-    <string name="text_trending">Viral</string>
     <string name="text_popular">Populer</string>
     <string name="text_search">Pencarian</string>
     <string name="text_upcoming">Segera Tayang</string>
@@ -9,7 +8,7 @@
     <string name="txtRate">Rating : %1$.2f</string>
     <string name="txtReleaseDate">Tanggal Rilis : %1$s</string>
     <string name="txtGenre">Genres : %1$s</string>
-    <string name="twitter_app_not_found">Aplikasi Twitter tidak ditemukan</string>
     <string name="share_msg">Ayo nonton bareng %1$s, ini adalah film dengan penilaian sekitar %2$.2f</string>
-    <string name="fb_app_not_found">Aplikasi Facebook tidak ditemukan</string>
+    <string name="is_favorite">is_favorite</string>
+    <string name="share_button_text">Share</string>
 </resources>

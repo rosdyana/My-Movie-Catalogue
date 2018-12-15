@@ -6,19 +6,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.sleepybear.mymoviecatalogue.MovieDetail;
 import com.sleepybear.mymoviecatalogue.R;
-import com.sleepybear.mymoviecatalogue.adapter.PopularAdapter;
+import com.sleepybear.mymoviecatalogue.adapter.MovieAdapter;
 import com.sleepybear.mymoviecatalogue.api.APIService;
 import com.sleepybear.mymoviecatalogue.api.NetworkInstance;
 import com.sleepybear.mymoviecatalogue.listener.RecycleTouchListener;
+import com.sleepybear.mymoviecatalogue.models.Result;
 import com.sleepybear.mymoviecatalogue.models.popular.PopularMovieModel;
-import com.sleepybear.mymoviecatalogue.models.popular.PopularResult;
 import com.sleepybear.mymoviecatalogue.utils.utils;
 
 import java.util.ArrayList;
@@ -33,8 +32,8 @@ import retrofit2.Response;
 
 
 public class PopularFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
-    PopularAdapter mAdapter;
-    private List<PopularResult> list = new ArrayList<>();
+    MovieAdapter mAdapter;
+    private List<Result> list = new ArrayList<>();
     @BindView(R.id.popular_recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.swipe_refresh_container)
@@ -55,7 +54,7 @@ public class PopularFragment extends Fragment implements SwipeRefreshLayout.OnRe
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_popular, container, false);
         ButterKnife.bind(this, view);
-        mAdapter = new PopularAdapter();
+        mAdapter = new MovieAdapter();
         RecyclerView.LayoutManager mlayLayoutManager = new GridLayoutManager(getActivity(), 2);
 
         recyclerView.setLayoutManager(mlayLayoutManager);
@@ -73,7 +72,7 @@ public class PopularFragment extends Fragment implements SwipeRefreshLayout.OnRe
         recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new RecycleTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                PopularResult obj = list.get(position);
+                Result obj = list.get(position);
                 Intent intent = new Intent(getActivity(), MovieDetail.class);
                 intent.putExtra(MovieDetail.MOVIE_RESULT, obj);
                 intent.putExtra(MovieDetail.FRAGMENT_NAME, PopularFragment.class.getSimpleName());
@@ -97,7 +96,7 @@ public class PopularFragment extends Fragment implements SwipeRefreshLayout.OnRe
             @Override
             public void onResponse(Call<PopularMovieModel> call, Response<PopularMovieModel> response) {
                 if (response.isSuccessful()) {
-                    List<PopularResult> popularResultList = response.body().getResults();
+                    List<Result> popularResultList = response.body().getResults();
                     list.addAll(popularResultList);
                     mAdapter.clearAll();
                     mAdapter.updateData(popularResultList);
