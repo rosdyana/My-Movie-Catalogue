@@ -41,7 +41,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String FRAGMENT_STATE = "fragment_state";
+    private static final String FRAGMENT_NAME = "fragment_name";
     public static List<Genre> ourMovieGenres = new ArrayList<>();
+    private Integer fragmentState;
+    private String fragmentName;
     private Fragment fragment;
     private TextView mToolbarTitle;
     SearchView searchView;
@@ -98,9 +102,19 @@ public class MainActivity extends AppCompatActivity {
 
         mToolbarTitle = view.findViewById(R.id.toolbar_title);
 
-        mToolbarTitle.setText(getString(R.string.text_trending));
+        if (savedInstanceState != null) {
+            fragmentState = savedInstanceState.getInt(FRAGMENT_STATE);
+            fragmentName = savedInstanceState.getString(FRAGMENT_NAME);
+            mToolbarTitle.setText(fragmentName);
+            view = mBottomNav.findViewById(fragmentState);
+            view.performClick();
+        } else {
+            mToolbarTitle.setText(getString(R.string.text_trending));
+            loadFragment(new TrendingFragment());
+            fragmentState = R.id.action_trending;
+            fragmentName = getString(R.string.text_trending);
+        }
         mToolbarTitle.setTextColor(getResources().getColor(R.color.white));
-        loadFragment(new TrendingFragment());
 
         mBottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -110,21 +124,29 @@ public class MainActivity extends AppCompatActivity {
                         mToolbarTitle.setText(getString(R.string.text_popular));
                         fragment = new PopularFragment();
                         loadFragment(fragment);
+                        fragmentState = R.id.action_popular;
+                        fragmentName = getString(R.string.text_popular);
                         break;
                     case R.id.action_now_playing:
                         mToolbarTitle.setText(getString(R.string.text_now_playing));
                         fragment = new NowPlayingFragment();
                         loadFragment(fragment);
+                        fragmentState = R.id.action_now_playing;
+                        fragmentName = getString(R.string.text_now_playing);
                         break;
                     case R.id.action_trending:
                         mToolbarTitle.setText(getString(R.string.text_trending));
                         fragment = new TrendingFragment();
                         loadFragment(fragment);
+                        fragmentState = R.id.action_trending;
+                        fragmentName = getString(R.string.text_trending);
                         break;
                     case R.id.action_upcoming:
                         mToolbarTitle.setText(getString(R.string.text_upcoming));
                         fragment = new UpcomingFragment();
                         loadFragment(fragment);
+                        fragmentState = R.id.action_upcoming;
+                        fragmentName = getString(R.string.text_upcoming);
                         break;
                 }
                 return true;
@@ -132,10 +154,18 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+    @Override
+    public void onSaveInstanceState (Bundle outState){
+        super.onSaveInstanceState(outState);
+        outState.putInt(FRAGMENT_STATE, fragmentState);
+        outState.putString(FRAGMENT_NAME, fragmentName);
+    }
+
     private void loadFragment(final Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);
-        Log.d("ROS ", fragment.getClass().getSimpleName());
+//        Log.d("ROS ", fragment.getClass().getSimpleName());
         transaction.addToBackStack(null);
         transaction.commit();
     }

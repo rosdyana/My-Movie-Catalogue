@@ -12,6 +12,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "API_KEY", API_KEY
         buildConfigField "String", "BASE_URL_IMG", "\"http://image.tmdb.org/t/p/w200/\""
+        buildConfigField "String", "BASE_URL_IMG_BACKDROP", "\"http://image.tmdb.org/t/p/w500/\""
     }
     buildTypes {
         release {
