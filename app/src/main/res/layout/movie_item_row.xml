@@ -37,7 +37,9 @@
                 android:paddingRight="@dimen/album_title_padding"
                 android:paddingTop="@dimen/album_title_padding"
                 android:textColor="#111"
-                android:textSize="11dp" />
+                android:textAlignment="center"
+                android:textStyle="bold"
+                android:textSize="14dp" />
 
 
         </RelativeLayout>
