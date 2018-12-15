@@ -2,10 +2,9 @@ package com.sleepybear.mymoviecatalogue;
 
 import android.content.ContentValues;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
+import android.database.SQLException;
 import android.graphics.Color;
-import android.net.Uri;
+
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -13,12 +12,12 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.sleepybear.mymoviecatalogue.db.MovieDBHelper;
 import com.sleepybear.mymoviecatalogue.models.Result;
 import com.sleepybear.mymoviecatalogue.utils.AppPreferences;
 
@@ -33,8 +32,9 @@ public class MovieDetail extends AppCompatActivity {
     public static final String MOVIE_RESULT = "movie_result";
     public static final String FRAGMENT_NAME = "fragment_name";
     private AppPreferences appPreferences;
-    private ContentValues contentValues;
     private Result result;
+    private ArrayList<Result> dataFromDB = new ArrayList<>();
+    private MovieDBHelper movieDBHelper;
     @BindView(R.id.movie_title)
     TextView movieTitle;
     @BindView(R.id.overview_movie)
@@ -45,10 +45,6 @@ public class MovieDetail extends AppCompatActivity {
     TextView movieReleaseDate;
     @BindView(R.id.movie_genres)
     TextView movieGenres;
-    @BindView(R.id.twitter_btn)
-    ImageButton btnTwitter;
-    @BindView(R.id.facebook_btn)
-    ImageButton btnFacebbok;
     @BindView(R.id.backdrop_poster)
     ImageView movieBackdrop;
     @BindView(R.id.toolbar)
@@ -65,7 +61,7 @@ public class MovieDetail extends AppCompatActivity {
 
         ButterKnife.bind(this);
         appPreferences = new AppPreferences(this);
-        contentValues = new ContentValues();
+        movieDBHelper = new MovieDBHelper(MovieDetail.this);
 
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -77,18 +73,21 @@ public class MovieDetail extends AppCompatActivity {
             public void onClick(View view) {
                 if (!appPreferences.isFavorite()) {
                     fab_favorite.setColorFilter(Color.RED);
-//                    contentValues.put(DbContract.FavoriteColumns.COL_ID, )
                     appPreferences.setFavorite(true);
+                    movieDBHelper.open();
+                    movieDBHelper.insert(result);
+                    movieDBHelper.close();
+
                 } else {
                     appPreferences.setFavorite(false);
-                    fab_favorite.setColorFilter(Color.GRAY);
+                    fab_favorite.setColorFilter(Color.BLACK);
+                    movieDBHelper.open();
+                    movieDBHelper.delete(result.getId());
+                    movieDBHelper.close();
                 }
 
             }
         });
-
-        fab_favorite.setColorFilter(Color.GRAY);
-        appPreferences.setFavorite(false);
 
         fab_share.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +102,27 @@ public class MovieDetail extends AppCompatActivity {
         String fragmentName = getIntent().getExtras().getString(FRAGMENT_NAME);
         Log.d("ROS", fragmentName);
         result = getIntent().getParcelableExtra(MOVIE_RESULT);
+        try{
+            movieDBHelper.open();
+            dataFromDB = movieDBHelper.getValueByMovieId(result.getId());
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            movieDBHelper.close();
+        }
+
+        if(dataFromDB != null){
+            if(dataFromDB.size() > 0){
+                fab_favorite.setColorFilter(Color.RED);
+                appPreferences.setFavorite(true);
+            } else {
+                fab_favorite.setColorFilter(Color.BLACK);
+                appPreferences.setFavorite(false);
+            }
+        }
+
+
+
         loadData(result);
 
     }

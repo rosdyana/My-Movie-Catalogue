@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.sleepybear.mymoviecatalogue.api.APIService;
 import com.sleepybear.mymoviecatalogue.api.NetworkInstance;
+import com.sleepybear.mymoviecatalogue.db.MovieDBHelper;
 import com.sleepybear.mymoviecatalogue.fragments.NowPlayingFragment;
 import com.sleepybear.mymoviecatalogue.fragments.PopularFragment;
 import com.sleepybear.mymoviecatalogue.fragments.SearchFragment;
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private String fragmentName;
     private Fragment fragment;
     private TextView mToolbarTitle;
+
     SearchView searchView;
 
     @BindView(R.id.bottom_navigation)
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
         getGenreFromServer();
         ActivityUtils.setStatusBarGradiant(MainActivity.this, getResources().getDrawable(R.drawable.header_gradient_color));
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
