@@ -11,7 +11,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -23,7 +22,6 @@ import com.sleepybear.mymoviecatalogue.api.NetworkInstance;
 import com.sleepybear.mymoviecatalogue.fragments.NowPlayingFragment;
 import com.sleepybear.mymoviecatalogue.fragments.PopularFragment;
 import com.sleepybear.mymoviecatalogue.fragments.SearchFragment;
-import com.sleepybear.mymoviecatalogue.fragments.TrendingFragment;
 import com.sleepybear.mymoviecatalogue.fragments.UpcomingFragment;
 import com.sleepybear.mymoviecatalogue.models.genre.Genre;
 import com.sleepybear.mymoviecatalogue.models.genre.GenreModel;
@@ -109,10 +107,10 @@ public class MainActivity extends AppCompatActivity {
             view = mBottomNav.findViewById(fragmentState);
             view.performClick();
         } else {
-            mToolbarTitle.setText(getString(R.string.text_trending));
-            loadFragment(new TrendingFragment());
-            fragmentState = R.id.action_trending;
-            fragmentName = getString(R.string.text_trending);
+            mToolbarTitle.setText(getString(R.string.text_popular));
+            loadFragment(new PopularFragment());
+            fragmentState = R.id.action_popular;
+            fragmentName = getString(R.string.text_popular);
         }
         mToolbarTitle.setTextColor(getResources().getColor(R.color.white));
 
@@ -134,13 +132,6 @@ public class MainActivity extends AppCompatActivity {
                         fragmentState = R.id.action_now_playing;
                         fragmentName = getString(R.string.text_now_playing);
                         break;
-                    case R.id.action_trending:
-                        mToolbarTitle.setText(getString(R.string.text_trending));
-                        fragment = new TrendingFragment();
-                        loadFragment(fragment);
-                        fragmentState = R.id.action_trending;
-                        fragmentName = getString(R.string.text_trending);
-                        break;
                     case R.id.action_upcoming:
                         mToolbarTitle.setText(getString(R.string.text_upcoming));
                         fragment = new UpcomingFragment();
@@ -156,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     @Override
-    public void onSaveInstanceState (Bundle outState){
+    public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(FRAGMENT_STATE, fragmentState);
         outState.putString(FRAGMENT_NAME, fragmentName);
@@ -172,12 +163,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (mBottomNav.getSelectedItemId() == R.id.action_trending) {
+        if (mBottomNav.getSelectedItemId() == R.id.action_popular) {
             super.onBackPressed();
             finish();
         } else {
             // always back to first menu
-            mBottomNav.setSelectedItemId(R.id.action_trending);
+            mBottomNav.setSelectedItemId(R.id.action_popular);
         }
     }
 

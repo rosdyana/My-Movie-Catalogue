@@ -2,12 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_trending"
-        android:enabled="true"
-        android:icon="@drawable/ic_trending_up_black_24dp"
-        android:title="@string/text_trending"
-        app:showAsAction="ifRoom" />
-    <item
         android:id="@+id/action_popular"
         android:enabled="true"
         android:icon="@drawable/ic_star_black_24dp"

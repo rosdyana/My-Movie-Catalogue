@@ -4,12 +4,13 @@ import java.util.List;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.sleepybear.mymoviecatalogue.models.Result;
 
 public class UpcomingMovieModel {
 
     @SerializedName("results")
     @Expose
-    private List<UpcomingResult> results = null;
+    private List<Result> results = null;
     @SerializedName("page")
     @Expose
     private Integer page;
@@ -23,11 +24,11 @@ public class UpcomingMovieModel {
     @Expose
     private Integer totalPages;
 
-    public List<UpcomingResult> getResults() {
+    public List<Result> getResults() {
         return results;
     }
 
-    public void setResults(List<UpcomingResult> results) {
+    public void setResults(List<Result> results) {
         this.results = results;
     }
 

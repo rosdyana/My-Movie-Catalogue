@@ -8,11 +8,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.sleepybear.mymoviecatalogue.BuildConfig;
 import com.sleepybear.mymoviecatalogue.R;
-import com.sleepybear.mymoviecatalogue.models.nowplaying.NowplayingResult;
-import com.sleepybear.mymoviecatalogue.models.popular.PopularResult;
-import com.sleepybear.mymoviecatalogue.models.search.SearchResult;
-import com.sleepybear.mymoviecatalogue.models.trending.TrendingResult;
-import com.sleepybear.mymoviecatalogue.models.upcoming.UpcomingResult;
+import com.sleepybear.mymoviecatalogue.models.Result;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,52 +25,10 @@ class MovieViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, itemView);
     }
 
-    public void bind(TrendingResult trendingResult) {
-        txtMovieTitle.setText(trendingResult.getTitle() == null ? trendingResult.getName() : trendingResult.getTitle());
+    public void bind(Result result) {
+        txtMovieTitle.setText(result.getTitle());
         Glide.with(itemView.getContext())
-                .load(BuildConfig.BASE_URL_IMG + trendingResult.getPosterPath())
+                .load(BuildConfig.BASE_URL_IMG + result.getPosterPath())
                 .into(imgThumbnail);
-    }
-
-    public void bind(UpcomingResult upcomingResult) {
-        txtMovieTitle.setText(upcomingResult.getTitle());
-        Glide.with(itemView.getContext())
-                .load(BuildConfig.BASE_URL_IMG + upcomingResult.getPosterPath())
-                .into(imgThumbnail);
-    }
-
-    public void bind(PopularResult popularResult) {
-        txtMovieTitle.setText(popularResult.getTitle());
-        Glide.with(itemView.getContext())
-                .load(BuildConfig.BASE_URL_IMG + popularResult.getPosterPath())
-                .into(imgThumbnail);
-    }
-
-    public void bind(NowplayingResult nowplayingResult) {
-        txtMovieTitle.setText(nowplayingResult.getTitle());
-        Glide.with(itemView.getContext())
-                .load(BuildConfig.BASE_URL_IMG + nowplayingResult.getPosterPath())
-                .into(imgThumbnail);
-
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-    }
-
-    public void bind(SearchResult searchResult) {
-        txtMovieTitle.setText(searchResult.getTitle());
-        Glide.with(itemView.getContext())
-                .load(BuildConfig.BASE_URL_IMG + searchResult.getPosterPath())
-                .into(imgThumbnail);
-
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
     }
 }

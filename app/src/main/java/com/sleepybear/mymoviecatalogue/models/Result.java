@@ -1,4 +1,4 @@
-package com.sleepybear.mymoviecatalogue.models.nowplaying;
+package com.sleepybear.mymoviecatalogue.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -9,7 +9,7 @@ import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class NowplayingResult implements Parcelable {
+public class Result implements Parcelable {
 
     @SerializedName("vote_count")
     @Expose
@@ -189,10 +189,10 @@ public class NowplayingResult implements Parcelable {
         dest.writeString(this.releaseDate);
     }
 
-    public NowplayingResult() {
+    public Result() {
     }
 
-    protected NowplayingResult(Parcel in) {
+    protected Result(Parcel in) {
         this.voteCount = (Integer) in.readValue(Integer.class.getClassLoader());
         this.id = (Integer) in.readValue(Integer.class.getClassLoader());
         this.video = (Boolean) in.readValue(Boolean.class.getClassLoader());
@@ -210,15 +210,15 @@ public class NowplayingResult implements Parcelable {
         this.releaseDate = in.readString();
     }
 
-    public static final Parcelable.Creator<NowplayingResult> CREATOR = new Parcelable.Creator<NowplayingResult>() {
+    public static final Parcelable.Creator<Result> CREATOR = new Parcelable.Creator<Result>() {
         @Override
-        public NowplayingResult createFromParcel(Parcel source) {
-            return new NowplayingResult(source);
+        public Result createFromParcel(Parcel source) {
+            return new Result(source);
         }
 
         @Override
-        public NowplayingResult[] newArray(int size) {
-            return new NowplayingResult[size];
+        public Result[] newArray(int size) {
+            return new Result[size];
         }
     };
 }

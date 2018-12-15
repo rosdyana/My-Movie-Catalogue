@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.sleepybear.mymoviecatalogue.models.Result;
 
 public class PopularMovieModel {
 
@@ -19,7 +20,7 @@ public class PopularMovieModel {
     private Integer totalPages;
     @SerializedName("results")
     @Expose
-    private List<PopularResult> results = null;
+    private List<Result> results = null;
 
     public Integer getPage() {
         return page;
@@ -45,11 +46,11 @@ public class PopularMovieModel {
         this.totalPages = totalPages;
     }
 
-    public List<PopularResult> getResults() {
+    public List<Result> getResults() {
         return results;
     }
 
-    public void setResults(List<PopularResult> results) {
+    public void setResults(List<Result> results) {
         this.results = results;
     }
 }

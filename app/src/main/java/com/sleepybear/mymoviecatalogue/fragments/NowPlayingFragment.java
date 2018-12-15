@@ -12,12 +12,12 @@ import android.view.ViewGroup;
 
 import com.sleepybear.mymoviecatalogue.MovieDetail;
 import com.sleepybear.mymoviecatalogue.R;
-import com.sleepybear.mymoviecatalogue.adapter.NowplayingAdapter;
+import com.sleepybear.mymoviecatalogue.adapter.MovieAdapter;
 import com.sleepybear.mymoviecatalogue.api.APIService;
 import com.sleepybear.mymoviecatalogue.api.NetworkInstance;
 import com.sleepybear.mymoviecatalogue.listener.RecycleTouchListener;
+import com.sleepybear.mymoviecatalogue.models.Result;
 import com.sleepybear.mymoviecatalogue.models.nowplaying.NowplayingModel;
-import com.sleepybear.mymoviecatalogue.models.nowplaying.NowplayingResult;
 import com.sleepybear.mymoviecatalogue.utils.utils;
 
 import java.util.ArrayList;
@@ -32,8 +32,8 @@ import retrofit2.Response;
 
 
 public class NowPlayingFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
-    NowplayingAdapter mAdapter;
-    private List<NowplayingResult> list = new ArrayList<>();
+    MovieAdapter mAdapter;
+    private List<Result> list = new ArrayList<>();
     @BindView(R.id.nowplaying_recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.swipe_refresh_container)
@@ -53,7 +53,7 @@ public class NowPlayingFragment extends Fragment implements SwipeRefreshLayout.O
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_now_playing, container, false);
         ButterKnife.bind(this, view);
-        mAdapter = new NowplayingAdapter();
+        mAdapter = new MovieAdapter();
         RecyclerView.LayoutManager mlayLayoutManager = new GridLayoutManager(getActivity(), 2);
 
         recyclerView.setLayoutManager(mlayLayoutManager);
@@ -72,7 +72,7 @@ public class NowPlayingFragment extends Fragment implements SwipeRefreshLayout.O
         recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new RecycleTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                NowplayingResult obj = list.get(position);
+                Result obj = list.get(position);
                 Intent intent = new Intent(getActivity(), MovieDetail.class);
                 intent.putExtra(MovieDetail.MOVIE_RESULT, obj);
                 intent.putExtra(MovieDetail.FRAGMENT_NAME, NowPlayingFragment.class.getSimpleName());
@@ -96,7 +96,7 @@ public class NowPlayingFragment extends Fragment implements SwipeRefreshLayout.O
             @Override
             public void onResponse(Call<NowplayingModel> call, Response<NowplayingModel> response) {
                 if (response.isSuccessful()) {
-                    List<NowplayingResult> items = response.body().getResults();
+                    List<Result> items = response.body().getResults();
                     list.addAll(items);
                     mAdapter.clearAll();
                     mAdapter.updateData(items);
