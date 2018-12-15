@@ -118,28 +118,6 @@
                     android:layout_height="wrap_content"
                     tools:text="Genre : Drama, Action" />
             </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/share_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/genre_container"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/facebook_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_facebook" />
-
-                <ImageButton
-                    android:id="@+id/twitter_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_twitter" />
-            </LinearLayout>
         </RelativeLayout>
 
     </android.support.v4.widget.NestedScrollView>
