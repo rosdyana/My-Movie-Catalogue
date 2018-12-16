@@ -75,14 +75,14 @@ public class MovieDetail extends AppCompatActivity {
                     fab_favorite.setColorFilter(Color.RED);
                     appPreferences.setFavorite(true);
                     movieDBHelper.open();
-                    movieDBHelper.insert(result);
+                    movieDBHelper.addFavorite(result);
                     movieDBHelper.close();
 
                 } else {
                     appPreferences.setFavorite(false);
                     fab_favorite.setColorFilter(Color.BLACK);
                     movieDBHelper.open();
-                    movieDBHelper.delete(result.getId());
+                    movieDBHelper.deleteFavorite(result.getId());
                     movieDBHelper.close();
                 }
 
@@ -94,7 +94,7 @@ public class MovieDetail extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
-                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_msg, result.getTitle(), result.getVoteAverage()));
+                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_msg, result.getOriginalTitle(), result.getVoteAverage()));
                 startActivity(Intent.createChooser(intent, getResources().getString(R.string.share_button_text)));
             }
         });
@@ -102,25 +102,34 @@ public class MovieDetail extends AppCompatActivity {
         String fragmentName = getIntent().getExtras().getString(FRAGMENT_NAME);
         Log.d("ROS", fragmentName);
         result = getIntent().getParcelableExtra(MOVIE_RESULT);
-        try{
+        try {
             movieDBHelper.open();
-            dataFromDB = movieDBHelper.getValueByMovieId(result.getId());
-        } catch (SQLException e){
+            dataFromDB = movieDBHelper.getMovieByName(result.getOriginalTitle());
+//            for (int i = 0; i < dataFromDB.size(); i++) {
+//                Log.d("ROS", dataFromDB.get(i).getOriginalTitle());
+//                Log.d("ROS", String.valueOf(dataFromDB.get(i).getId()));
+//            }
+//            ArrayList<Result> cobaall = new ArrayList<>();
+//            cobaall = movieDBHelper.getAllData();
+//            Log.d("ROS", cobaall.toString());
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             movieDBHelper.close();
         }
 
-        if(dataFromDB != null){
-            if(dataFromDB.size() > 0){
+        if (!dataFromDB.isEmpty()) {
+            if (dataFromDB.get(0).getOriginalTitle().equals(result.getOriginalTitle())) {
                 fab_favorite.setColorFilter(Color.RED);
                 appPreferences.setFavorite(true);
             } else {
                 fab_favorite.setColorFilter(Color.BLACK);
                 appPreferences.setFavorite(false);
             }
+        } else {
+            fab_favorite.setColorFilter(Color.BLACK);
+            appPreferences.setFavorite(false);
         }
-
 
 
         loadData(result);
@@ -128,7 +137,7 @@ public class MovieDetail extends AppCompatActivity {
     }
 
     private void loadData(Result result) {
-        movieTitle.setText(result.getTitle());
+        movieTitle.setText(result.getOriginalTitle());
         movieDescription.setText(result.getOverview());
         movieRating.setText(getString(R.string.txtRate, result.getVoteAverage()));
         movieReleaseDate.setText(getString(R.string.txtReleaseDate, result.getReleaseDate()));
@@ -142,7 +151,7 @@ public class MovieDetail extends AppCompatActivity {
                         .centerCrop())
                 .into(movieBackdrop);
 
-        getSupportActionBar().setTitle(result.getTitle());
+        getSupportActionBar().setTitle(result.getOriginalTitle());
     }
 
     private String getGenre(List<Integer> genreIds) {

@@ -44,7 +44,7 @@ public class MovieDBHelper {
             do {
                 result = new Result();
                 result.setId(cursor.getColumnIndexOrThrow(DbContract.FavoriteColumns.COL_ID));
-                result.setTitle(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.FavoriteColumns.COL_NAME)));
+                result.setOriginalTitle(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.FavoriteColumns.COL_NAME)));
                 result.setBackdropPath(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.FavoriteColumns.COL_BACKDROP_PATH)));
                 result.setPosterPath(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.FavoriteColumns.COL_POSTER_PATH)));
                 result.setOverview(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.FavoriteColumns.COL_OVERVIEW)));
@@ -59,10 +59,66 @@ public class MovieDBHelper {
         return arrayList;
     }
 
-    public long insert(Result result) {
+    public ArrayList<Result> getMovieByName(String name) {
+        ArrayList<Result> arrayList = new ArrayList<>();
+        Result result;
+        Cursor cursor = sqLiteDatabase.query(DbContract.TABLE_FAVORITE, null, DbContract.FavoriteColumns.COL_NAME + " LIKE ?", new String[]{name}, null, null, DbContract.FavoriteColumns.COL_ID + " ASC", null);
+
+        cursor.moveToFirst();
+        if (cursor.getCount() > 0) {
+            do {
+                result = new Result();
+                result.setId(cursor.getColumnIndexOrThrow(DbContract.FavoriteColumns.COL_ID));
+                result.setOriginalTitle(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.FavoriteColumns.COL_NAME)));
+                result.setBackdropPath(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.FavoriteColumns.COL_BACKDROP_PATH)));
+                result.setPosterPath(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.FavoriteColumns.COL_POSTER_PATH)));
+                result.setOverview(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.FavoriteColumns.COL_OVERVIEW)));
+                result.setReleaseDate(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.FavoriteColumns.COL_RELEASE_DATE)));
+                result.setVoteAverage(cursor.getDouble(cursor.getColumnIndexOrThrow(DbContract.FavoriteColumns.COL_VOTE_AVG)));
+
+                arrayList.add(result);
+                cursor.moveToNext();
+
+            } while (!cursor.isAfterLast());
+        }
+        cursor.close();
+        return arrayList;
+    }
+
+    public Cursor queryAllData() {
+        return sqLiteDatabase.rawQuery("SELECT * FROM " + DbContract.TABLE_FAVORITE + " ORDER BY " + DbContract.FavoriteColumns.COL_ID + " ASC", null);
+    }
+
+    public ArrayList<Result> getAllData() {
+        ArrayList<Result> arrayList = new ArrayList<>();
+        Result result;
+
+        Cursor cursor = queryAllData();
+        cursor.moveToFirst();
+        if (cursor.getCount() > 0) {
+            do {
+                result = new Result();
+                result.setId(cursor.getColumnIndexOrThrow(DbContract.FavoriteColumns.COL_ID));
+                result.setOriginalTitle(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.FavoriteColumns.COL_NAME)));
+                result.setBackdropPath(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.FavoriteColumns.COL_BACKDROP_PATH)));
+                result.setPosterPath(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.FavoriteColumns.COL_POSTER_PATH)));
+                result.setOverview(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.FavoriteColumns.COL_OVERVIEW)));
+                result.setReleaseDate(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.FavoriteColumns.COL_RELEASE_DATE)));
+                result.setVoteAverage(cursor.getDouble(cursor.getColumnIndexOrThrow(DbContract.FavoriteColumns.COL_VOTE_AVG)));
+
+                arrayList.add(result);
+                cursor.moveToNext();
+
+            } while (!cursor.isAfterLast());
+        }
+        cursor.close();
+        return arrayList;
+    }
+
+    public long addFavorite(Result result) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(DbContract.FavoriteColumns.COL_ID, result.getId());
-        contentValues.put(DbContract.FavoriteColumns.COL_NAME, result.getTitle());
+        contentValues.put(DbContract.FavoriteColumns.COL_NAME, result.getOriginalTitle());
         contentValues.put(DbContract.FavoriteColumns.COL_OVERVIEW, result.getOverview());
         contentValues.put(DbContract.FavoriteColumns.COL_BACKDROP_PATH, result.getBackdropPath());
         contentValues.put(DbContract.FavoriteColumns.COL_POSTER_PATH, result.getPosterPath());
@@ -72,7 +128,7 @@ public class MovieDBHelper {
     }
 
 
-    public int delete(int id) {
+    public int deleteFavorite(int id) {
         return sqLiteDatabase.delete(DbContract.TABLE_FAVORITE, DbContract.FavoriteColumns.COL_ID + " = '" + id + "'", null);
     }
 }
