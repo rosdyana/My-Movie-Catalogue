@@ -2,6 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sleepybear.mymoviecatalogue">
 
+    <permission
+        android:name="com.sleepybear.mymoviecatalogue.READ_DATABASE"
+        android:protectionLevel="normal" />
+    <permission
+        android:name="com.sleepybear.mymoviecatalogue.WRITE_DATABASE"
+        android:protectionLevel="normal" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:allowBackup="true"
@@ -23,6 +30,13 @@
             android:name=".MovieDetail"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <provider
+            android:name=".provider.FavoriteProvider"
+            android:authorities="com.sleepybear.mymoviecatalogue"
+            android:exported="true"
+            android:readPermission="com.sleepybear.mymoviecatalogue.READ_DATABASE"
+            android:writePermission="com.sleepybear.mymoviecatalogue.WRITE_DATABASE" />
     </application>
 
 </manifest>

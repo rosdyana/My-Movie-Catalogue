@@ -12,14 +12,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DB_VERSION = 1;
 
     public static String CREATE_TABLE_FAVORITE = "create table " + DbContract.TABLE_FAVORITE
-//            + " (" + DbContract.FavoriteColumns.COL_ID + " integer primary key autoincrement);";
-            + " (" + DbContract.FavoriteColumns.COL_ID + " integer not null, "
+    // + " (" + DbContract.FavoriteColumns.COL_ID + " integer primary key
+    // autoincrement);";
+            + " (" + DbContract.FavoriteColumns._ID + " integer primary key autoincrement, "
             + DbContract.FavoriteColumns.COL_BACKDROP_PATH + " text not null, "
-            + DbContract.FavoriteColumns.COL_POSTER_PATH + " text not null, "
-            + DbContract.FavoriteColumns.COL_NAME + " text not null, "
-            + DbContract.FavoriteColumns.COL_OVERVIEW + " text not null, "
-            + DbContract.FavoriteColumns.COL_RELEASE_DATE + " text not null, "
-            + DbContract.FavoriteColumns.COL_VOTE_AVG + " double not null);";
+            + DbContract.FavoriteColumns.COL_POSTER_PATH + " text not null, " + DbContract.FavoriteColumns.COL_NAME
+            + " text not null, " + DbContract.FavoriteColumns.COL_OVERVIEW + " text not null, "
+            + DbContract.FavoriteColumns.COL_RELEASE_DATE + " text not null, " + DbContract.FavoriteColumns.COL_VOTE_AVG
+            + " double not null);";
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);

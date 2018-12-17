@@ -100,7 +100,7 @@ public class MovieDetail extends AppCompatActivity {
         });
 
         String fragmentName = getIntent().getExtras().getString(FRAGMENT_NAME);
-        Log.d("ROS", fragmentName);
+//        Log.d("ROS", fragmentName);
         result = getIntent().getParcelableExtra(MOVIE_RESULT);
         try {
             movieDBHelper.open();

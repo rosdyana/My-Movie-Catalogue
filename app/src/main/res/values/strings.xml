@@ -7,7 +7,7 @@
     <string name="txtRate">Rating : %1$.2f</string>
     <string name="txtReleaseDate">Release Date : %1$s</string>
     <string name="txtGenre">Genres : %1$s</string>
-    <string name="share_msg">Let\'s watch %1$s, it\'s movie with rate %2$.2f</string>
+    <string name="share_msg">Let\'s watch %1$s, this movie rate is %2$.2f</string>
     <string name="is_favorite">is_favorite</string>
     <string name="share_button_text">Share</string>
 </resources>

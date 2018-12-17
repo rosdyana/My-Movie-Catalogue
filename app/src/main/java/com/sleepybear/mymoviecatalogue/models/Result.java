@@ -194,15 +194,15 @@ public class Result implements Parcelable {
     public Result() {
     }
 
-//    public Result(Cursor cursor){
-//        this.id = DbContract.getColumnInt(cursor, DbContract.FavoriteColumns._ID);
-//        this.title = DbContract.getColumnString(cursor, DbContract.FavoriteColumns.COL_NAME);
-//        this.backdropPath = DbContract.getColumnString(cursor, DbContract.FavoriteColumns.COL_BACKDROP_PATH);
-//        this.overview = DbContract.getColumnString(cursor, DbContract.FavoriteColumns.COL_OVERVIEW);
-//        this.posterPath = DbContract.getColumnString(cursor, DbContract.FavoriteColumns.COL_POSTER_PATH);
-//        this.releaseDate = DbContract.getColumnString(cursor, DbContract.FavoriteColumns.COL_RELEASE_DATE);
-//        this.voteAverage = DbContract.getColumnDouble(cursor, DbContract.FavoriteColumns.COL_VOTE_AVG);
-//    }
+    public Result(Cursor cursor) {
+        this.id = DbContract.getColumnInt(cursor, DbContract.FavoriteColumns._ID);
+        this.title = DbContract.getColumnString(cursor, DbContract.FavoriteColumns.COL_NAME);
+        this.backdropPath = DbContract.getColumnString(cursor, DbContract.FavoriteColumns.COL_BACKDROP_PATH);
+        this.overview = DbContract.getColumnString(cursor, DbContract.FavoriteColumns.COL_OVERVIEW);
+        this.posterPath = DbContract.getColumnString(cursor, DbContract.FavoriteColumns.COL_POSTER_PATH);
+        this.releaseDate = DbContract.getColumnString(cursor, DbContract.FavoriteColumns.COL_RELEASE_DATE);
+        this.voteAverage = DbContract.getColumnDouble(cursor, DbContract.FavoriteColumns.COL_VOTE_AVG);
+    }
 
     protected Result(Parcel in) {
         this.voteCount = (Integer) in.readValue(Integer.class.getClassLoader());
