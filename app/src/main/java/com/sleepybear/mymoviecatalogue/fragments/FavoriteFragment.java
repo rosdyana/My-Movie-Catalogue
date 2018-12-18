@@ -95,7 +95,7 @@ public class FavoriteFragment extends Fragment implements SwipeRefreshLayout.OnR
             results = movieDBHelper.getAllData();
             mAdapter.clearAll();
             mAdapter.updateData(results);
-//            Log.d("ROS",results.toString());
+            Log.d("ROS",results.toString());
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

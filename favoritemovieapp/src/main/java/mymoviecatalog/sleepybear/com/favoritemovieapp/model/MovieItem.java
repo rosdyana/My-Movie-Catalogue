@@ -69,7 +69,7 @@ public class MovieItem implements Parcelable {
     }
 
     public MovieItem(Cursor cursor) {
-        this.id = DbContract.getColumnInt(cursor, DbContract.FavoriteColumns._ID);
+        this.id = DbContract.getColumnInt(cursor, DbContract.FavoriteColumns.COL_MOVIE_ID);
         this.movie_title = DbContract.getColumnString(cursor, DbContract.FavoriteColumns.COL_NAME);
         this.movie_overview = DbContract.getColumnString(cursor, DbContract.FavoriteColumns.COL_OVERVIEW);
         this.thumbnail_poster = DbContract.getColumnString(cursor, DbContract.FavoriteColumns.COL_POSTER_PATH);

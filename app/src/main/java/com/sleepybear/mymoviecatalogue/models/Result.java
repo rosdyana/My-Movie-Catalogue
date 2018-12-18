@@ -195,7 +195,7 @@ public class Result implements Parcelable {
     }
 
     public Result(Cursor cursor) {
-        this.id = DbContract.getColumnInt(cursor, DbContract.FavoriteColumns._ID);
+        this.id = DbContract.getColumnInt(cursor, DbContract.FavoriteColumns.COL_MOVIE_ID);
         this.title = DbContract.getColumnString(cursor, DbContract.FavoriteColumns.COL_NAME);
         this.backdropPath = DbContract.getColumnString(cursor, DbContract.FavoriteColumns.COL_BACKDROP_PATH);
         this.overview = DbContract.getColumnString(cursor, DbContract.FavoriteColumns.COL_OVERVIEW);
@@ -235,6 +235,6 @@ public class Result implements Parcelable {
     };
 
     public String toString() {
-        return "originalTitle : " + originalTitle ;
+        return "\nId : " + id + "\noriginalTitle : " + originalTitle;
     }
 }

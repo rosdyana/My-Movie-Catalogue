@@ -76,7 +76,7 @@ public class MovieDetail extends AppCompatActivity {
                     fab_favorite.setColorFilter(Color.RED);
                     appPreferences.setFavorite(true);
                     ContentValues cv = new ContentValues();
-                    cv.put(DbContract.FavoriteColumns._ID, result.getId());
+                    cv.put(DbContract.FavoriteColumns.COL_MOVIE_ID, result.getId());
                     cv.put(DbContract.FavoriteColumns.COL_NAME, result.getOriginalTitle());
                     cv.put(DbContract.FavoriteColumns.COL_OVERVIEW, result.getOverview());
                     cv.put(DbContract.FavoriteColumns.COL_BACKDROP_PATH, result.getBackdropPath());
@@ -88,7 +88,10 @@ public class MovieDetail extends AppCompatActivity {
                 } else {
                     appPreferences.setFavorite(false);
                     fab_favorite.setColorFilter(Color.BLACK);
-                    getContentResolver().delete(Uri.parse(DbContract.CONTENT_URI + "/" + result.getId()),null,null);
+//                    getContentResolver().delete(Uri.parse(DbContract.CONTENT_URI + "/" + result.getId()),null,null);
+                    movieDBHelper.open();
+                    movieDBHelper.deleteFavorite(result.getOriginalTitle());
+                    movieDBHelper.close();
                 }
 
             }

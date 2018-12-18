@@ -33,14 +33,14 @@ public class MovieDBHelper {
     public ArrayList<Result> getValueByMovieId(Integer MovieId) {
         ArrayList<Result> arrayList = new ArrayList<>();
         Result result;
-        Cursor cursor = sqLiteDatabase.query(DbContract.TABLE_FAVORITE, null, DbContract.FavoriteColumns._ID + " = ?",
+        Cursor cursor = sqLiteDatabase.query(DbContract.TABLE_FAVORITE, null, DbContract.FavoriteColumns.COL_MOVIE_ID + " = ?",
                 new String[] { String.valueOf(MovieId) }, null, null, null);
 
         cursor.moveToFirst();
         if (cursor.getCount() > 0) {
             do {
                 result = new Result();
-                result.setId(cursor.getColumnIndexOrThrow(DbContract.FavoriteColumns._ID));
+                result.setId(cursor.getColumnIndexOrThrow(DbContract.FavoriteColumns.COL_MOVIE_ID));
                 result.setOriginalTitle(
                         cursor.getString(cursor.getColumnIndexOrThrow(DbContract.FavoriteColumns.COL_NAME)));
                 result.setBackdropPath(
@@ -67,13 +67,13 @@ public class MovieDBHelper {
         Result result;
         Cursor cursor = sqLiteDatabase.query(DbContract.TABLE_FAVORITE, null,
                 DbContract.FavoriteColumns.COL_NAME + " LIKE ?", new String[] { name }, null, null,
-                DbContract.FavoriteColumns._ID + " ASC", null);
+                DbContract.FavoriteColumns.COL_MOVIE_ID + " ASC", null);
 
         cursor.moveToFirst();
         if (cursor.getCount() > 0) {
             do {
                 result = new Result();
-                result.setId(cursor.getColumnIndexOrThrow(DbContract.FavoriteColumns._ID));
+                result.setId(cursor.getColumnIndexOrThrow(DbContract.FavoriteColumns.COL_MOVIE_ID));
                 result.setOriginalTitle(
                         cursor.getString(cursor.getColumnIndexOrThrow(DbContract.FavoriteColumns.COL_NAME)));
                 result.setBackdropPath(
@@ -98,7 +98,7 @@ public class MovieDBHelper {
 
     public Cursor queryAllData() {
         return sqLiteDatabase.rawQuery(
-                "SELECT * FROM " + DbContract.TABLE_FAVORITE + " ORDER BY " + DbContract.FavoriteColumns._ID + " ASC",
+                "SELECT * FROM " + DbContract.TABLE_FAVORITE + " ORDER BY " + DbContract.FavoriteColumns.COL_MOVIE_ID + " ASC",
                 null);
     }
 
@@ -111,7 +111,7 @@ public class MovieDBHelper {
         if (cursor.getCount() > 0) {
             do {
                 result = new Result();
-                result.setId(cursor.getColumnIndexOrThrow(DbContract.FavoriteColumns._ID));
+                result.setId(cursor.getColumnIndexOrThrow(DbContract.FavoriteColumns.COL_MOVIE_ID));
                 result.setOriginalTitle(
                         cursor.getString(cursor.getColumnIndexOrThrow(DbContract.FavoriteColumns.COL_NAME)));
                 result.setBackdropPath(
@@ -139,7 +139,7 @@ public class MovieDBHelper {
         Log.d("ROS INSERt",result.toString());
         ContentValues contentValues = new ContentValues();
 //        contentValues.put(DbContract.FavoriteColumns._ID, result.getId());
-        contentValues.put(DbContract.FavoriteColumns._ID, result.getId());
+        contentValues.put(DbContract.FavoriteColumns.COL_MOVIE_ID, result.getId());
         contentValues.put(DbContract.FavoriteColumns.COL_NAME, result.getOriginalTitle());
         contentValues.put(DbContract.FavoriteColumns.COL_OVERVIEW, result.getOverview());
         contentValues.put(DbContract.FavoriteColumns.COL_BACKDROP_PATH, result.getBackdropPath());
@@ -149,19 +149,19 @@ public class MovieDBHelper {
         return sqLiteDatabase.insert(DbContract.TABLE_FAVORITE, null, contentValues);
     }
 
-    public int deleteFavorite(int id) {
-        return sqLiteDatabase.delete(DbContract.TABLE_FAVORITE, DbContract.FavoriteColumns._ID + " = '" + id + "'",
+    public int deleteFavorite(String name) {
+        return sqLiteDatabase.delete(DbContract.TABLE_FAVORITE, DbContract.FavoriteColumns.COL_NAME + " LIKE '" + name + "'",
                 null);
     }
 
     public Cursor queryByIdProvider(String id) {
-        return sqLiteDatabase.query(DbContract.TABLE_FAVORITE, null, DbContract.FavoriteColumns._ID + " = ?",
+        return sqLiteDatabase.query(DbContract.TABLE_FAVORITE, null, DbContract.FavoriteColumns.COL_MOVIE_ID + " = ?",
                 new String[] { id }, null, null, null, null);
     }
 
     public Cursor queryProvider() {
         return sqLiteDatabase.query(DbContract.TABLE_FAVORITE, null, null, null, null, null,
-                DbContract.FavoriteColumns._ID + " DESC");
+                DbContract.FavoriteColumns.COL_MOVIE_ID + " DESC");
     }
 
     public long insertProvider(ContentValues values) {
@@ -169,12 +169,12 @@ public class MovieDBHelper {
     }
 
     public int updateProvider(String id, ContentValues values) {
-        return sqLiteDatabase.update(DbContract.TABLE_FAVORITE, values, DbContract.FavoriteColumns._ID + " = ?",
+        return sqLiteDatabase.update(DbContract.TABLE_FAVORITE, values, DbContract.FavoriteColumns.COL_MOVIE_ID + " = ?",
                 new String[] { id });
     }
 
     public int deleteProvider(String id) {
-        return sqLiteDatabase.delete(DbContract.TABLE_FAVORITE, DbContract.FavoriteColumns._ID + " = ?",
+        return sqLiteDatabase.delete(DbContract.TABLE_FAVORITE, DbContract.FavoriteColumns.COL_MOVIE_ID + " = ?",
                 new String[] { id });
     }
 
