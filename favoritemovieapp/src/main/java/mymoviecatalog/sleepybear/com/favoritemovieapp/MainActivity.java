@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity
         }
         if(cursor.moveToFirst()){
             movieItem = new MovieItem(cursor);
-            Log.d("ROS",movieItem.toString());
+//            Log.d("ROS",movieItem.toString());
         }
         cursor.close();
     }

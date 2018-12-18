@@ -46,7 +46,7 @@ dependencies {
 
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
 
-    debugImplementation 'com.amitshekhar.android:debug-db:1.0.4'
+//    debugImplementation 'com.amitshekhar.android:debug-db:1.0.4'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

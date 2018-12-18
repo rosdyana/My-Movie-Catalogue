@@ -1,16 +1,12 @@
 package com.sleepybear.mymoviecatalogue.fragments;
 
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.SQLException;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +28,7 @@ public class FavoriteFragment extends Fragment implements SwipeRefreshLayout.OnR
     MovieAdapter mAdapter;
     private List<Result> results = new ArrayList<>();
     private MovieDBHelper movieDBHelper;
-    @BindView(R.id.nowplaying_recycler_view)
+    @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.swipe_refresh_container)
     SwipeRefreshLayout swipeRefreshLayout;
@@ -50,7 +46,7 @@ public class FavoriteFragment extends Fragment implements SwipeRefreshLayout.OnR
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_now_playing, container, false);
+        View view = inflater.inflate(R.layout.fragment_movie, container, false);
         ButterKnife.bind(this, view);
         mAdapter = new MovieAdapter();
         movieDBHelper = new MovieDBHelper(getContext());
@@ -73,7 +69,7 @@ public class FavoriteFragment extends Fragment implements SwipeRefreshLayout.OnR
             @Override
             public void onClick(View view, int position) {
                 Result obj = results.get(position);
-                Log.d("ROS click", obj.getId().toString());
+//                Log.d("ROS click", obj.getId().toString());
                 Intent intent = new Intent(getActivity(), MovieDetail.class);
                 intent.putExtra(MovieDetail.MOVIE_RESULT, obj);
                 startActivity(intent);
@@ -95,7 +91,7 @@ public class FavoriteFragment extends Fragment implements SwipeRefreshLayout.OnR
             results = movieDBHelper.getAllData();
             mAdapter.clearAll();
             mAdapter.updateData(results);
-            Log.d("ROS",results.toString());
+//            Log.d("ROS",results.toString());
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -107,6 +103,12 @@ public class FavoriteFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void onRefresh() {
+        loadFromDB();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
         loadFromDB();
     }
 }

@@ -108,17 +108,10 @@ public class MovieDetail extends AppCompatActivity {
         });
 
         result = getIntent().getParcelableExtra(MOVIE_RESULT);
-        Log.d("ROS",result.toString());
+//        Log.d("ROS",result.toString());
         try {
             movieDBHelper.open();
             dataFromDB = movieDBHelper.getMovieByName(result.getOriginalTitle());
-//            for (int i = 0; i < dataFromDB.size(); i++) {
-//                Log.d("ROS", dataFromDB.get(i).getOriginalTitle());
-//                Log.d("ROS", String.valueOf(dataFromDB.get(i).getId()));
-//            }
-//            ArrayList<Result> cobaall = new ArrayList<>();
-//            cobaall = movieDBHelper.getAllData();
-//            Log.d("ROS", cobaall.toString());
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

@@ -34,7 +34,7 @@ import retrofit2.Response;
 public class UpcomingFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     MovieAdapter mAdapter;
     private List<Result> list = new ArrayList<>();
-    @BindView(R.id.upcoming_recycler_view)
+    @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.swipe_refresh_container)
     SwipeRefreshLayout swipeRefreshLayout;
@@ -58,7 +58,7 @@ public class UpcomingFragment extends Fragment implements SwipeRefreshLayout.OnR
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_upcoming, container, false);
+        View view = inflater.inflate(R.layout.fragment_movie, container, false);
         ButterKnife.bind(this, view);
         mAdapter = new MovieAdapter();
 

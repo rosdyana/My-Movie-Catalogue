@@ -20,7 +20,7 @@ public class NetworkInstance {
 
     public static Retrofit getRetrofitInstance() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        interceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
         final OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(20, TimeUnit.SECONDS)
                 .writeTimeout(20, TimeUnit.SECONDS)

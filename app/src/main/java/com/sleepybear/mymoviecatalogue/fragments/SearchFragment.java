@@ -36,7 +36,7 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
     private String searchQuery;
     MovieAdapter mAdapter;
     private List<Result> list = new ArrayList<>();
-    @BindView(R.id.search_recycler_view)
+    @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.swipe_refresh_container)
     SwipeRefreshLayout swipeRefreshLayout;
@@ -55,8 +55,8 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         searchQuery = this.getArguments().getString("search_query");
-        Log.d("ROS search ", searchQuery);
-        View view = inflater.inflate(R.layout.fragment_search, container, false);
+//        Log.d("ROS search ", searchQuery);
+        View view = inflater.inflate(R.layout.fragment_movie, container, false);
         ButterKnife.bind(this, view);
         mAdapter = new MovieAdapter();
 

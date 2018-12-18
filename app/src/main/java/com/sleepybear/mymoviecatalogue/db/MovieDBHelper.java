@@ -126,7 +126,7 @@ public class MovieDBHelper {
                         cursor.getDouble(cursor.getColumnIndexOrThrow(DbContract.FavoriteColumns.COL_VOTE_AVG)));
 
                 arrayList.add(result);
-                Log.d("ROS getalldata", result.toString());
+//                Log.d("ROS getalldata", result.toString());
                 cursor.moveToNext();
 
             } while (!cursor.isAfterLast());
@@ -136,7 +136,7 @@ public class MovieDBHelper {
     }
 
     public long addFavorite(Result result) {
-        Log.d("ROS INSERt",result.toString());
+//        Log.d("ROS INSERt",result.toString());
         ContentValues contentValues = new ContentValues();
 //        contentValues.put(DbContract.FavoriteColumns._ID, result.getId());
         contentValues.put(DbContract.FavoriteColumns.COL_MOVIE_ID, result.getId());
