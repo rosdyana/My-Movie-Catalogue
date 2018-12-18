@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,7 @@ import retrofit2.Response;
 public class NowPlayingFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     MovieAdapter mAdapter;
     private List<Result> list = new ArrayList<>();
-    @BindView(R.id.nowplaying_recycler_view)
+    @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.swipe_refresh_container)
     SwipeRefreshLayout swipeRefreshLayout;
@@ -51,7 +52,7 @@ public class NowPlayingFragment extends Fragment implements SwipeRefreshLayout.O
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_now_playing, container, false);
+        View view = inflater.inflate(R.layout.fragment_movie, container, false);
         ButterKnife.bind(this, view);
         mAdapter = new MovieAdapter();
         RecyclerView.LayoutManager mlayLayoutManager = new GridLayoutManager(getActivity(), 2);
@@ -73,9 +74,9 @@ public class NowPlayingFragment extends Fragment implements SwipeRefreshLayout.O
             @Override
             public void onClick(View view, int position) {
                 Result obj = list.get(position);
+//                Log.d("ROS",obj.toString());
                 Intent intent = new Intent(getActivity(), MovieDetail.class);
                 intent.putExtra(MovieDetail.MOVIE_RESULT, obj);
-                intent.putExtra(MovieDetail.FRAGMENT_NAME, NowPlayingFragment.class.getSimpleName());
                 startActivity(intent);
             }
 

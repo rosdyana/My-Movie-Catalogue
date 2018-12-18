@@ -11,4 +11,5 @@
     <string name="share_msg">Ayo nonton bareng %1$s, ini adalah film dengan penilaian sekitar %2$.2f</string>
     <string name="is_favorite">is_favorite</string>
     <string name="share_button_text">Share</string>
+    <string name="text_favorite">Favorite</string>
 </resources>

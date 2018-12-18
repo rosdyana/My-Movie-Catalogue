@@ -2,9 +2,9 @@ package com.sleepybear.mymoviecatalogue;
 
 import android.content.ContentValues;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
+import android.database.SQLException;
 import android.graphics.Color;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -13,12 +13,13 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.sleepybear.mymoviecatalogue.db.DbContract;
+import com.sleepybear.mymoviecatalogue.db.MovieDBHelper;
 import com.sleepybear.mymoviecatalogue.models.Result;
 import com.sleepybear.mymoviecatalogue.utils.AppPreferences;
 
@@ -31,10 +32,10 @@ import butterknife.ButterKnife;
 
 public class MovieDetail extends AppCompatActivity {
     public static final String MOVIE_RESULT = "movie_result";
-    public static final String FRAGMENT_NAME = "fragment_name";
     private AppPreferences appPreferences;
-    private ContentValues contentValues;
     private Result result;
+    private ArrayList<Result> dataFromDB = new ArrayList<>();
+    private MovieDBHelper movieDBHelper;
     @BindView(R.id.movie_title)
     TextView movieTitle;
     @BindView(R.id.overview_movie)
@@ -45,10 +46,6 @@ public class MovieDetail extends AppCompatActivity {
     TextView movieReleaseDate;
     @BindView(R.id.movie_genres)
     TextView movieGenres;
-    @BindView(R.id.twitter_btn)
-    ImageButton btnTwitter;
-    @BindView(R.id.facebook_btn)
-    ImageButton btnFacebbok;
     @BindView(R.id.backdrop_poster)
     ImageView movieBackdrop;
     @BindView(R.id.toolbar)
@@ -65,7 +62,7 @@ public class MovieDetail extends AppCompatActivity {
 
         ButterKnife.bind(this);
         appPreferences = new AppPreferences(this);
-        contentValues = new ContentValues();
+        movieDBHelper = new MovieDBHelper(MovieDetail.this);
 
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -77,38 +74,70 @@ public class MovieDetail extends AppCompatActivity {
             public void onClick(View view) {
                 if (!appPreferences.isFavorite()) {
                     fab_favorite.setColorFilter(Color.RED);
-//                    contentValues.put(DbContract.FavoriteColumns.COL_ID, )
                     appPreferences.setFavorite(true);
+                    ContentValues cv = new ContentValues();
+                    cv.put(DbContract.FavoriteColumns.COL_MOVIE_ID, result.getId());
+                    cv.put(DbContract.FavoriteColumns.COL_NAME, result.getOriginalTitle());
+                    cv.put(DbContract.FavoriteColumns.COL_OVERVIEW, result.getOverview());
+                    cv.put(DbContract.FavoriteColumns.COL_BACKDROP_PATH, result.getBackdropPath());
+                    cv.put(DbContract.FavoriteColumns.COL_POSTER_PATH, result.getPosterPath());
+                    cv.put(DbContract.FavoriteColumns.COL_RELEASE_DATE, result.getReleaseDate());
+                    cv.put(DbContract.FavoriteColumns.COL_VOTE_AVG, result.getVoteAverage());
+                    getContentResolver().insert(DbContract.CONTENT_URI, cv);
+
                 } else {
                     appPreferences.setFavorite(false);
-                    fab_favorite.setColorFilter(Color.GRAY);
+                    fab_favorite.setColorFilter(Color.BLACK);
+//                    getContentResolver().delete(Uri.parse(DbContract.CONTENT_URI + "/" + result.getId()),null,null);
+                    movieDBHelper.open();
+                    movieDBHelper.deleteFavorite(result.getOriginalTitle());
+                    movieDBHelper.close();
                 }
 
             }
         });
-
-        fab_favorite.setColorFilter(Color.GRAY);
-        appPreferences.setFavorite(false);
 
         fab_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
-                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_msg, result.getTitle(), result.getVoteAverage()));
+                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_msg, result.getOriginalTitle(), result.getVoteAverage()));
                 startActivity(Intent.createChooser(intent, getResources().getString(R.string.share_button_text)));
             }
         });
 
-        String fragmentName = getIntent().getExtras().getString(FRAGMENT_NAME);
-        Log.d("ROS", fragmentName);
         result = getIntent().getParcelableExtra(MOVIE_RESULT);
+//        Log.d("ROS",result.toString());
+        try {
+            movieDBHelper.open();
+            dataFromDB = movieDBHelper.getMovieByName(result.getOriginalTitle());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            movieDBHelper.close();
+        }
+
+        if (!dataFromDB.isEmpty()) {
+            if (dataFromDB.get(0).getOriginalTitle().equals(result.getOriginalTitle())) {
+                fab_favorite.setColorFilter(Color.RED);
+                appPreferences.setFavorite(true);
+            } else {
+                fab_favorite.setColorFilter(Color.BLACK);
+                appPreferences.setFavorite(false);
+            }
+        } else {
+            fab_favorite.setColorFilter(Color.BLACK);
+            appPreferences.setFavorite(false);
+        }
+
+
         loadData(result);
 
     }
 
     private void loadData(Result result) {
-        movieTitle.setText(result.getTitle());
+        movieTitle.setText(result.getOriginalTitle());
         movieDescription.setText(result.getOverview());
         movieRating.setText(getString(R.string.txtRate, result.getVoteAverage()));
         movieReleaseDate.setText(getString(R.string.txtReleaseDate, result.getReleaseDate()));
@@ -122,7 +151,7 @@ public class MovieDetail extends AppCompatActivity {
                         .centerCrop())
                 .into(movieBackdrop);
 
-        getSupportActionBar().setTitle(result.getTitle());
+        getSupportActionBar().setTitle(result.getOriginalTitle());
     }
 
     private String getGenre(List<Integer> genreIds) {

@@ -9,7 +9,7 @@ import java.util.Calendar;
 
 public class utils {
     public static String getDeviceLang(String country) {
-        Log.d("ROS", country);
+//        Log.d("ROS", country);
         if (country.equals("Indonesia")) {
             return "id";
         }

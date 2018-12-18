@@ -34,7 +34,7 @@ import retrofit2.Response;
 public class PopularFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     MovieAdapter mAdapter;
     private List<Result> list = new ArrayList<>();
-    @BindView(R.id.popular_recycler_view)
+    @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.swipe_refresh_container)
     SwipeRefreshLayout swipeRefreshLayout;
@@ -52,7 +52,7 @@ public class PopularFragment extends Fragment implements SwipeRefreshLayout.OnRe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_popular, container, false);
+        View view = inflater.inflate(R.layout.fragment_movie, container, false);
         ButterKnife.bind(this, view);
         mAdapter = new MovieAdapter();
         RecyclerView.LayoutManager mlayLayoutManager = new GridLayoutManager(getActivity(), 2);
@@ -75,7 +75,6 @@ public class PopularFragment extends Fragment implements SwipeRefreshLayout.OnRe
                 Result obj = list.get(position);
                 Intent intent = new Intent(getActivity(), MovieDetail.class);
                 intent.putExtra(MovieDetail.MOVIE_RESULT, obj);
-                intent.putExtra(MovieDetail.FRAGMENT_NAME, PopularFragment.class.getSimpleName());
                 startActivity(intent);
             }
 
