@@ -10,4 +10,8 @@
     <string name="share_msg">Let\'s watch %1$s, this movie rate is %2$.2f</string>
     <string name="is_favorite">is_favorite</string>
     <string name="share_button_text">Share</string>
+    <string name="text_favorite">Favorite</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

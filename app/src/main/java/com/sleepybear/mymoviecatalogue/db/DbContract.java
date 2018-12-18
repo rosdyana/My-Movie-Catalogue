@@ -8,7 +8,7 @@ public class DbContract {
     public static String TABLE_FAVORITE = "table_favorite";
 
     public static final class FavoriteColumns implements BaseColumns {
-        // public static String COL_ID = "movie_id";
+//        public static String COL_MOVIE_ID = "movie_id";
         public static String COL_NAME = "name";
         public static String COL_POSTER_PATH = "poster_path";
         public static String COL_BACKDROP_PATH = "backdrop_path";

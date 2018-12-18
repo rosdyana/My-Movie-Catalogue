@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.SQLException;
 import android.graphics.Color;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.sleepybear.mymoviecatalogue.db.DbContract;
 import com.sleepybear.mymoviecatalogue.db.MovieDBHelper;
 import com.sleepybear.mymoviecatalogue.models.Result;
 import com.sleepybear.mymoviecatalogue.utils.AppPreferences;
@@ -30,7 +32,6 @@ import butterknife.ButterKnife;
 
 public class MovieDetail extends AppCompatActivity {
     public static final String MOVIE_RESULT = "movie_result";
-    public static final String FRAGMENT_NAME = "fragment_name";
     private AppPreferences appPreferences;
     private Result result;
     private ArrayList<Result> dataFromDB = new ArrayList<>();
@@ -74,16 +75,20 @@ public class MovieDetail extends AppCompatActivity {
                 if (!appPreferences.isFavorite()) {
                     fab_favorite.setColorFilter(Color.RED);
                     appPreferences.setFavorite(true);
-                    movieDBHelper.open();
-                    movieDBHelper.addFavorite(result);
-                    movieDBHelper.close();
+                    ContentValues cv = new ContentValues();
+                    cv.put(DbContract.FavoriteColumns._ID, result.getId());
+                    cv.put(DbContract.FavoriteColumns.COL_NAME, result.getOriginalTitle());
+                    cv.put(DbContract.FavoriteColumns.COL_OVERVIEW, result.getOverview());
+                    cv.put(DbContract.FavoriteColumns.COL_BACKDROP_PATH, result.getBackdropPath());
+                    cv.put(DbContract.FavoriteColumns.COL_POSTER_PATH, result.getPosterPath());
+                    cv.put(DbContract.FavoriteColumns.COL_RELEASE_DATE, result.getReleaseDate());
+                    cv.put(DbContract.FavoriteColumns.COL_VOTE_AVG, result.getVoteAverage());
+                    getContentResolver().insert(DbContract.CONTENT_URI, cv);
 
                 } else {
                     appPreferences.setFavorite(false);
                     fab_favorite.setColorFilter(Color.BLACK);
-                    movieDBHelper.open();
-                    movieDBHelper.deleteFavorite(result.getId());
-                    movieDBHelper.close();
+                    getContentResolver().delete(Uri.parse(DbContract.CONTENT_URI + "/" + result.getId()),null,null);
                 }
 
             }
@@ -99,9 +104,8 @@ public class MovieDetail extends AppCompatActivity {
             }
         });
 
-        String fragmentName = getIntent().getExtras().getString(FRAGMENT_NAME);
-//        Log.d("ROS", fragmentName);
         result = getIntent().getParcelableExtra(MOVIE_RESULT);
+        Log.d("ROS",result.toString());
         try {
             movieDBHelper.open();
             dataFromDB = movieDBHelper.getMovieByName(result.getOriginalTitle());

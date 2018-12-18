@@ -83,7 +83,6 @@ public class UpcomingFragment extends Fragment implements SwipeRefreshLayout.OnR
                 Result obj = list.get(position);
                 Intent intent = new Intent(getActivity(), MovieDetail.class);
                 intent.putExtra(MovieDetail.MOVIE_RESULT, obj);
-                intent.putExtra(MovieDetail.FRAGMENT_NAME, UpcomingFragment.class.getSimpleName());
                 startActivity(intent);
             }
 

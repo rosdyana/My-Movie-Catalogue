@@ -75,7 +75,6 @@ public class PopularFragment extends Fragment implements SwipeRefreshLayout.OnRe
                 Result obj = list.get(position);
                 Intent intent = new Intent(getActivity(), MovieDetail.class);
                 intent.putExtra(MovieDetail.MOVIE_RESULT, obj);
-                intent.putExtra(MovieDetail.FRAGMENT_NAME, PopularFragment.class.getSimpleName());
                 startActivity(intent);
             }
 

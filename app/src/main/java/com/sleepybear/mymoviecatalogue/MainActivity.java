@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.sleepybear.mymoviecatalogue.api.APIService;
 import com.sleepybear.mymoviecatalogue.api.NetworkInstance;
 import com.sleepybear.mymoviecatalogue.db.MovieDBHelper;
+import com.sleepybear.mymoviecatalogue.fragments.FavoriteFragment;
 import com.sleepybear.mymoviecatalogue.fragments.NowPlayingFragment;
 import com.sleepybear.mymoviecatalogue.fragments.PopularFragment;
 import com.sleepybear.mymoviecatalogue.fragments.SearchFragment;
@@ -141,6 +142,13 @@ public class MainActivity extends AppCompatActivity {
                         loadFragment(fragment);
                         fragmentState = R.id.action_upcoming;
                         fragmentName = getString(R.string.text_upcoming);
+                        break;
+                    case R.id.action_favorite:
+                        mToolbarTitle.setText(getString(R.string.text_favorite));
+                        fragment = new FavoriteFragment();
+                        loadFragment(fragment);
+                        fragmentState = R.id.action_favorite;
+                        fragmentName = getString(R.string.text_favorite);
                         break;
                 }
                 return true;

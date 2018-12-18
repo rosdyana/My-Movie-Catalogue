@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.sleepybear.mymoviecatalogue.models.Result;
 
@@ -125,6 +126,7 @@ public class MovieDBHelper {
                         cursor.getDouble(cursor.getColumnIndexOrThrow(DbContract.FavoriteColumns.COL_VOTE_AVG)));
 
                 arrayList.add(result);
+                Log.d("ROS getalldata", result.toString());
                 cursor.moveToNext();
 
             } while (!cursor.isAfterLast());
@@ -134,7 +136,9 @@ public class MovieDBHelper {
     }
 
     public long addFavorite(Result result) {
+        Log.d("ROS INSERt",result.toString());
         ContentValues contentValues = new ContentValues();
+//        contentValues.put(DbContract.FavoriteColumns._ID, result.getId());
         contentValues.put(DbContract.FavoriteColumns._ID, result.getId());
         contentValues.put(DbContract.FavoriteColumns.COL_NAME, result.getOriginalTitle());
         contentValues.put(DbContract.FavoriteColumns.COL_OVERVIEW, result.getOverview());

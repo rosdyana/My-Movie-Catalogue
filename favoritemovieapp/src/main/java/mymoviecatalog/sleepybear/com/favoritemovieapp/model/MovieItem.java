@@ -84,6 +84,10 @@ public class MovieItem implements Parcelable {
         this.thumbnail_poster = in.readString();
     }
 
+    public String toString() {
+        return "\n"+id+"\n"+movie_title;
+    }
+
     public static final Parcelable.Creator<MovieItem> CREATOR = new Parcelable.Creator<MovieItem>() {
         @Override
         public MovieItem createFromParcel(Parcel source) {

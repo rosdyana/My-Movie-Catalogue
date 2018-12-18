@@ -235,6 +235,6 @@ public class Result implements Parcelable {
     };
 
     public String toString() {
-        return "originalTitle : " + originalTitle + "\nId : " + id.toString();
+        return "originalTitle : " + originalTitle ;
     }
 }
