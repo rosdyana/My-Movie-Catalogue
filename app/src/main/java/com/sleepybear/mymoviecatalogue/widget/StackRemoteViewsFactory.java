@@ -25,7 +25,7 @@ class StackRemoteViewsFactory implements
         RemoteViewsService.RemoteViewsFactory {
     private Context mContext;
     private int mAppWidgetId;
-    private List<Result> results = new ArrayList<>();
+    private ArrayList<Result> results = new ArrayList<>();
     private MovieDBHelper movieDBHelper;
 
     public StackRemoteViewsFactory(Context context, Intent intent) {
@@ -66,7 +66,7 @@ class StackRemoteViewsFactory implements
 
     @Override
     public RemoteViews getViewAt(int position) {
-
+//        Log.d("ROS", results.toString());
         RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.widget_item);
         Bitmap bitmap = null;
         try {
@@ -85,7 +85,13 @@ class StackRemoteViewsFactory implements
         rv.setTextViewText(R.id.tv_movie_title, movieTitle);
 
         Bundle extras = new Bundle();
-        extras.putString(FavoriteMoviesWidget.EXTRA_ITEM, movieTitle);
+        extras.putString(FavoriteMoviesWidget.EXTRA_ITEM_TITLE, movieTitle);
+        extras.putString(FavoriteMoviesWidget.EXTRA_ITEM_BACKDROP, results.get(position).getBackdropPath());
+        extras.putString(FavoriteMoviesWidget.EXTRA_ITEM_OVERVIEW, results.get(position).getOverview());
+        extras.putString(FavoriteMoviesWidget.EXTRA_ITEM_RELEASE_DATE, results.get(position).getReleaseDate());
+        extras.putDouble(FavoriteMoviesWidget.EXTRA_ITEM_RATING, results.get(position).getVoteAverage());
+        extras.putIntegerArrayList(FavoriteMoviesWidget.EXTRA_ITEM_GENRE, results.get(position).getGenreIds());
+        extras.putInt(FavoriteMoviesWidget.EXTRA_ITEM_IDX, position);
         Intent fillInIntent = new Intent();
         fillInIntent.putExtras(extras);
 

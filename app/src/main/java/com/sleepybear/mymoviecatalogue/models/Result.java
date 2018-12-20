@@ -42,7 +42,7 @@ public class Result implements Parcelable {
     private String originalTitle;
     @SerializedName("genre_ids")
     @Expose
-    private List<Integer> genreIds = null;
+    private ArrayList<Integer> genreIds = null;
     @SerializedName("backdrop_path")
     @Expose
     private String backdropPath;
@@ -128,11 +128,11 @@ public class Result implements Parcelable {
         this.originalTitle = originalTitle;
     }
 
-    public List<Integer> getGenreIds() {
+    public ArrayList<Integer> getGenreIds() {
         return genreIds;
     }
 
-    public void setGenreIds(List<Integer> genreIds) {
+    public void setGenreIds(ArrayList<Integer> genreIds) {
         this.genreIds = genreIds;
     }
 

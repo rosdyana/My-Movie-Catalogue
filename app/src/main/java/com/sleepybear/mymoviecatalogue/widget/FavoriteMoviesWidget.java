@@ -3,23 +3,38 @@ package com.sleepybear.mymoviecatalogue.widget;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
+import com.sleepybear.mymoviecatalogue.MainActivity;
+import com.sleepybear.mymoviecatalogue.MovieDetail;
 import com.sleepybear.mymoviecatalogue.R;
+import com.sleepybear.mymoviecatalogue.models.Result;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Implementation of App Widget functionality.
  */
 public class FavoriteMoviesWidget extends AppWidgetProvider {
     public static final String TOAST_ACTION = "com.sleepybear.mymoviecatalogue.TOAST_ACTION";
-    public static final String EXTRA_ITEM = "com.sleepybear.mymoviecatalogue.EXTRA_ITEM";
+    public static final String EXTRA_ITEM_IDX = "com.sleepybear.mymoviecatalogue.EXTRA_ITEM_IDX";
+    public static final String EXTRA_ITEM_TITLE = "com.sleepybear.mymoviecatalogue.EXTRA_ITEM_TITLE";
+    public static final String EXTRA_ITEM_BACKDROP = "com.sleepybear.mymoviecatalogue.EXTRA_ITEM_BACKDROP";
+    public static final String EXTRA_ITEM_OVERVIEW = "com.sleepybear.mymoviecatalogue.EXTRA_ITEM_OVERVIEW";
+    public static final String EXTRA_ITEM_RATING = "com.sleepybear.mymoviecatalogue.EXTRA_ITEM_RATING";
+    public static final String EXTRA_ITEM_RELEASE_DATE = "com.sleepybear.mymoviecatalogue.EXTRA_ITEM_RELEASE_DATE";
+    public static final String EXTRA_ITEM_GENRE = "com.sleepybear.mymoviecatalogue.EXTRA_ITEM_GENRE";
+    private ArrayList<Result> list = new ArrayList<>();
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
+    void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
+                         int appWidgetId) {
         Intent intent = new Intent(context, StackWidgetService.class);
 
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
@@ -69,12 +84,29 @@ public class FavoriteMoviesWidget extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 
+        ComponentName componentName = new ComponentName(context, FavoriteMoviesWidget.class);
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(componentName);
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.stack_view);
 
         if (intent.getAction().equals(TOAST_ACTION)) {
-            int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-                    AppWidgetManager.INVALID_APPWIDGET_ID);
-            String movieName = intent.getStringExtra(EXTRA_ITEM);
+            String movieName = intent.getStringExtra(EXTRA_ITEM_TITLE);
+            String movieBackdrop = intent.getStringExtra(EXTRA_ITEM_BACKDROP);
+            String movieOverview = intent.getStringExtra(EXTRA_ITEM_OVERVIEW);
+            Double movieRating = intent.getDoubleExtra(EXTRA_ITEM_RATING,0.0);
+            String movieReleaseDate = intent.getStringExtra(EXTRA_ITEM_RELEASE_DATE);
+            ArrayList<Integer> movieGenre = intent.getIntegerArrayListExtra(EXTRA_ITEM_GENRE);
+            Result result = new Result();
+            result.setOriginalTitle(movieName);
+            result.setBackdropPath(movieBackdrop);
+            result.setOverview(movieOverview);
+            result.setVoteAverage(movieRating);
+            result.setReleaseDate(movieReleaseDate);
+            result.setGenreIds(movieGenre);
             Toast.makeText(context, movieName, Toast.LENGTH_SHORT).show();
+            Intent detailmovie = new Intent(context, MovieDetail.class);
+            detailmovie.setAction(FavoriteMoviesWidget.TOAST_ACTION);
+            detailmovie.putExtra(MovieDetail.MOVIE_RESULT, result);
+            context.startActivity(detailmovie);
         }
 
 
