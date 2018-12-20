@@ -39,7 +39,7 @@
                 android:textColor="#111"
                 android:textAlignment="center"
                 android:textStyle="bold"
-                android:textSize="14dp" />
+                android:textSize="14sp" />
 
 
         </RelativeLayout>

@@ -35,11 +35,12 @@ import retrofit2.Response;
 public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private String searchQuery;
     MovieAdapter mAdapter;
-    private List<Result> list = new ArrayList<>();
+    private ArrayList<Result> list = new ArrayList<>();
     @BindView(R.id.rv_recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.swipe_refresh_container)
     SwipeRefreshLayout swipeRefreshLayout;
+    private static final String STATE_SAVE = "state_save";
 
     public SearchFragment() {
         // Required empty public constructor
@@ -66,14 +67,20 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
         recyclerView.setNestedScrollingEnabled(false);
 
         swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.post(new Runnable() {
 
-            @Override
-            public void run() {
-                swipeRefreshLayout.setRefreshing(true);
-                fetchSearchMovieItems();
-            }
-        });
+        if (savedInstanceState != null) {
+            list = savedInstanceState.getParcelableArrayList(STATE_SAVE);
+            mAdapter.updateData(list);
+        } else {
+            swipeRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    swipeRefreshLayout.setRefreshing(true);
+                    fetchSearchMovieItems();
+                }
+            });
+        }
+
 
         recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new RecycleTouchListener.ClickListener() {
             @Override
@@ -90,6 +97,12 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
             }
         }));
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(STATE_SAVE, list);
     }
 
     private void fetchSearchMovieItems() {

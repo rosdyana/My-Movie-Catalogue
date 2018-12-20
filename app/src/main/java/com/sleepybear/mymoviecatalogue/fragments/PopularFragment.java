@@ -33,11 +33,12 @@ import retrofit2.Response;
 
 public class PopularFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     MovieAdapter mAdapter;
-    private List<Result> list = new ArrayList<>();
+    private ArrayList<Result> list = new ArrayList<>();
     @BindView(R.id.rv_recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.swipe_refresh_container)
     SwipeRefreshLayout swipeRefreshLayout;
+    private static final String STATE_SAVE = "state_save";
 
 
     public PopularFragment() {
@@ -62,13 +63,20 @@ public class PopularFragment extends Fragment implements SwipeRefreshLayout.OnRe
         recyclerView.setNestedScrollingEnabled(false);
 
         swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                swipeRefreshLayout.setRefreshing(true);
-                fetchPopularMovieItems();
-            }
-        });
+
+        if (savedInstanceState != null) {
+            list = savedInstanceState.getParcelableArrayList(STATE_SAVE);
+            mAdapter.updateData(list);
+        } else {
+            swipeRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    swipeRefreshLayout.setRefreshing(true);
+                    fetchPopularMovieItems();
+                }
+            });
+        }
+
         recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new RecycleTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
@@ -84,6 +92,12 @@ public class PopularFragment extends Fragment implements SwipeRefreshLayout.OnRe
             }
         }));
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(STATE_SAVE, list);
     }
 
     private void fetchPopularMovieItems() {

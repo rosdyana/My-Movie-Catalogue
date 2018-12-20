@@ -108,7 +108,7 @@ public class MovieDetail extends AppCompatActivity {
         });
 
         result = getIntent().getParcelableExtra(MOVIE_RESULT);
-//        Log.d("ROS",result.toString());
+        Log.d("ROS",result.toString());
         try {
             movieDBHelper.open();
             dataFromDB = movieDBHelper.getMovieByName(result.getOriginalTitle());
