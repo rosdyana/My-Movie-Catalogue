@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ImageButton mBtnSetting = view.findViewById(R.id.action_setting_menu);
+        ImageButton mBtnSetting = view.findViewById(R.id.ib_action_setting_menu);
         mBtnSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mToolbarTitle = view.findViewById(R.id.toolbar_title);
+        mToolbarTitle = view.findViewById(R.id.tv_toolbar_title);
 
         if (savedInstanceState != null) {
             fragmentState = savedInstanceState.getInt(FRAGMENT_STATE);

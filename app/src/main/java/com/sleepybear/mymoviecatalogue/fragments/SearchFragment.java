@@ -36,7 +36,7 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
     private String searchQuery;
     MovieAdapter mAdapter;
     private List<Result> list = new ArrayList<>();
-    @BindView(R.id.recycler_view)
+    @BindView(R.id.rv_recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.swipe_refresh_container)
     SwipeRefreshLayout swipeRefreshLayout;
