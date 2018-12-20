@@ -25,7 +25,7 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
-                android:id="@+id/im_backdrop"
+                android:id="@+id/iv_backdrop_poster"
                 android:layout_width="match_parent"
                 android:layout_height="350dp"
                 android:contentDescription="@string/app_name"

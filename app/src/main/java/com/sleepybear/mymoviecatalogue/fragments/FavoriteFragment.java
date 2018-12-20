@@ -28,7 +28,7 @@ public class FavoriteFragment extends Fragment implements SwipeRefreshLayout.OnR
     MovieAdapter mAdapter;
     private List<Result> results = new ArrayList<>();
     private MovieDBHelper movieDBHelper;
-    @BindView(R.id.recycler_view)
+    @BindView(R.id.rv_recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.swipe_refresh_container)
     SwipeRefreshLayout swipeRefreshLayout;
