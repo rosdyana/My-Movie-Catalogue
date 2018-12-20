@@ -36,17 +36,17 @@ public class MovieDetail extends AppCompatActivity {
     private Result result;
     private ArrayList<Result> dataFromDB = new ArrayList<>();
     private MovieDBHelper movieDBHelper;
-    @BindView(R.id.movie_title)
+    @BindView(R.id.tv_movie_title)
     TextView movieTitle;
-    @BindView(R.id.overview_movie)
+    @BindView(R.id.tv_overview_movie)
     TextView movieDescription;
-    @BindView(R.id.movie_rating)
+    @BindView(R.id.tv_movie_rating)
     TextView movieRating;
-    @BindView(R.id.release_date)
+    @BindView(R.id.tv_release_date)
     TextView movieReleaseDate;
-    @BindView(R.id.movie_genres)
+    @BindView(R.id.tv_movie_genres)
     TextView movieGenres;
-    @BindView(R.id.backdrop_poster)
+    @BindView(R.id.iv_backdrop_poster)
     ImageView movieBackdrop;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
