@@ -11,6 +11,9 @@
     <string name="is_favorite">is_favorite</string>
     <string name="share_button_text">Share</string>
     <string name="text_favorite">Favorite</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="empty_text">Empty</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

@@ -33,11 +33,12 @@ import retrofit2.Response;
 
 public class UpcomingFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     MovieAdapter mAdapter;
-    private List<Result> list = new ArrayList<>();
+    private ArrayList<Result> list = new ArrayList<>();
     @BindView(R.id.rv_recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.swipe_refresh_container)
     SwipeRefreshLayout swipeRefreshLayout;
+    private static final String STATE_SAVE = "state_save";
 
     public UpcomingFragment() {
         // Required empty public constructor
@@ -66,16 +67,21 @@ public class UpcomingFragment extends Fragment implements SwipeRefreshLayout.OnR
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(mAdapter);
         recyclerView.setNestedScrollingEnabled(false);
-
         swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.post(new Runnable() {
 
-            @Override
-            public void run() {
-                swipeRefreshLayout.setRefreshing(true);
-                fetchUpcomingMovieItems();
-            }
-        });
+        if (savedInstanceState != null) {
+            list = savedInstanceState.getParcelableArrayList(STATE_SAVE);
+            mAdapter.updateData(list);
+        } else {
+            swipeRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    swipeRefreshLayout.setRefreshing(true);
+                    fetchUpcomingMovieItems();
+                }
+            });
+        }
+
 
         recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new RecycleTouchListener.ClickListener() {
             @Override
@@ -92,6 +98,12 @@ public class UpcomingFragment extends Fragment implements SwipeRefreshLayout.OnR
             }
         }));
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(STATE_SAVE, list);
     }
 
     private void fetchUpcomingMovieItems() {

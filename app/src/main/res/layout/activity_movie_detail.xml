@@ -71,7 +71,7 @@
                 android:id="@+id/movie_rate_date"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/movie_title"
+                android:layout_below="@id/tv_movie_title"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:orientation="horizontal">

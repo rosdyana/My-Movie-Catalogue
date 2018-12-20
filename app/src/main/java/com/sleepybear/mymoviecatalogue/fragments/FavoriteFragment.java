@@ -26,12 +26,13 @@ import butterknife.ButterKnife;
 
 public class FavoriteFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     MovieAdapter mAdapter;
-    private List<Result> results = new ArrayList<>();
+    private ArrayList<Result> results = new ArrayList<>();
     private MovieDBHelper movieDBHelper;
     @BindView(R.id.rv_recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.swipe_refresh_container)
     SwipeRefreshLayout swipeRefreshLayout;
+    private static final String STATE_SAVE = "state_save";
 
     public FavoriteFragment() {
         // Required empty public constructor
@@ -57,13 +58,20 @@ public class FavoriteFragment extends Fragment implements SwipeRefreshLayout.OnR
         recyclerView.setNestedScrollingEnabled(false);
 
         swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                swipeRefreshLayout.setRefreshing(true);
-                loadFromDB();
-            }
-        });
+
+        if (savedInstanceState != null) {
+            results = savedInstanceState.getParcelableArrayList(STATE_SAVE);
+            mAdapter.updateData(results);
+        } else {
+            swipeRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    swipeRefreshLayout.setRefreshing(true);
+                    loadFromDB();
+                }
+            });
+        }
+
 
         recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new RecycleTouchListener.ClickListener() {
             @Override
@@ -83,6 +91,11 @@ public class FavoriteFragment extends Fragment implements SwipeRefreshLayout.OnR
         return view;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(STATE_SAVE, results);
+    }
 
     private void loadFromDB() {
         swipeRefreshLayout.setRefreshing(true);
