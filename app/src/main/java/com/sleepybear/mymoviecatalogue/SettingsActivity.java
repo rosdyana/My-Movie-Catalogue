@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.sleepybear.mymoviecatalogue.notification.DailyNotifications;
+import com.sleepybear.mymoviecatalogue.notification.UpcomingSchedulerTask;
 
 import java.util.List;
 
@@ -36,7 +37,6 @@ import java.util.List;
  * API Guide</a> for more information on developing a Settings UI.
  */
 public class SettingsActivity extends AppCompatPreferenceActivity {
-
     /**
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
@@ -194,13 +194,17 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class NotificationPreferenceFragment extends PreferenceFragment implements Preference.OnPreferenceChangeListener{
+        private UpcomingSchedulerTask upcomingSchedulerTask;
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_notification);
             setHasOptionsMenu(true);
-            findPreference("notifications_daily_reminder").setOnPreferenceChangeListener(this);
             findPreference("notifications_release_today_reminder").setOnPreferenceChangeListener(this);
+            findPreference("notifications_daily_reminder").setOnPreferenceChangeListener(this);
+
+
+            upcomingSchedulerTask = new UpcomingSchedulerTask(getActivity());
         }
 
         @Override
@@ -215,8 +219,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
         @Override
         public boolean onPreferenceChange(Preference preference, Object o) {
+            boolean isTurnOn = (boolean) o;
             if(preference.getKey().equals("notifications_daily_reminder")) {
-                if ((boolean) o) {
+                if (isTurnOn) {
                     DailyNotifications.setDailyReminder(getActivity(), getString(R.string.daily_reminder_notification_text), "07:00");
                     Toast.makeText(getActivity(), getString(R.string.daily_reminder_enable), Toast.LENGTH_SHORT).show();
                 } else {
@@ -224,8 +229,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     Toast.makeText(getActivity(), getString(R.string.daily_reminder_disable), Toast.LENGTH_SHORT).show();
                 }
                 return true;
-            } else if(preference.getKey().equals("notifications_release_today_reminder")){
-
+            }
+            if(preference.getKey().equals("notifications_release_today_reminder")){
+                if (isTurnOn) {
+                    upcomingSchedulerTask.createPeriodicTask();
+                    Toast.makeText(getActivity(), getString(R.string.upcoming_movie_reminder_enable), Toast.LENGTH_SHORT).show();
+                } else {
+                    upcomingSchedulerTask.cancelPeriodicTask();
+                    Toast.makeText(getActivity(), getString(R.string.upcoming_movie_reminder_disable), Toast.LENGTH_SHORT).show();
+                }
+                return true;
             }
             return false;
         }

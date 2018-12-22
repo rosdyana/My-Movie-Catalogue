@@ -12,62 +12,66 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
-import com.sleepybear.mymoviecatalogue.MainActivity;
+import com.sleepybear.mymoviecatalogue.MovieDetail;
 import com.sleepybear.mymoviecatalogue.R;
+import com.sleepybear.mymoviecatalogue.models.Result;
 
 import java.util.Calendar;
 
 import static android.content.Context.ALARM_SERVICE;
 
-public class DailyNotifications extends BroadcastReceiver {
-    private static final int DAILY_REMINDER_REQUEST_CODE = 100;
+public class UpcomingNotifications extends BroadcastReceiver {
+    private static final int UPCOMING_MOVIE_REMINDER_REQUEST_CODE = 101;
     private static final String EXTRA_CONTENT = "CONTENT";
-    private static String CHANNEL_ID = "channel_01";
+    private static final String EXTRA_TITLE = "TITLE";
+    private static String CHANNEL_ID = "channel_02";
     private static CharSequence CHANNEL_NAME = "Movie Catalog channel";
 
     @Override
     public void onReceive(Context context, Intent intent) {
         String message = intent.getStringExtra(EXTRA_CONTENT);
-        String title = context.getResources().getString(R.string.app_name);
-        showNotification(context, MainActivity.class, title, message);
+        String title = intent.getStringExtra(EXTRA_TITLE);
+        Result results = intent.getParcelableExtra(MovieDetail.MOVIE_RESULT);
+        showNotification(context, MovieDetail.class, title, message,results);
     }
 
-    public static void setDailyReminder(Context context, String content, String time) {
+    public static void setUpcomingMovieReminder(Context context, String title, String content, String date, String time, Result items) {
         Calendar calendar = Calendar.getInstance();
 
+//        String dateArray[] = date.split("-");
         String timeArray[] = time.split(":");
         Calendar setCalendar = Calendar.getInstance();
+//        setCalendar.set(Calendar.YEAR, Integer.parseInt(dateArray[0]));
+//        setCalendar.set(Calendar.MONTH, Integer.parseInt(dateArray[1]) - 1);
+//        setCalendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dateArray[2]));
         setCalendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(timeArray[0]));
         setCalendar.set(Calendar.MINUTE, Integer.parseInt(timeArray[1]));
-        setCalendar.set(Calendar.SECOND, 0);
+        setCalendar.set(Calendar.SECOND,  0);
 
 
         if (setCalendar.before(calendar))
             setCalendar.add(Calendar.DATE, 1);
 
-        Intent intent = new Intent(context, DailyNotifications.class);
+        Intent intent = new Intent(context, UpcomingNotifications.class);
+        intent.putExtra(EXTRA_TITLE, title);
         intent.putExtra(EXTRA_CONTENT, content);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, DAILY_REMINDER_REQUEST_CODE, intent, 0);
+        intent.putExtra(MovieDetail.MOVIE_RESULT, items);
+//        Log.d("ROS", "setUpcomingMovieReminder "+title+content+items.toString());
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, UPCOMING_MOVIE_REMINDER_REQUEST_CODE, intent, 0);
         AlarmManager am = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         am.setInexactRepeating(AlarmManager.RTC_WAKEUP, setCalendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
 
     }
 
-    public static void cancelReminder(Context context) {
-        Intent intent = new Intent(context, DailyNotifications.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, DAILY_REMINDER_REQUEST_CODE, intent, 0);
-        AlarmManager am = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-        am.cancel(pendingIntent);
-        pendingIntent.cancel();
-    }
-
-    private static void showNotification(Context context, Class<?> cls, String title, String content) {
+    private static void showNotification(Context context, Class<?> cls,String title, String content, Result results) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-
+//        Log.d("ROS", "showNotification "+title+content+results.toString());
         Intent intent = new Intent(context, cls);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, DAILY_REMINDER_REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        intent.putExtra(MovieDetail.MOVIE_RESULT, results);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, UPCOMING_MOVIE_REMINDER_REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_bear)
@@ -86,8 +90,6 @@ public class DailyNotifications extends BroadcastReceiver {
             }
         }
 
-        notificationManager.notify(DAILY_REMINDER_REQUEST_CODE, builder.build());
+        notificationManager.notify(UPCOMING_MOVIE_REMINDER_REQUEST_CODE, builder.build());
     }
-
-
 }

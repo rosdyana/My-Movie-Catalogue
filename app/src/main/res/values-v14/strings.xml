@@ -21,4 +21,7 @@
     <string name="daily_reminder_notification_text">Movie Catalog missing you!</string>
     <string name="daily_reminder_enable">Daily reminder notification is active</string>
     <string name="daily_reminder_disable">Daily reminder notification is turn off.</string>
+    <string name="upcoming_reminder_text">%1$s has been released today!</string>
+    <string name="upcoming_movie_reminder_enable">Upcoming movie notification is active.</string>
+    <string name="upcoming_movie_reminder_disable">Upcoming movie notification is turn off.</string>
 </resources>
