@@ -119,7 +119,7 @@ public class UpcomingFragment extends Fragment implements SwipeRefreshLayout.OnR
                     list.clear();
                     for (int i = 0; i < items.size(); i++) {
                         // only show the movie that will release after today
-                        if (items.get(i).getReleaseDate().compareTo(utils.getCurrentDate()) > 0) {
+                        if (items.get(i).getReleaseDate().compareTo(utils.getCurrentDate()) >= 0) {
                             list.add(items.get(i));
                         }
                     }

@@ -2,7 +2,6 @@ package com.sleepybear.mymoviecatalogue;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -19,7 +18,6 @@ import android.widget.TextView;
 
 import com.sleepybear.mymoviecatalogue.api.APIService;
 import com.sleepybear.mymoviecatalogue.api.NetworkInstance;
-import com.sleepybear.mymoviecatalogue.db.MovieDBHelper;
 import com.sleepybear.mymoviecatalogue.fragments.FavoriteFragment;
 import com.sleepybear.mymoviecatalogue.fragments.NowPlayingFragment;
 import com.sleepybear.mymoviecatalogue.fragments.PopularFragment;
@@ -92,6 +90,8 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+
 
         ImageButton mBtnSetting = view.findViewById(R.id.ib_action_setting_menu);
         mBtnSetting.setOnClickListener(new View.OnClickListener() {

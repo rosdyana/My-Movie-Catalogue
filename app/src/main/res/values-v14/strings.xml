@@ -15,4 +15,10 @@
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="empty_text">Empty</string>
+    <string name="pref_change_language">Change language</string>
+    <string name="pref_title_daily_reminder">Daily reminder notifications</string>
+    <string name="pref_title_release_today_reminder">Release today notifications</string>
+    <string name="daily_reminder_notification_text">Movie Catalog missing you!</string>
+    <string name="daily_reminder_enable">Daily reminder notification is active</string>
+    <string name="daily_reminder_disable">Daily reminder notification is turn off.</string>
 </resources>
