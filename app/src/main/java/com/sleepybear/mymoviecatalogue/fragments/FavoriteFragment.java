@@ -124,4 +124,5 @@ public class FavoriteFragment extends Fragment implements SwipeRefreshLayout.OnR
         super.onResume();
         loadFromDB();
     }
+
 }

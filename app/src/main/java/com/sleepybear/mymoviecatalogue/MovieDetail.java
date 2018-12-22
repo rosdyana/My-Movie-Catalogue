@@ -69,6 +69,15 @@ public class MovieDetail extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        toolbar.setNavigationIcon(android.support.v7.appcompat.R.drawable.abc_ic_ab_back_material);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                onBackPressed();
+            }
+        });
+
         fab_favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -141,7 +150,12 @@ public class MovieDetail extends AppCompatActivity {
         movieDescription.setText(result.getOverview());
         movieRating.setText(getString(R.string.txtRate, result.getVoteAverage()));
         movieReleaseDate.setText(getString(R.string.txtReleaseDate, result.getReleaseDate()));
-        movieGenres.setText(getString(R.string.txtGenre, getGenre(result.getGenreIds())));
+        if(getGenre(result.getGenreIds()).isEmpty()){
+            movieGenres.setVisibility(View.GONE);
+        } else {
+            movieGenres.setText(getString(R.string.txtGenre, getGenre(result.getGenreIds())));
+        }
+
 
         Glide.with(getApplicationContext())
                 .load(BuildConfig.BASE_URL_IMG_BACKDROP + result.getBackdropPath())
@@ -163,5 +177,25 @@ public class MovieDetail extends AppCompatActivity {
         }
 //        Log.d("ROS", TextUtils.join(",", result));
         return TextUtils.join(" , ", result);
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_right);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        this.overridePendingTransition(R.anim.slide_in_left,
+                R.anim.slide_out_left);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }
