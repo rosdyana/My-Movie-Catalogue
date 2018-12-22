@@ -48,8 +48,14 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/favorite_movies_widget_info" />
         </receiver>
-        <service android:name=".widget.StackWidgetService"
-            android:permission="android.permission.BIND_REMOTEVIEWS" ></service>
+
+        <service
+            android:name=".widget.StackWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"></activity>
     </application>
 
 </manifest>

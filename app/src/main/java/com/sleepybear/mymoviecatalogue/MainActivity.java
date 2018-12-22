@@ -97,8 +97,10 @@ public class MainActivity extends AppCompatActivity {
         mBtnSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Settings.ACTION_LOCALE_SETTINGS);
-                startActivity(intent);
+//                Intent intent = new Intent(Settings.ACTION_LOCALE_SETTINGS);
+//                startActivity(intent);
+                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                finish();
             }
         });
 
