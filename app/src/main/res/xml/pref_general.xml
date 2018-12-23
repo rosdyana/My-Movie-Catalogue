@@ -4,4 +4,8 @@
         <intent android:action="android.settings.LOCALE_SETTINGS" />
     </Preference>
 
+    <Preference
+        android:key="preference_about"
+        android:title="@string/pref_about" />
+
 </PreferenceScreen>

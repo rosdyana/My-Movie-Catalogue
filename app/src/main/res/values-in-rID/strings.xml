@@ -26,4 +26,8 @@
     <string name="upcoming_reminder_text">%1$s telah dirilis hari ini!</string>
     <string name="upcoming_movie_reminder_enable">Notifikasi film yang akan tayang diaktifkan.</string>
     <string name="upcoming_movie_reminder_disable">Notifikasi film yang akan tayang dimatikan.</string>
+    <string name="pref_about">About</string>
+    <string name="ok_text">Ok</string>
+    <string name="about_title">About</string>
+    <string name="about_content">%1$s version %2$s\nContact : %3$s\nGithub : %4$s</string>
 </resources>
