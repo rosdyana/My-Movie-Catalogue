@@ -5,7 +5,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 
-import com.sleepybear.mymoviecatalogue.models.genre.GenreModel;
 import com.sleepybear.mymoviecatalogue.models.nowplaying.NowplayingModel;
 import com.sleepybear.mymoviecatalogue.models.popular.PopularMovieModel;
 import com.sleepybear.mymoviecatalogue.models.search.SearchMovieModel;
@@ -26,6 +25,4 @@ public interface APIService {
     @GET("movie/now_playing")
     Call<NowplayingModel> getNowplaying(@Query(value = "language") String language);
 
-    @GET("genre/movie/list")
-    Call<GenreModel> getGenre(@Query(value = "language") String language);
 }

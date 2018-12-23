@@ -11,6 +11,7 @@ import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.sleepybear.mymoviecatalogue.MainActivity;
 import com.sleepybear.mymoviecatalogue.MovieDetail;
 import com.sleepybear.mymoviecatalogue.R;
@@ -31,8 +32,8 @@ public class FavoriteMoviesWidget extends AppWidgetProvider {
     public static final String EXTRA_ITEM_RATING = "com.sleepybear.mymoviecatalogue.EXTRA_ITEM_RATING";
     public static final String EXTRA_ITEM_RELEASE_DATE = "com.sleepybear.mymoviecatalogue.EXTRA_ITEM_RELEASE_DATE";
     public static final String EXTRA_ITEM_GENRE = "com.sleepybear.mymoviecatalogue.EXTRA_ITEM_GENRE";
-    private ArrayList<Result> list = new ArrayList<>();
-
+    private List<Result> list = new ArrayList<>();
+    private Gson gson = new Gson();
     void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                          int appWidgetId) {
         Intent intent = new Intent(context, StackWidgetService.class);
@@ -89,23 +90,25 @@ public class FavoriteMoviesWidget extends AppWidgetProvider {
         appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.stack_view);
 
         if (intent.getAction().equals(TOAST_ACTION)) {
-            String movieName = intent.getStringExtra(EXTRA_ITEM_TITLE);
-            String movieBackdrop = intent.getStringExtra(EXTRA_ITEM_BACKDROP);
-            String movieOverview = intent.getStringExtra(EXTRA_ITEM_OVERVIEW);
-            Double movieRating = intent.getDoubleExtra(EXTRA_ITEM_RATING,0.0);
-            String movieReleaseDate = intent.getStringExtra(EXTRA_ITEM_RELEASE_DATE);
-            ArrayList<Integer> movieGenre = intent.getIntegerArrayListExtra(EXTRA_ITEM_GENRE);
-            Result result = new Result();
-            result.setOriginalTitle(movieName);
-            result.setBackdropPath(movieBackdrop);
-            result.setOverview(movieOverview);
-            result.setVoteAverage(movieRating);
-            result.setReleaseDate(movieReleaseDate);
-            result.setGenreIds(movieGenre);
+            String json = intent.getStringExtra(MovieDetail.MOVIE_RESULT);
+            Result result = gson.fromJson(json, Result.class);
+            String movieName = result.getOriginalTitle();
+//            String movieBackdrop = result.getBackdropPath();
+//            String movieOverview = result.getOverview();
+//            Double movieRating = intent.getDoubleExtra(EXTRA_ITEM_RATING,0.0);
+//            String movieReleaseDate = intent.getStringExtra(EXTRA_ITEM_RELEASE_DATE);
+//            ArrayList<Integer> movieGenre = intent.getIntegerArrayListExtra(EXTRA_ITEM_GENRE);
+//            Result result = new Result();
+//            result.setOriginalTitle(movieName);
+//            result.setBackdropPath(movieBackdrop);
+//            result.setOverview(movieOverview);
+//            result.setVoteAverage(movieRating);
+//            result.setReleaseDate(movieReleaseDate);
+//            result.setGenreIds(movieGenre);
             Toast.makeText(context, movieName, Toast.LENGTH_SHORT).show();
             Intent detailmovie = new Intent(context, MovieDetail.class);
             detailmovie.setAction(FavoriteMoviesWidget.TOAST_ACTION);
-            detailmovie.putExtra(MovieDetail.MOVIE_RESULT, result);
+            detailmovie.putExtra(MovieDetail.MOVIE_RESULT, new Gson().toJson(result));
             context.startActivity(detailmovie);
         }
 

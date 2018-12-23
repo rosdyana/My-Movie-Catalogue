@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
 import com.sleepybear.mymoviecatalogue.MovieDetail;
 import com.sleepybear.mymoviecatalogue.R;
 import com.sleepybear.mymoviecatalogue.adapter.MovieAdapter;
@@ -87,7 +88,7 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
             public void onClick(View view, int position) {
                 Result obj = list.get(position);
                 Intent intent = new Intent(getActivity(), MovieDetail.class);
-                intent.putExtra(MovieDetail.MOVIE_RESULT, obj);
+                intent.putExtra(MovieDetail.MOVIE_RESULT, new Gson().toJson(obj));
                 startActivity(intent);
             }
 

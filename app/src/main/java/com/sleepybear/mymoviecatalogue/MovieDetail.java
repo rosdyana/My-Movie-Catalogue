@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.gson.Gson;
 import com.sleepybear.mymoviecatalogue.db.DbContract;
 import com.sleepybear.mymoviecatalogue.db.MovieDBHelper;
 import com.sleepybear.mymoviecatalogue.models.Result;
@@ -31,6 +32,7 @@ import butterknife.ButterKnife;
 
 
 public class MovieDetail extends AppCompatActivity {
+    private Gson gson = new Gson();
     public static final String MOVIE_RESULT = "movie_result";
     private AppPreferences appPreferences;
     private Result result;
@@ -44,8 +46,6 @@ public class MovieDetail extends AppCompatActivity {
     TextView movieRating;
     @BindView(R.id.tv_release_date)
     TextView movieReleaseDate;
-    @BindView(R.id.tv_movie_genres)
-    TextView movieGenres;
     @BindView(R.id.iv_backdrop_poster)
     ImageView movieBackdrop;
     @BindView(R.id.toolbar)
@@ -63,6 +63,7 @@ public class MovieDetail extends AppCompatActivity {
         ButterKnife.bind(this);
         appPreferences = new AppPreferences(this);
         movieDBHelper = new MovieDBHelper(MovieDetail.this);
+        result = new Result();
 
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -116,8 +117,10 @@ public class MovieDetail extends AppCompatActivity {
             }
         });
 
-        result = getIntent().getParcelableExtra(MOVIE_RESULT);
-        Log.d("ROS",result.toString());
+//        result = getIntent().getParcelableExtra(MOVIE_RESULT);
+        String json = getIntent().getStringExtra(MOVIE_RESULT);
+        result = gson.fromJson(json, Result.class);
+//        Log.d("ROS",result.toString());
         try {
             movieDBHelper.open();
             dataFromDB = movieDBHelper.getMovieByName(result.getOriginalTitle());
@@ -150,12 +153,6 @@ public class MovieDetail extends AppCompatActivity {
         movieDescription.setText(result.getOverview());
         movieRating.setText(getString(R.string.txtRate, result.getVoteAverage()));
         movieReleaseDate.setText(getString(R.string.txtReleaseDate, result.getReleaseDate()));
-        if(getGenre(result.getGenreIds()).isEmpty()){
-            movieGenres.setVisibility(View.GONE);
-        } else {
-            movieGenres.setText(getString(R.string.txtGenre, getGenre(result.getGenreIds())));
-        }
-
 
         Glide.with(getApplicationContext())
                 .load(BuildConfig.BASE_URL_IMG_BACKDROP + result.getBackdropPath())
@@ -168,16 +165,6 @@ public class MovieDetail extends AppCompatActivity {
         getSupportActionBar().setTitle(result.getOriginalTitle());
     }
 
-    private String getGenre(List<Integer> genreIds) {
-        List<String> result = new ArrayList<>();
-        for (int i = 0; i < MainActivity.ourMovieGenres.size(); i++) {
-            if (genreIds.contains(MainActivity.ourMovieGenres.get(i).getId())) {
-                result.add(MainActivity.ourMovieGenres.get(i).getName());
-            }
-        }
-//        Log.d("ROS", TextUtils.join(",", result));
-        return TextUtils.join(" , ", result);
-    }
 
     @Override
     public void finish() {

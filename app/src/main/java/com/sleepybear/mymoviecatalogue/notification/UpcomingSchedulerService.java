@@ -44,7 +44,7 @@ public class UpcomingSchedulerService extends GcmTaskService {
                         if (items.get(i).getReleaseDate().compareTo(utils.getCurrentDate()) >= 0) {
                             String content = getString(R.string.upcoming_reminder_text, items.get(i).getOriginalTitle());
                             Result results = items.get(i);
-                            UpcomingNotifications.setUpcomingMovieReminder(getApplicationContext(), items.get(i).getOriginalTitle(), content, items.get(i).getReleaseDate(), "02:13", results);
+                            UpcomingNotifications.setUpcomingMovieReminder(getApplicationContext(), items.get(i).getOriginalTitle(), content, items.get(i).getReleaseDate(), "08:00", results);
 //                            Log.d("ROS", "getUpcomingMovie "+items.get(i).getOriginalTitle()+content+items.get(i).getReleaseDate()+"02:08"+results.toString());
                         }
                     }
