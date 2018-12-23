@@ -7,13 +7,11 @@
     <string name="text_now_playing">Now Playing</string>
     <string name="txtRate">Rating : %1$.2f</string>
     <string name="txtReleaseDate">Release Date : %1$s</string>
-    <string name="txtGenre">Genres : %1$s</string>
     <string name="share_msg">Let\'s watch %1$s, this movie rate is %2$.2f</string>
     <string name="is_favorite">is_favorite</string>
     <string name="share_button_text">Share</string>
     <string name="text_favorite">Favorite</string>
     <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
     <string name="empty_text">Empty</string>
     <string name="pref_change_language">Change language</string>
     <string name="pref_title_daily_reminder">Daily reminder notifications</string>
