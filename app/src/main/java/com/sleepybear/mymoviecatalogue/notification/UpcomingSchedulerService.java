@@ -1,7 +1,5 @@
 package com.sleepybear.mymoviecatalogue.notification;
 
-import android.util.Log;
-
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.GcmTaskService;
 import com.google.android.gms.gcm.TaskParams;
@@ -21,10 +19,11 @@ import retrofit2.Response;
 
 public class UpcomingSchedulerService extends GcmTaskService {
     public static String TAG_TASK_UPCOMING_MOVIE_UPDATE = "TAG_TASK_UPCOMING_MOVIE_UPDATE";
+
     @Override
     public int onRunTask(TaskParams taskParams) {
         int result = 0;
-        if(taskParams.getTag().equals(TAG_TASK_UPCOMING_MOVIE_UPDATE)){
+        if (taskParams.getTag().equals(TAG_TASK_UPCOMING_MOVIE_UPDATE)) {
             getUpcomingMovie();
             result = GcmNetworkManager.RESULT_SUCCESS;
         }
@@ -45,7 +44,6 @@ public class UpcomingSchedulerService extends GcmTaskService {
                             String content = getString(R.string.upcoming_reminder_text, items.get(i).getOriginalTitle());
                             Result results = items.get(i);
                             UpcomingNotifications.setUpcomingMovieReminder(getApplicationContext(), items.get(i).getOriginalTitle(), content, items.get(i).getReleaseDate(), "08:00", results);
-//                            Log.d("ROS", "getUpcomingMovie "+items.get(i).getOriginalTitle()+content+items.get(i).getReleaseDate()+"02:08"+results.toString());
                         }
                     }
                 }

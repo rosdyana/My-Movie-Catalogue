@@ -63,9 +63,8 @@ public class MainActivity extends AppCompatActivity
         if (cursor == null) {
             return;
         }
-        if(cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             movieItem = new MovieItem(cursor);
-//            Log.d("ROS",movieItem.toString());
         }
         cursor.close();
     }
@@ -74,7 +73,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         TextView myTextView = (TextView) view.findViewById(R.id.movie_title);
-        Snackbar.make(adapterView, myTextView.getText().toString(),Snackbar.LENGTH_LONG).show();
+        Snackbar.make(adapterView, myTextView.getText().toString(), Snackbar.LENGTH_LONG).show();
     }
 
     @NonNull

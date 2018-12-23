@@ -11,7 +11,7 @@ import android.support.annotation.Nullable;
 import com.sleepybear.mymoviecatalogue.db.DbContract;
 import com.sleepybear.mymoviecatalogue.db.MovieDBHelper;
 
-public class FavoriteProvider extends ContentProvider{
+public class FavoriteProvider extends ContentProvider {
     private MovieDBHelper movieDBHelper;
     private static final int MOVIE_FAVORITE_ID = 1;
     private static final int MOVIE_FAVORITE = 2;

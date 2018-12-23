@@ -80,13 +80,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
         ImageButton mBtnSetting = view.findViewById(R.id.ib_action_setting_menu);
         mBtnSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(Settings.ACTION_LOCALE_SETTINGS);
-//                startActivity(intent);
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));
                 finish();
             }
@@ -157,7 +154,6 @@ public class MainActivity extends AppCompatActivity {
     private void loadFragment(final Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);
-//        Log.d("ROS ", fragment.getClass().getSimpleName());
         transaction.addToBackStack(null);
         transaction.commit();
     }

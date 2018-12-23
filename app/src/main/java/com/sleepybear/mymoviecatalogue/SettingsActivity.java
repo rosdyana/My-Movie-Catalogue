@@ -193,8 +193,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      * activity is showing a two-pane settings UI.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class NotificationPreferenceFragment extends PreferenceFragment implements Preference.OnPreferenceChangeListener{
+    public static class NotificationPreferenceFragment extends PreferenceFragment implements Preference.OnPreferenceChangeListener {
         private UpcomingSchedulerTask upcomingSchedulerTask;
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -220,7 +221,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         @Override
         public boolean onPreferenceChange(Preference preference, Object o) {
             boolean isTurnOn = (boolean) o;
-            if(preference.getKey().equals("notifications_daily_reminder")) {
+            if (preference.getKey().equals("notifications_daily_reminder")) {
                 if (isTurnOn) {
                     DailyNotifications.setDailyReminder(getActivity(), getString(R.string.daily_reminder_notification_text), "07:00");
                     Toast.makeText(getActivity(), getString(R.string.daily_reminder_enable), Toast.LENGTH_SHORT).show();
@@ -230,7 +231,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 }
                 return true;
             }
-            if(preference.getKey().equals("notifications_release_today_reminder")){
+            if (preference.getKey().equals("notifications_release_today_reminder")) {
                 if (isTurnOn) {
                     upcomingSchedulerTask.createPeriodicTask();
                     Toast.makeText(getActivity(), getString(R.string.upcoming_movie_reminder_enable), Toast.LENGTH_SHORT).show();

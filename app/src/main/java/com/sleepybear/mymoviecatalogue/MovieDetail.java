@@ -1,17 +1,17 @@
 package com.sleepybear.mymoviecatalogue;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.SQLException;
 import android.graphics.Color;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,9 +23,9 @@ import com.sleepybear.mymoviecatalogue.db.DbContract;
 import com.sleepybear.mymoviecatalogue.db.MovieDBHelper;
 import com.sleepybear.mymoviecatalogue.models.Result;
 import com.sleepybear.mymoviecatalogue.utils.AppPreferences;
+import com.sleepybear.mymoviecatalogue.widget.FavoriteMoviesWidget;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -98,11 +98,17 @@ public class MovieDetail extends AppCompatActivity {
                 } else {
                     appPreferences.setFavorite(false);
                     fab_favorite.setColorFilter(Color.BLACK);
-//                    getContentResolver().delete(Uri.parse(DbContract.CONTENT_URI + "/" + result.getId()),null,null);
                     movieDBHelper.open();
                     movieDBHelper.deleteFavorite(result.getOriginalTitle());
                     movieDBHelper.close();
                 }
+
+                // update stack widget
+                Context context = getApplicationContext();
+                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+                ComponentName thisWidget = new ComponentName(context, FavoriteMoviesWidget.class);
+                int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
+                appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.stack_view);
 
             }
         });
@@ -117,10 +123,8 @@ public class MovieDetail extends AppCompatActivity {
             }
         });
 
-//        result = getIntent().getParcelableExtra(MOVIE_RESULT);
         String json = getIntent().getStringExtra(MOVIE_RESULT);
         result = gson.fromJson(json, Result.class);
-//        Log.d("ROS",result.toString());
         try {
             movieDBHelper.open();
             dataFromDB = movieDBHelper.getMovieByName(result.getOriginalTitle());

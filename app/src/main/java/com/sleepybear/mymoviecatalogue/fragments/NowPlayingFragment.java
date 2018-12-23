@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,7 +82,6 @@ public class NowPlayingFragment extends Fragment implements SwipeRefreshLayout.O
             @Override
             public void onClick(View view, int position) {
                 Result obj = list.get(position);
-//                Log.d("ROS",obj.toString());
                 Intent intent = new Intent(getActivity(), MovieDetail.class);
                 intent.putExtra(MovieDetail.MOVIE_RESULT, new Gson().toJson(obj));
                 startActivity(intent);

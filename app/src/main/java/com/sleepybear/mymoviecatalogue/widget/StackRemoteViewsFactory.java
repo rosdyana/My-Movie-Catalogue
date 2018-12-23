@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.SQLException;
 import android.graphics.Bitmap;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -20,7 +19,6 @@ import com.sleepybear.mymoviecatalogue.db.MovieDBHelper;
 import com.sleepybear.mymoviecatalogue.models.Result;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 class StackRemoteViewsFactory implements
@@ -68,7 +66,6 @@ class StackRemoteViewsFactory implements
 
     @Override
     public RemoteViews getViewAt(int position) {
-//        Log.d("ROS", results.toString());
         RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.widget_item);
         Bitmap bitmap = null;
         try {
@@ -86,15 +83,7 @@ class StackRemoteViewsFactory implements
         rv.setImageViewBitmap(R.id.iv_backdrop_poster, bitmap);
         rv.setTextViewText(R.id.tv_movie_title, movieTitle);
 
-//        Bundle extras = new Bundle();
-//        extras.putString(FavoriteMoviesWidget.EXTRA_ITEM_TITLE, movieTitle);
-//        extras.putString(FavoriteMoviesWidget.EXTRA_ITEM_BACKDROP, results.get(position).getBackdropPath());
-//        extras.putString(FavoriteMoviesWidget.EXTRA_ITEM_OVERVIEW, results.get(position).getOverview());
-//        extras.putString(FavoriteMoviesWidget.EXTRA_ITEM_RELEASE_DATE, results.get(position).getReleaseDate());
-//        extras.putDouble(FavoriteMoviesWidget.EXTRA_ITEM_RATING, results.get(position).getVoteAverage());
-//        extras.putIntegerArrayList(FavoriteMoviesWidget.EXTRA_ITEM_GENRE, results.get(position).getGenreIds());
-//        extras.putInt(FavoriteMoviesWidget.EXTRA_ITEM_IDX, position);
-        Intent fillInIntent = new Intent();
+       Intent fillInIntent = new Intent();
         Result itemresult = results.get(position);
         fillInIntent.putExtra(MovieDetail.MOVIE_RESULT, new Gson().toJson(itemresult));
         rv.setOnClickFillInIntent(R.id.iv_backdrop_poster, fillInIntent);

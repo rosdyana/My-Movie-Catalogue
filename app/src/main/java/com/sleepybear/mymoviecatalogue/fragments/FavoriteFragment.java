@@ -20,7 +20,6 @@ import com.sleepybear.mymoviecatalogue.listener.RecycleTouchListener;
 import com.sleepybear.mymoviecatalogue.models.Result;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -105,7 +104,6 @@ public class FavoriteFragment extends Fragment implements SwipeRefreshLayout.OnR
             results = movieDBHelper.getAllData();
             mAdapter.clearAll();
             mAdapter.updateData(results);
-//            Log.d("ROS",results.toString());
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -121,7 +119,7 @@ public class FavoriteFragment extends Fragment implements SwipeRefreshLayout.OnR
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         loadFromDB();
     }
