@@ -12,10 +12,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DB_VERSION = 1;
 
     public static String CREATE_TABLE_FAVORITE = "create table " + DbContract.TABLE_FAVORITE
-            // + " (" + DbContract.FavoriteColumns.COL_ID + " integer primary key
-            // autoincrement);";
             + " (" + DbContract.FavoriteColumns.COL_MOVIE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT  , "
-//            + DbContract.FavoriteColumns.COL_MOVIE_ID + " integer not null, "
             + DbContract.FavoriteColumns.COL_NAME + " text not null, "
             + DbContract.FavoriteColumns.COL_OVERVIEW + " text not null, "
             + DbContract.FavoriteColumns.COL_BACKDROP_PATH + " text not null, "
@@ -29,7 +26,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        Log.d("ROS", "Create application database");
         sqLiteDatabase.execSQL(CREATE_TABLE_FAVORITE);
     }
 

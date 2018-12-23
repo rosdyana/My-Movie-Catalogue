@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
 import com.sleepybear.mymoviecatalogue.MovieDetail;
 import com.sleepybear.mymoviecatalogue.R;
 import com.sleepybear.mymoviecatalogue.adapter.MovieAdapter;
@@ -19,7 +20,6 @@ import com.sleepybear.mymoviecatalogue.listener.RecycleTouchListener;
 import com.sleepybear.mymoviecatalogue.models.Result;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -79,7 +79,7 @@ public class FavoriteFragment extends Fragment implements SwipeRefreshLayout.OnR
                 Result obj = results.get(position);
 //                Log.d("ROS click", obj.getId().toString());
                 Intent intent = new Intent(getActivity(), MovieDetail.class);
-                intent.putExtra(MovieDetail.MOVIE_RESULT, obj);
+                intent.putExtra(MovieDetail.MOVIE_RESULT, new Gson().toJson(obj));
                 startActivity(intent);
             }
 
@@ -104,7 +104,6 @@ public class FavoriteFragment extends Fragment implements SwipeRefreshLayout.OnR
             results = movieDBHelper.getAllData();
             mAdapter.clearAll();
             mAdapter.updateData(results);
-//            Log.d("ROS",results.toString());
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -120,8 +119,9 @@ public class FavoriteFragment extends Fragment implements SwipeRefreshLayout.OnR
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         loadFromDB();
     }
+
 }

@@ -1,0 +1,14 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- A 'parent' preference, which enables/disables child preferences (below)
+         when checked/unchecked. -->
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="notifications_daily_reminder"
+        android:title="@string/pref_title_daily_reminder" />
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="notifications_release_today_reminder"
+        android:title="@string/pref_title_release_today_reminder" />
+</PreferenceScreen>

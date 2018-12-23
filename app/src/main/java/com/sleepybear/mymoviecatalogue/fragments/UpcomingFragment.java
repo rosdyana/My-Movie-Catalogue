@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
 import com.sleepybear.mymoviecatalogue.MovieDetail;
 import com.sleepybear.mymoviecatalogue.R;
 import com.sleepybear.mymoviecatalogue.adapter.MovieAdapter;
@@ -88,7 +89,7 @@ public class UpcomingFragment extends Fragment implements SwipeRefreshLayout.OnR
             public void onClick(View view, int position) {
                 Result obj = list.get(position);
                 Intent intent = new Intent(getActivity(), MovieDetail.class);
-                intent.putExtra(MovieDetail.MOVIE_RESULT, obj);
+                intent.putExtra(MovieDetail.MOVIE_RESULT, new Gson().toJson(obj));
                 startActivity(intent);
             }
 
@@ -119,7 +120,7 @@ public class UpcomingFragment extends Fragment implements SwipeRefreshLayout.OnR
                     list.clear();
                     for (int i = 0; i < items.size(); i++) {
                         // only show the movie that will release after today
-                        if (items.get(i).getReleaseDate().compareTo(utils.getCurrentDate()) > 0) {
+                        if (items.get(i).getReleaseDate().compareTo(utils.getCurrentDate()) >= 0) {
                             list.add(items.get(i));
                         }
                     }
