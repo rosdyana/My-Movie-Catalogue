@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
 import com.sleepybear.mymoviecatalogue.MovieDetail;
 import com.sleepybear.mymoviecatalogue.R;
 import com.sleepybear.mymoviecatalogue.adapter.MovieAdapter;
@@ -35,11 +36,12 @@ import retrofit2.Response;
 public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private String searchQuery;
     MovieAdapter mAdapter;
-    private List<Result> list = new ArrayList<>();
+    private ArrayList<Result> list = new ArrayList<>();
     @BindView(R.id.rv_recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.swipe_refresh_container)
     SwipeRefreshLayout swipeRefreshLayout;
+    private static final String STATE_SAVE = "state_save";
 
     public SearchFragment() {
         // Required empty public constructor
@@ -55,7 +57,6 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         searchQuery = this.getArguments().getString("search_query");
-//        Log.d("ROS search ", searchQuery);
         View view = inflater.inflate(R.layout.fragment_movie, container, false);
         ButterKnife.bind(this, view);
         mAdapter = new MovieAdapter();
@@ -66,21 +67,27 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
         recyclerView.setNestedScrollingEnabled(false);
 
         swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.post(new Runnable() {
 
-            @Override
-            public void run() {
-                swipeRefreshLayout.setRefreshing(true);
-                fetchSearchMovieItems();
-            }
-        });
+        if (savedInstanceState != null) {
+            list = savedInstanceState.getParcelableArrayList(STATE_SAVE);
+            mAdapter.updateData(list);
+        } else {
+            swipeRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    swipeRefreshLayout.setRefreshing(true);
+                    fetchSearchMovieItems();
+                }
+            });
+        }
+
 
         recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new RecycleTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 Result obj = list.get(position);
                 Intent intent = new Intent(getActivity(), MovieDetail.class);
-                intent.putExtra(MovieDetail.MOVIE_RESULT, obj);
+                intent.putExtra(MovieDetail.MOVIE_RESULT, new Gson().toJson(obj));
                 startActivity(intent);
             }
 
@@ -90,6 +97,12 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
             }
         }));
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(STATE_SAVE, list);
     }
 
     private void fetchSearchMovieItems() {

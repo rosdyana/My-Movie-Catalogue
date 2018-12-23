@@ -1,36 +1,38 @@
 package com.sleepybear.mymoviecatalogue;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.SQLException;
 import android.graphics.Color;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.gson.Gson;
 import com.sleepybear.mymoviecatalogue.db.DbContract;
 import com.sleepybear.mymoviecatalogue.db.MovieDBHelper;
 import com.sleepybear.mymoviecatalogue.models.Result;
 import com.sleepybear.mymoviecatalogue.utils.AppPreferences;
+import com.sleepybear.mymoviecatalogue.widget.FavoriteMoviesWidget;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
 public class MovieDetail extends AppCompatActivity {
+    private Gson gson = new Gson();
     public static final String MOVIE_RESULT = "movie_result";
     private AppPreferences appPreferences;
     private Result result;
@@ -44,8 +46,6 @@ public class MovieDetail extends AppCompatActivity {
     TextView movieRating;
     @BindView(R.id.tv_release_date)
     TextView movieReleaseDate;
-    @BindView(R.id.tv_movie_genres)
-    TextView movieGenres;
     @BindView(R.id.iv_backdrop_poster)
     ImageView movieBackdrop;
     @BindView(R.id.toolbar)
@@ -63,11 +63,21 @@ public class MovieDetail extends AppCompatActivity {
         ButterKnife.bind(this);
         appPreferences = new AppPreferences(this);
         movieDBHelper = new MovieDBHelper(MovieDetail.this);
+        result = new Result();
 
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+        toolbar.setNavigationIcon(android.support.v7.appcompat.R.drawable.abc_ic_ab_back_material);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                onBackPressed();
+            }
+        });
 
         fab_favorite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,11 +98,17 @@ public class MovieDetail extends AppCompatActivity {
                 } else {
                     appPreferences.setFavorite(false);
                     fab_favorite.setColorFilter(Color.BLACK);
-//                    getContentResolver().delete(Uri.parse(DbContract.CONTENT_URI + "/" + result.getId()),null,null);
                     movieDBHelper.open();
                     movieDBHelper.deleteFavorite(result.getOriginalTitle());
                     movieDBHelper.close();
                 }
+
+                // update stack widget
+                Context context = getApplicationContext();
+                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+                ComponentName thisWidget = new ComponentName(context, FavoriteMoviesWidget.class);
+                int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
+                appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.stack_view);
 
             }
         });
@@ -107,8 +123,8 @@ public class MovieDetail extends AppCompatActivity {
             }
         });
 
-        result = getIntent().getParcelableExtra(MOVIE_RESULT);
-//        Log.d("ROS",result.toString());
+        String json = getIntent().getStringExtra(MOVIE_RESULT);
+        result = gson.fromJson(json, Result.class);
         try {
             movieDBHelper.open();
             dataFromDB = movieDBHelper.getMovieByName(result.getOriginalTitle());
@@ -141,7 +157,6 @@ public class MovieDetail extends AppCompatActivity {
         movieDescription.setText(result.getOverview());
         movieRating.setText(getString(R.string.txtRate, result.getVoteAverage()));
         movieReleaseDate.setText(getString(R.string.txtReleaseDate, result.getReleaseDate()));
-        movieGenres.setText(getString(R.string.txtGenre, getGenre(result.getGenreIds())));
 
         Glide.with(getApplicationContext())
                 .load(BuildConfig.BASE_URL_IMG_BACKDROP + result.getBackdropPath())
@@ -154,14 +169,24 @@ public class MovieDetail extends AppCompatActivity {
         getSupportActionBar().setTitle(result.getOriginalTitle());
     }
 
-    private String getGenre(List<Integer> genreIds) {
-        List<String> result = new ArrayList<>();
-        for (int i = 0; i < MainActivity.ourMovieGenres.size(); i++) {
-            if (genreIds.contains(MainActivity.ourMovieGenres.get(i).getId())) {
-                result.add(MainActivity.ourMovieGenres.get(i).getName());
-            }
-        }
-//        Log.d("ROS", TextUtils.join(",", result));
-        return TextUtils.join(" , ", result);
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_right);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        this.overridePendingTransition(R.anim.slide_in_left,
+                R.anim.slide_out_left);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

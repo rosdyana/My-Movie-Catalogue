@@ -40,7 +40,7 @@ public class FavoriteMovieAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        if(cursor != null){
+        if (cursor != null) {
             ButterKnife.bind(this, view);
             tv_movie_title.setText(DbContract.getColumnString(cursor, DbContract.FavoriteColumns.COL_NAME));
             tv_overview_movie.setText(DbContract.getColumnString(cursor, DbContract.FavoriteColumns.COL_OVERVIEW));

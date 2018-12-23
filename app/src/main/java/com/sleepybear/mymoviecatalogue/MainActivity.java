@@ -2,7 +2,6 @@ package com.sleepybear.mymoviecatalogue;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -17,33 +16,21 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.sleepybear.mymoviecatalogue.api.APIService;
-import com.sleepybear.mymoviecatalogue.api.NetworkInstance;
-import com.sleepybear.mymoviecatalogue.db.MovieDBHelper;
+
 import com.sleepybear.mymoviecatalogue.fragments.FavoriteFragment;
 import com.sleepybear.mymoviecatalogue.fragments.NowPlayingFragment;
 import com.sleepybear.mymoviecatalogue.fragments.PopularFragment;
 import com.sleepybear.mymoviecatalogue.fragments.SearchFragment;
 import com.sleepybear.mymoviecatalogue.fragments.UpcomingFragment;
-import com.sleepybear.mymoviecatalogue.models.genre.Genre;
-import com.sleepybear.mymoviecatalogue.models.genre.GenreModel;
 import com.sleepybear.mymoviecatalogue.utils.ActivityUtils;
-import com.sleepybear.mymoviecatalogue.utils.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private static final String FRAGMENT_STATE = "fragment_state";
     private static final String FRAGMENT_NAME = "fragment_name";
-    public static List<Genre> ourMovieGenres = new ArrayList<>();
     private Integer fragmentState;
     private String fragmentName;
     private Fragment fragment;
@@ -60,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        getGenreFromServer();
         ActivityUtils.setStatusBarGradiant(MainActivity.this, getResources().getDrawable(R.drawable.header_gradient_color));
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
@@ -93,12 +79,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         ImageButton mBtnSetting = view.findViewById(R.id.ib_action_setting_menu);
         mBtnSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Settings.ACTION_LOCALE_SETTINGS);
-                startActivity(intent);
+                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                finish();
             }
         });
 
@@ -167,7 +154,6 @@ public class MainActivity extends AppCompatActivity {
     private void loadFragment(final Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);
-//        Log.d("ROS ", fragment.getClass().getSimpleName());
         transaction.addToBackStack(null);
         transaction.commit();
     }
@@ -183,25 +169,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-    public void getGenreFromServer() {
-        APIService service = NetworkInstance.getRetrofitInstance().create(APIService.class);
-        String currentLanguage = utils.getDeviceLang(Locale.getDefault().getDisplayLanguage());
-        Call<GenreModel> genreModelCall = service.getGenre(currentLanguage);
-        genreModelCall.enqueue(new Callback<GenreModel>() {
-            @Override
-            public void onResponse(Call<GenreModel> call, Response<GenreModel> response) {
-                if (response.isSuccessful()) {
-                    List<Genre> items = response.body().getGenres();
-                    ourMovieGenres.clear();
-                    ourMovieGenres.addAll(items);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<GenreModel> call, Throwable t) {
-
-            }
-        });
-    }
 }

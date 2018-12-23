@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
 import com.sleepybear.mymoviecatalogue.MovieDetail;
 import com.sleepybear.mymoviecatalogue.R;
 import com.sleepybear.mymoviecatalogue.adapter.MovieAdapter;
@@ -19,19 +20,19 @@ import com.sleepybear.mymoviecatalogue.listener.RecycleTouchListener;
 import com.sleepybear.mymoviecatalogue.models.Result;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class FavoriteFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     MovieAdapter mAdapter;
-    private List<Result> results = new ArrayList<>();
+    private ArrayList<Result> results = new ArrayList<>();
     private MovieDBHelper movieDBHelper;
     @BindView(R.id.rv_recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.swipe_refresh_container)
     SwipeRefreshLayout swipeRefreshLayout;
+    private static final String STATE_SAVE = "state_save";
 
     public FavoriteFragment() {
         // Required empty public constructor
@@ -57,13 +58,20 @@ public class FavoriteFragment extends Fragment implements SwipeRefreshLayout.OnR
         recyclerView.setNestedScrollingEnabled(false);
 
         swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                swipeRefreshLayout.setRefreshing(true);
-                loadFromDB();
-            }
-        });
+
+        if (savedInstanceState != null) {
+            results = savedInstanceState.getParcelableArrayList(STATE_SAVE);
+            mAdapter.updateData(results);
+        } else {
+            swipeRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    swipeRefreshLayout.setRefreshing(true);
+                    loadFromDB();
+                }
+            });
+        }
+
 
         recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new RecycleTouchListener.ClickListener() {
             @Override
@@ -71,7 +79,7 @@ public class FavoriteFragment extends Fragment implements SwipeRefreshLayout.OnR
                 Result obj = results.get(position);
 //                Log.d("ROS click", obj.getId().toString());
                 Intent intent = new Intent(getActivity(), MovieDetail.class);
-                intent.putExtra(MovieDetail.MOVIE_RESULT, obj);
+                intent.putExtra(MovieDetail.MOVIE_RESULT, new Gson().toJson(obj));
                 startActivity(intent);
             }
 
@@ -83,6 +91,11 @@ public class FavoriteFragment extends Fragment implements SwipeRefreshLayout.OnR
         return view;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(STATE_SAVE, results);
+    }
 
     private void loadFromDB() {
         swipeRefreshLayout.setRefreshing(true);
@@ -91,7 +104,6 @@ public class FavoriteFragment extends Fragment implements SwipeRefreshLayout.OnR
             results = movieDBHelper.getAllData();
             mAdapter.clearAll();
             mAdapter.updateData(results);
-//            Log.d("ROS",results.toString());
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -107,8 +119,9 @@ public class FavoriteFragment extends Fragment implements SwipeRefreshLayout.OnR
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         loadFromDB();
     }
+
 }
