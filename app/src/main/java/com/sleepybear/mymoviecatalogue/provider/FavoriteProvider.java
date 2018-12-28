@@ -46,7 +46,9 @@ public class FavoriteProvider extends ContentProvider {
                 break;
         }
         if (cursor != null) {
-            cursor.setNotificationUri(getContext().getContentResolver(), uri);
+            if (getContext() != null) {
+                cursor.setNotificationUri(getContext().getContentResolver(), uri);
+            }
         }
 
         return cursor;
@@ -73,7 +75,9 @@ public class FavoriteProvider extends ContentProvider {
         }
 
         if (addedUri > 0) {
-            getContext().getContentResolver().notifyChange(uri, null);
+            if (getContext() != null) {
+                getContext().getContentResolver().notifyChange(uri, null);
+            }
         }
 
         return Uri.parse(DbContract.CONTENT_URI + "/" + addedUri);
@@ -93,7 +97,9 @@ public class FavoriteProvider extends ContentProvider {
         }
 
         if (deletedUri > 0) {
-            getContext().getContentResolver().notifyChange(uri, null);
+            if (getContext() != null) {
+                getContext().getContentResolver().notifyChange(uri, null);
+            }
         }
 
         return deletedUri;
@@ -112,7 +118,9 @@ public class FavoriteProvider extends ContentProvider {
         }
 
         if (updatedUri > 0) {
-            getContext().getContentResolver().notifyChange(uri, null);
+            if (getContext() != null) {
+                getContext().getContentResolver().notifyChange(uri, null);
+            }
         }
         return updatedUri;
     }
