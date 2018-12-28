@@ -25,14 +25,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class FavoriteFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+    private static final String STATE_SAVE = "state_save";
     MovieAdapter mAdapter;
-    private ArrayList<Result> results = new ArrayList<>();
-    private MovieDBHelper movieDBHelper;
     @BindView(R.id.rv_recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.swipe_refresh_container)
     SwipeRefreshLayout swipeRefreshLayout;
-    private static final String STATE_SAVE = "state_save";
+    private ArrayList<Result> results = new ArrayList<>();
+    private MovieDBHelper movieDBHelper;
 
     public FavoriteFragment() {
         // Required empty public constructor

@@ -6,12 +6,10 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-
 import com.sleepybear.mymoviecatalogue.MovieDetail;
 import com.sleepybear.mymoviecatalogue.R;
 import com.sleepybear.mymoviecatalogue.models.Result;

@@ -1,10 +1,10 @@
 package com.sleepybear.mymoviecatalogue.models.upcoming;
 
-import java.util.List;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.sleepybear.mymoviecatalogue.models.Result;
+
+import java.util.List;
 
 public class UpcomingMovieModel {
 

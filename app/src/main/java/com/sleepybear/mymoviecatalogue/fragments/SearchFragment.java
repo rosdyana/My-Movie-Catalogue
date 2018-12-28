@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,14 +33,14 @@ import retrofit2.Response;
 
 
 public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
-    private String searchQuery;
+    private static final String STATE_SAVE = "state_save";
     MovieAdapter mAdapter;
-    private ArrayList<Result> list = new ArrayList<>();
     @BindView(R.id.rv_recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.swipe_refresh_container)
     SwipeRefreshLayout swipeRefreshLayout;
-    private static final String STATE_SAVE = "state_save";
+    private String searchQuery;
+    private ArrayList<Result> list = new ArrayList<>();
 
     public SearchFragment() {
         // Required empty public constructor

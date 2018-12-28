@@ -1,14 +1,13 @@
 package com.sleepybear.mymoviecatalogue.api;
 
-import retrofit2.Call;
-import retrofit2.http.GET;
-import retrofit2.http.Query;
-
-
 import com.sleepybear.mymoviecatalogue.models.nowplaying.NowplayingModel;
 import com.sleepybear.mymoviecatalogue.models.popular.PopularMovieModel;
 import com.sleepybear.mymoviecatalogue.models.search.SearchMovieModel;
 import com.sleepybear.mymoviecatalogue.models.upcoming.UpcomingMovieModel;
+
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 public interface APIService {
 

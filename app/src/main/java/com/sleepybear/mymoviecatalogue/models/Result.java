@@ -4,15 +4,25 @@ import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.sleepybear.mymoviecatalogue.db.DbContract;
 
+import java.util.ArrayList;
+
 public class Result implements Parcelable {
 
+    public static final Parcelable.Creator<Result> CREATOR = new Parcelable.Creator<Result>() {
+        @Override
+        public Result createFromParcel(Parcel source) {
+            return new Result(source);
+        }
+
+        @Override
+        public Result[] newArray(int size) {
+            return new Result[size];
+        }
+    };
     @SerializedName("vote_count")
     @Expose
     private Integer voteCount;
@@ -55,6 +65,37 @@ public class Result implements Parcelable {
     @SerializedName("release_date")
     @Expose
     private String releaseDate;
+
+    public Result() {
+    }
+
+    public Result(Cursor cursor) {
+        this.id = DbContract.getColumnInt(cursor, DbContract.FavoriteColumns.COL_MOVIE_ID);
+        this.title = DbContract.getColumnString(cursor, DbContract.FavoriteColumns.COL_NAME);
+        this.backdropPath = DbContract.getColumnString(cursor, DbContract.FavoriteColumns.COL_BACKDROP_PATH);
+        this.overview = DbContract.getColumnString(cursor, DbContract.FavoriteColumns.COL_OVERVIEW);
+        this.posterPath = DbContract.getColumnString(cursor, DbContract.FavoriteColumns.COL_POSTER_PATH);
+        this.releaseDate = DbContract.getColumnString(cursor, DbContract.FavoriteColumns.COL_RELEASE_DATE);
+        this.voteAverage = DbContract.getColumnDouble(cursor, DbContract.FavoriteColumns.COL_VOTE_AVG);
+    }
+
+    protected Result(Parcel in) {
+        this.voteCount = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.id = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.video = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.voteAverage = (Double) in.readValue(Double.class.getClassLoader());
+        this.title = in.readString();
+        this.popularity = (Double) in.readValue(Double.class.getClassLoader());
+        this.posterPath = in.readString();
+        this.originalLanguage = in.readString();
+        this.originalTitle = in.readString();
+        this.genreIds = new ArrayList<Integer>();
+        in.readList(this.genreIds, Integer.class.getClassLoader());
+        this.backdropPath = in.readString();
+        this.adult = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.overview = in.readString();
+        this.releaseDate = in.readString();
+    }
 
     public Integer getVoteCount() {
         return voteCount;
@@ -190,49 +231,6 @@ public class Result implements Parcelable {
         dest.writeString(this.overview);
         dest.writeString(this.releaseDate);
     }
-
-    public Result() {
-    }
-
-    public Result(Cursor cursor) {
-        this.id = DbContract.getColumnInt(cursor, DbContract.FavoriteColumns.COL_MOVIE_ID);
-        this.title = DbContract.getColumnString(cursor, DbContract.FavoriteColumns.COL_NAME);
-        this.backdropPath = DbContract.getColumnString(cursor, DbContract.FavoriteColumns.COL_BACKDROP_PATH);
-        this.overview = DbContract.getColumnString(cursor, DbContract.FavoriteColumns.COL_OVERVIEW);
-        this.posterPath = DbContract.getColumnString(cursor, DbContract.FavoriteColumns.COL_POSTER_PATH);
-        this.releaseDate = DbContract.getColumnString(cursor, DbContract.FavoriteColumns.COL_RELEASE_DATE);
-        this.voteAverage = DbContract.getColumnDouble(cursor, DbContract.FavoriteColumns.COL_VOTE_AVG);
-    }
-
-    protected Result(Parcel in) {
-        this.voteCount = (Integer) in.readValue(Integer.class.getClassLoader());
-        this.id = (Integer) in.readValue(Integer.class.getClassLoader());
-        this.video = (Boolean) in.readValue(Boolean.class.getClassLoader());
-        this.voteAverage = (Double) in.readValue(Double.class.getClassLoader());
-        this.title = in.readString();
-        this.popularity = (Double) in.readValue(Double.class.getClassLoader());
-        this.posterPath = in.readString();
-        this.originalLanguage = in.readString();
-        this.originalTitle = in.readString();
-        this.genreIds = new ArrayList<Integer>();
-        in.readList(this.genreIds, Integer.class.getClassLoader());
-        this.backdropPath = in.readString();
-        this.adult = (Boolean) in.readValue(Boolean.class.getClassLoader());
-        this.overview = in.readString();
-        this.releaseDate = in.readString();
-    }
-
-    public static final Parcelable.Creator<Result> CREATOR = new Parcelable.Creator<Result>() {
-        @Override
-        public Result createFromParcel(Parcel source) {
-            return new Result(source);
-        }
-
-        @Override
-        public Result[] newArray(int size) {
-            return new Result[size];
-        }
-    };
 
     public String toString() {
         return "\nId : " + id + "\noriginalTitle : " + originalTitle;

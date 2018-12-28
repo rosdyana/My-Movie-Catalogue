@@ -1,7 +1,5 @@
 package com.sleepybear.mymoviecatalogue.utils;
 
-import android.util.Log;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;

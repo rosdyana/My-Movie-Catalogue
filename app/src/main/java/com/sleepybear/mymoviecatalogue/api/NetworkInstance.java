@@ -15,8 +15,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NetworkInstance {
-    private static Retrofit retrofit;
     private static final String BASE_URL = "https://api.themoviedb.org/3/";
+    private static Retrofit retrofit;
 
     public static Retrofit getRetrofitInstance() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();

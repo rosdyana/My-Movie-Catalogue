@@ -2,20 +2,19 @@ package com.sleepybear.mymoviecatalogue;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 
 import com.sleepybear.mymoviecatalogue.fragments.FavoriteFragment;
 import com.sleepybear.mymoviecatalogue.fragments.NowPlayingFragment;
@@ -24,22 +23,19 @@ import com.sleepybear.mymoviecatalogue.fragments.SearchFragment;
 import com.sleepybear.mymoviecatalogue.fragments.UpcomingFragment;
 import com.sleepybear.mymoviecatalogue.utils.ActivityUtils;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
     private static final String FRAGMENT_STATE = "fragment_state";
     private static final String FRAGMENT_NAME = "fragment_name";
+    SearchView searchView;
+    @BindView(R.id.bottom_navigation)
+    BottomNavigationView mBottomNav;
     private Integer fragmentState;
     private String fragmentName;
     private Fragment fragment;
     private TextView mToolbarTitle;
-
-    SearchView searchView;
-
-    @BindView(R.id.bottom_navigation)
-    BottomNavigationView mBottomNav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

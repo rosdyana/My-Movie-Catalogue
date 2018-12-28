@@ -26,13 +26,6 @@ public class DailyNotifications extends BroadcastReceiver {
     private static String CHANNEL_ID = "channel_01";
     private static CharSequence CHANNEL_NAME = "Movie Catalog channel";
 
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        String message = intent.getStringExtra(EXTRA_CONTENT);
-        String title = context.getResources().getString(R.string.app_name);
-        showNotification(context, MainActivity.class, title, message);
-    }
-
     public static void setDailyReminder(Context context, String content, String time) {
         Calendar calendar = Calendar.getInstance();
 
@@ -87,6 +80,13 @@ public class DailyNotifications extends BroadcastReceiver {
         }
 
         notificationManager.notify(DAILY_REMINDER_REQUEST_CODE, builder.build());
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        String message = intent.getStringExtra(EXTRA_CONTENT);
+        String title = context.getResources().getString(R.string.app_name);
+        showNotification(context, MainActivity.class, title, message);
     }
 
 

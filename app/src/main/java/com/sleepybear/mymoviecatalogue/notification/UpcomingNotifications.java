@@ -30,15 +30,6 @@ public class UpcomingNotifications extends BroadcastReceiver {
     private static CharSequence CHANNEL_NAME = "Movie Catalog channel";
     private Gson gson = new Gson();
 
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        String message = intent.getStringExtra(EXTRA_CONTENT);
-        String title = intent.getStringExtra(EXTRA_TITLE);
-        String jsonitem = intent.getStringExtra(MovieDetail.MOVIE_RESULT);
-        Result result = gson.fromJson(jsonitem, Result.class);
-        showNotification(context, MovieDetail.class, title, message, result);
-    }
-
     public static void setUpcomingMovieReminder(Context context, String title, String content, String date, String time, Result items) {
         String dateArray[] = date.split("-");
         String timeArray[] = time.split(":");
@@ -88,5 +79,14 @@ public class UpcomingNotifications extends BroadcastReceiver {
         }
 
         notificationManager.notify(UPCOMING_MOVIE_REMINDER_REQUEST_CODE, builder.build());
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        String message = intent.getStringExtra(EXTRA_CONTENT);
+        String title = intent.getStringExtra(EXTRA_TITLE);
+        String jsonitem = intent.getStringExtra(MovieDetail.MOVIE_RESULT);
+        Result result = gson.fromJson(jsonitem, Result.class);
+        showNotification(context, MovieDetail.class, title, message, result);
     }
 }

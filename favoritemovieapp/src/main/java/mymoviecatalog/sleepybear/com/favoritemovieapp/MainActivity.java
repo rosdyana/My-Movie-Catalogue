@@ -6,21 +6,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
-import android.view.View;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -33,11 +25,11 @@ import mymoviecatalog.sleepybear.com.favoritemovieapp.model.MovieItem;
 
 public class MainActivity extends AppCompatActivity
         implements AdapterView.OnItemClickListener, LoaderManager.LoaderCallbacks<Cursor> {
-    private FavoriteMovieAdapter favoriteMovieAdapter;
-    private MovieItem movieItem;
     private final int LOAD_FAV_MOVIES_ID = 1;
     @BindView(R.id.lv_movies)
     ListView lv_movies;
+    private FavoriteMovieAdapter favoriteMovieAdapter;
+    private MovieItem movieItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

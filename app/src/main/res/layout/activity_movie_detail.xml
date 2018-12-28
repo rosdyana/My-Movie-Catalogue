@@ -24,7 +24,6 @@
             app:expandedTitleTextAppearance="@android:color/transparent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-
             <com.flaviofaria.kenburnsview.KenBurnsView
                 android:id="@+id/iv_backdrop_poster"
                 android:layout_width="match_parent"

@@ -74,8 +74,8 @@ class StackRemoteViewsFactory implements
                     .load(BuildConfig.BASE_URL_IMG_BACKDROP + results.get(position).getBackdropPath())
                     .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                     .get();
-        } catch (InterruptedException | ExecutionException e){
-            Log.d("Widget Load Error","error");
+        } catch (InterruptedException | ExecutionException e) {
+            Log.d("Widget Load Error", "error");
         }
 
         String movieTitle = results.get(position).getOriginalTitle();
@@ -83,7 +83,7 @@ class StackRemoteViewsFactory implements
         rv.setImageViewBitmap(R.id.iv_backdrop_poster, bitmap);
         rv.setTextViewText(R.id.tv_movie_title, movieTitle);
 
-       Intent fillInIntent = new Intent();
+        Intent fillInIntent = new Intent();
         Result itemresult = results.get(position);
         fillInIntent.putExtra(MovieDetail.MOVIE_RESULT, new Gson().toJson(itemresult));
         rv.setOnClickFillInIntent(R.id.iv_backdrop_poster, fillInIntent);

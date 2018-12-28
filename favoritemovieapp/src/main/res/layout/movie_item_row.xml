@@ -10,7 +10,7 @@
         android:layout_height="92dp"
         android:layout_alignParentLeft="true"
         android:layout_margin="5dp"
-        tools:src="@drawable/ic_image_black_24dp"/>
+        tools:src="@drawable/ic_image_black_24dp" />
 
     <TextView
         android:id="@+id/movie_title"
@@ -19,7 +19,7 @@
         android:layout_alignTop="@+id/thumbnail_poster"
         android:layout_toRightOf="@+id/thumbnail_poster"
         android:textStyle="bold"
-        tools:text="Batman"/>
+        tools:text="Batman" />
 
     <TextView
         android:id="@+id/overview_movie"
@@ -30,7 +30,7 @@
         android:layout_toRightOf="@id/thumbnail_poster"
         android:ellipsize="end"
         android:maxLines="2"
-        tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."/>
+        tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." />
 
     <TextView
         android:id="@+id/release_date"
@@ -39,7 +39,7 @@
         android:layout_below="@+id/overview_movie"
         android:layout_marginTop="5dp"
         android:layout_toRightOf="@+id/thumbnail_poster"
-        tools:text="6-6-6"/>
+        tools:text="6-6-6" />
 
 
 </RelativeLayout>

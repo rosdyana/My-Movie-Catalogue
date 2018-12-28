@@ -33,13 +33,13 @@ import retrofit2.Response;
 
 
 public class UpcomingFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+    private static final String STATE_SAVE = "state_save";
     MovieAdapter mAdapter;
-    private ArrayList<Result> list = new ArrayList<>();
     @BindView(R.id.rv_recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.swipe_refresh_container)
     SwipeRefreshLayout swipeRefreshLayout;
-    private static final String STATE_SAVE = "state_save";
+    private ArrayList<Result> list = new ArrayList<>();
 
     public UpcomingFragment() {
         // Required empty public constructor

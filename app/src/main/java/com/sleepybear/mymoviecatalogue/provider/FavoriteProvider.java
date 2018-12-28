@@ -12,7 +12,6 @@ import com.sleepybear.mymoviecatalogue.db.DbContract;
 import com.sleepybear.mymoviecatalogue.db.MovieDBHelper;
 
 public class FavoriteProvider extends ContentProvider {
-    private MovieDBHelper movieDBHelper;
     private static final int MOVIE_FAVORITE_ID = 1;
     private static final int MOVIE_FAVORITE = 2;
     private static final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -21,6 +20,8 @@ public class FavoriteProvider extends ContentProvider {
         uriMatcher.addURI(DbContract.CONTENT_AUTHORITY, DbContract.TABLE_FAVORITE, MOVIE_FAVORITE);
         uriMatcher.addURI(DbContract.CONTENT_AUTHORITY, DbContract.TABLE_FAVORITE + "/#", MOVIE_FAVORITE_ID);
     }
+
+    private MovieDBHelper movieDBHelper;
 
     @Override
     public boolean onCreate() {

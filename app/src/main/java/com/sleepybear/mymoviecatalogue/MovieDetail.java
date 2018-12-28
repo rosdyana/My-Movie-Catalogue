@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.SQLException;
 import android.graphics.Color;
-
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -32,12 +31,7 @@ import butterknife.ButterKnife;
 
 
 public class MovieDetail extends AppCompatActivity {
-    private Gson gson = new Gson();
     public static final String MOVIE_RESULT = "movie_result";
-    private AppPreferences appPreferences;
-    private Result result;
-    private ArrayList<Result> dataFromDB = new ArrayList<>();
-    private MovieDBHelper movieDBHelper;
     @BindView(R.id.tv_movie_title)
     TextView movieTitle;
     @BindView(R.id.tv_overview_movie)
@@ -54,6 +48,11 @@ public class MovieDetail extends AppCompatActivity {
     FloatingActionButton fab_favorite;
     @BindView(R.id.fab_share)
     FloatingActionButton fab_share;
+    private Gson gson = new Gson();
+    private AppPreferences appPreferences;
+    private Result result;
+    private ArrayList<Result> dataFromDB = new ArrayList<>();
+    private MovieDBHelper movieDBHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
