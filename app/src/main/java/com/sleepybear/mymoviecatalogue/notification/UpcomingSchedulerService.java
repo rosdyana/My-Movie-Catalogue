@@ -8,7 +8,7 @@ import com.sleepybear.mymoviecatalogue.api.APIService;
 import com.sleepybear.mymoviecatalogue.api.NetworkInstance;
 import com.sleepybear.mymoviecatalogue.models.Result;
 import com.sleepybear.mymoviecatalogue.models.upcoming.UpcomingMovieModel;
-import com.sleepybear.mymoviecatalogue.utils.utils;
+import com.sleepybear.mymoviecatalogue.utils.Utils;
 
 import java.util.List;
 import java.util.Locale;
@@ -32,7 +32,7 @@ public class UpcomingSchedulerService extends GcmTaskService {
 
     private void getUpcomingMovie() {
         APIService service = NetworkInstance.getRetrofitInstance().create(APIService.class);
-        String currentLanguage = utils.getDeviceLang(Locale.getDefault().getDisplayLanguage());
+        String currentLanguage = Utils.getDeviceLang(Locale.getDefault().getDisplayLanguage());
         Call<UpcomingMovieModel> upcomingMovieModelCall = service.getUpcomingMovie(currentLanguage);
         upcomingMovieModelCall.enqueue(new Callback<UpcomingMovieModel>() {
             @Override
@@ -40,7 +40,7 @@ public class UpcomingSchedulerService extends GcmTaskService {
                 if (response.isSuccessful()) {
                     List<Result> items = response.body().getResults();
                     for (int i = 0; i < items.size(); i++) {
-                        if (items.get(i).getReleaseDate().compareTo(utils.getCurrentDate()) >= 0) {
+                        if (items.get(i).getReleaseDate().compareTo(Utils.getCurrentDate()) >= 0) {
                             String content = getString(R.string.upcoming_reminder_text, items.get(i).getOriginalTitle());
                             Result results = items.get(i);
                             UpcomingNotifications.setUpcomingMovieReminder(getApplicationContext(), items.get(i).getOriginalTitle(), content, items.get(i).getReleaseDate(), "08:00", results);

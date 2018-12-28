@@ -19,7 +19,7 @@ import com.sleepybear.mymoviecatalogue.api.NetworkInstance;
 import com.sleepybear.mymoviecatalogue.listener.RecycleTouchListener;
 import com.sleepybear.mymoviecatalogue.models.Result;
 import com.sleepybear.mymoviecatalogue.models.search.SearchMovieModel;
-import com.sleepybear.mymoviecatalogue.utils.utils;
+import com.sleepybear.mymoviecatalogue.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,7 +107,7 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
     private void fetchSearchMovieItems() {
         swipeRefreshLayout.setRefreshing(true);
         APIService service = NetworkInstance.getRetrofitInstance().create(APIService.class);
-        String currentLanguage = utils.getDeviceLang(Locale.getDefault().getDisplayLanguage());
+        String currentLanguage = Utils.getDeviceLang(Locale.getDefault().getDisplayLanguage());
         Call<SearchMovieModel> searchMovieModelCall = service.searchMovie(searchQuery, currentLanguage);
         searchMovieModelCall.enqueue(new Callback<SearchMovieModel>() {
             @Override

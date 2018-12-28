@@ -19,7 +19,7 @@ import com.sleepybear.mymoviecatalogue.api.NetworkInstance;
 import com.sleepybear.mymoviecatalogue.listener.RecycleTouchListener;
 import com.sleepybear.mymoviecatalogue.models.Result;
 import com.sleepybear.mymoviecatalogue.models.upcoming.UpcomingMovieModel;
-import com.sleepybear.mymoviecatalogue.utils.utils;
+import com.sleepybear.mymoviecatalogue.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,7 +110,7 @@ public class UpcomingFragment extends Fragment implements SwipeRefreshLayout.OnR
     private void fetchUpcomingMovieItems() {
         swipeRefreshLayout.setRefreshing(true);
         APIService service = NetworkInstance.getRetrofitInstance().create(APIService.class);
-        String currentLanguage = utils.getDeviceLang(Locale.getDefault().getDisplayLanguage());
+        String currentLanguage = Utils.getDeviceLang(Locale.getDefault().getDisplayLanguage());
         Call<UpcomingMovieModel> upcomingMovieModelCall = service.getUpcomingMovie(currentLanguage);
         upcomingMovieModelCall.enqueue(new Callback<UpcomingMovieModel>() {
             @Override
@@ -120,7 +120,7 @@ public class UpcomingFragment extends Fragment implements SwipeRefreshLayout.OnR
                     list.clear();
                     for (int i = 0; i < items.size(); i++) {
                         // only show the movie that will release after today
-                        if (items.get(i).getReleaseDate().compareTo(utils.getCurrentDate()) >= 0) {
+                        if (items.get(i).getReleaseDate().compareTo(Utils.getCurrentDate()) >= 0) {
                             list.add(items.get(i));
                         }
                     }

@@ -19,7 +19,7 @@ import com.sleepybear.mymoviecatalogue.api.NetworkInstance;
 import com.sleepybear.mymoviecatalogue.listener.RecycleTouchListener;
 import com.sleepybear.mymoviecatalogue.models.Result;
 import com.sleepybear.mymoviecatalogue.models.nowplaying.NowplayingModel;
-import com.sleepybear.mymoviecatalogue.utils.utils;
+import com.sleepybear.mymoviecatalogue.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,7 +104,7 @@ public class NowPlayingFragment extends Fragment implements SwipeRefreshLayout.O
     private void fetchNowplayingItems() {
         swipeRefreshLayout.setRefreshing(true);
         APIService apiService = NetworkInstance.getRetrofitInstance().create(APIService.class);
-        String currentLanguage = utils.getDeviceLang(Locale.getDefault().getDisplayLanguage());
+        String currentLanguage = Utils.getDeviceLang(Locale.getDefault().getDisplayLanguage());
         Call<NowplayingModel> nowplayingModelCall = apiService.getNowplaying(currentLanguage);
         nowplayingModelCall.enqueue(new Callback<NowplayingModel>() {
             @Override

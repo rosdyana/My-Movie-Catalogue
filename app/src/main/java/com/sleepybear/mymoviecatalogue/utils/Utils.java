@@ -5,7 +5,7 @@ import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class utils {
+public class Utils {
     public static String getDeviceLang(String country) {
 //        Log.d("ROS", country);
         if (country.equals("Indonesia")) {
