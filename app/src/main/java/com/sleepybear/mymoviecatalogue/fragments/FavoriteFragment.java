@@ -3,6 +3,8 @@ package com.sleepybear.mymoviecatalogue.fragments;
 import android.content.Intent;
 import android.database.SQLException;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -20,18 +22,23 @@ import com.sleepybear.mymoviecatalogue.listener.RecycleTouchListener;
 import com.sleepybear.mymoviecatalogue.models.Result;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class FavoriteFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private static final String STATE_SAVE = "state_save";
-    MovieAdapter mAdapter;
+    @Nullable
     @BindView(R.id.rv_recycler_view)
     RecyclerView recyclerView;
+    @Nullable
     @BindView(R.id.swipe_refresh_container)
     SwipeRefreshLayout swipeRefreshLayout;
+    private MovieAdapter mAdapter;
+    @Nullable
     private ArrayList<Result> results = new ArrayList<>();
+    @Nullable
     private MovieDBHelper movieDBHelper;
 
     public FavoriteFragment() {
@@ -40,67 +47,51 @@ public class FavoriteFragment extends Fragment implements SwipeRefreshLayout.OnR
 
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_movie, container, false);
         ButterKnife.bind(this, view);
         mAdapter = new MovieAdapter();
         movieDBHelper = new MovieDBHelper(getContext());
         RecyclerView.LayoutManager mlayLayoutManager = new GridLayoutManager(getActivity(), 2);
 
-        recyclerView.setLayoutManager(mlayLayoutManager);
+        Objects.requireNonNull(recyclerView).setLayoutManager(mlayLayoutManager);
         recyclerView.setAdapter(mAdapter);
         recyclerView.setNestedScrollingEnabled(false);
 
-        swipeRefreshLayout.setOnRefreshListener(this);
+        Objects.requireNonNull(swipeRefreshLayout).setOnRefreshListener(this);
 
         if (savedInstanceState != null) {
             results = savedInstanceState.getParcelableArrayList(STATE_SAVE);
-            mAdapter.updateData(results);
+            mAdapter.updateData(Objects.requireNonNull(results));
         } else {
-            swipeRefreshLayout.post(new Runnable() {
-                @Override
-                public void run() {
-                    swipeRefreshLayout.setRefreshing(true);
-                    loadFromDB();
-                }
+            swipeRefreshLayout.post(() -> {
+                swipeRefreshLayout.setRefreshing(true);
+                loadFromDB();
             });
         }
 
 
-        recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new RecycleTouchListener.ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                Result obj = results.get(position);
+        recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), position -> {
+            Result obj = results.get(position);
 //                Log.d("ROS click", obj.getId().toString());
-                Intent intent = new Intent(getActivity(), MovieDetail.class);
-                intent.putExtra(MovieDetail.MOVIE_RESULT, new Gson().toJson(obj));
-                startActivity(intent);
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
+            Intent intent = new Intent(getActivity(), MovieDetail.class);
+            intent.putExtra(MovieDetail.MOVIE_RESULT, new Gson().toJson(obj));
+            startActivity(intent);
         }));
         return view;
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(STATE_SAVE, results);
     }
 
     private void loadFromDB() {
-        swipeRefreshLayout.setRefreshing(true);
+        Objects.requireNonNull(swipeRefreshLayout).setRefreshing(true);
         try {
-            movieDBHelper.open();
+            Objects.requireNonNull(movieDBHelper).open();
             results = movieDBHelper.getAllData();
             mAdapter.clearAll();
             mAdapter.updateData(results);

@@ -7,8 +7,8 @@ import android.preference.PreferenceManager;
 import com.sleepybear.mymoviecatalogue.R;
 
 public class AppPreferences {
-    SharedPreferences sharedPreferences;
-    Context context;
+    private final SharedPreferences sharedPreferences;
+    private final Context context;
 
     public AppPreferences(Context context) {
         this.context = context;

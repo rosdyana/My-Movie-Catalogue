@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 
@@ -17,16 +18,16 @@ import com.sleepybear.mymoviecatalogue.MainActivity;
 import com.sleepybear.mymoviecatalogue.R;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 import static android.content.Context.ALARM_SERVICE;
 
 public class DailyNotifications extends BroadcastReceiver {
     private static final int DAILY_REMINDER_REQUEST_CODE = 100;
     private static final String EXTRA_CONTENT = "CONTENT";
-    private static String CHANNEL_ID = "channel_01";
-    private static CharSequence CHANNEL_NAME = "Movie Catalog channel";
+    private static final CharSequence CHANNEL_NAME = "Movie Catalog channel";
 
-    public static void setDailyReminder(Context context, String content, String time) {
+    public static void setDailyReminder(@NonNull Context context, String content, String time) {
         Calendar calendar = Calendar.getInstance();
 
         String timeArray[] = time.split(":");
@@ -43,15 +44,16 @@ public class DailyNotifications extends BroadcastReceiver {
         intent.putExtra(EXTRA_CONTENT, content);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, DAILY_REMINDER_REQUEST_CODE, intent, 0);
         AlarmManager am = (AlarmManager) context.getSystemService(ALARM_SERVICE);
+        assert am != null;
         am.setInexactRepeating(AlarmManager.RTC_WAKEUP, setCalendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
 
     }
 
-    public static void cancelReminder(Context context) {
+    public static void cancelReminder(@NonNull Context context) {
         Intent intent = new Intent(context, DailyNotifications.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, DAILY_REMINDER_REQUEST_CODE, intent, 0);
         AlarmManager am = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-        am.cancel(pendingIntent);
+        Objects.requireNonNull(am).cancel(pendingIntent);
         pendingIntent.cancel();
     }
 
@@ -62,6 +64,7 @@ public class DailyNotifications extends BroadcastReceiver {
         Intent intent = new Intent(context, cls);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, DAILY_REMINDER_REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+        String CHANNEL_ID = "channel_01";
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_bear)
                 .setContentTitle(title)
@@ -79,11 +82,11 @@ public class DailyNotifications extends BroadcastReceiver {
             }
         }
 
-        notificationManager.notify(DAILY_REMINDER_REQUEST_CODE, builder.build());
+        Objects.requireNonNull(notificationManager).notify(DAILY_REMINDER_REQUEST_CODE, builder.build());
     }
 
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(@NonNull Context context, @NonNull Intent intent) {
         String message = intent.getStringExtra(EXTRA_CONTENT);
         String title = context.getResources().getString(R.string.app_name);
         showNotification(context, MainActivity.class, title, message);

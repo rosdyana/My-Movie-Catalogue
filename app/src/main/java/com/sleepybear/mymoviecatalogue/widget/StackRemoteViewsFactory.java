@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.SQLException;
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -23,14 +25,14 @@ import java.util.concurrent.ExecutionException;
 
 class StackRemoteViewsFactory implements
         RemoteViewsService.RemoteViewsFactory {
-    private Context mContext;
-    private int mAppWidgetId;
+    private final Context mContext;
+    @NonNull
     private ArrayList<Result> results = new ArrayList<>();
     private MovieDBHelper movieDBHelper;
 
     public StackRemoteViewsFactory(Context context, Intent intent) {
         mContext = context;
-        mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
+        int mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                 AppWidgetManager.INVALID_APPWIDGET_ID);
     }
 
@@ -64,6 +66,7 @@ class StackRemoteViewsFactory implements
         return results.size();
     }
 
+    @NonNull
     @Override
     public RemoteViews getViewAt(int position) {
         RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.widget_item);
@@ -74,7 +77,7 @@ class StackRemoteViewsFactory implements
                     .load(BuildConfig.BASE_URL_IMG_BACKDROP + results.get(position).getBackdropPath())
                     .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                     .get();
-        } catch (InterruptedException | ExecutionException e) {
+        } catch (@NonNull InterruptedException | ExecutionException e) {
             Log.d("Widget Load Error", "error");
         }
 
@@ -90,6 +93,7 @@ class StackRemoteViewsFactory implements
         return rv;
     }
 
+    @Nullable
     @Override
     public RemoteViews getLoadingView() {
         return null;

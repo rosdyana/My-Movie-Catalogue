@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 
@@ -19,6 +20,7 @@ import com.sleepybear.mymoviecatalogue.R;
 import com.sleepybear.mymoviecatalogue.models.Result;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 import static android.content.Context.ALARM_SERVICE;
 
@@ -26,11 +28,10 @@ public class UpcomingNotifications extends BroadcastReceiver {
     private static final int UPCOMING_MOVIE_REMINDER_REQUEST_CODE = 101;
     private static final String EXTRA_CONTENT = "CONTENT";
     private static final String EXTRA_TITLE = "TITLE";
-    private static String CHANNEL_ID = "channel_02";
-    private static CharSequence CHANNEL_NAME = "Movie Catalog channel";
-    private Gson gson = new Gson();
+    private static final CharSequence CHANNEL_NAME = "Movie Catalog channel";
+    private final Gson gson = new Gson();
 
-    public static void setUpcomingMovieReminder(Context context, String title, String content, String date, String time, Result items) {
+    public static void setUpcomingMovieReminder(@NonNull Context context, String title, String content, String date, String time, Result items) {
         String dateArray[] = date.split("-");
         String timeArray[] = time.split(":");
         Calendar setCalendar = Calendar.getInstance();
@@ -49,7 +50,7 @@ public class UpcomingNotifications extends BroadcastReceiver {
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, UPCOMING_MOVIE_REMINDER_REQUEST_CODE, intent, 0);
         AlarmManager am = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, setCalendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+        Objects.requireNonNull(am).setInexactRepeating(AlarmManager.RTC_WAKEUP, setCalendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
 
     }
 
@@ -62,6 +63,7 @@ public class UpcomingNotifications extends BroadcastReceiver {
         intent.putExtra(MovieDetail.MOVIE_RESULT, new Gson().toJson(result));
         PendingIntent pendingIntent = PendingIntent.getActivity(context, UPCOMING_MOVIE_REMINDER_REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+        String CHANNEL_ID = "channel_02";
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_bear)
                 .setContentTitle(title)
@@ -79,11 +81,11 @@ public class UpcomingNotifications extends BroadcastReceiver {
             }
         }
 
-        notificationManager.notify(UPCOMING_MOVIE_REMINDER_REQUEST_CODE, builder.build());
+        Objects.requireNonNull(notificationManager).notify(UPCOMING_MOVIE_REMINDER_REQUEST_CODE, builder.build());
     }
 
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(@NonNull Context context, @NonNull Intent intent) {
         String message = intent.getStringExtra(EXTRA_CONTENT);
         String title = intent.getStringExtra(EXTRA_TITLE);
         String jsonitem = intent.getStringExtra(MovieDetail.MOVIE_RESULT);

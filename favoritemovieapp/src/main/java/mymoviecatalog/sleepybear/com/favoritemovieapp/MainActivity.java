@@ -11,11 +11,12 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,21 +27,19 @@ import mymoviecatalog.sleepybear.com.favoritemovieapp.model.MovieItem;
 public class MainActivity extends AppCompatActivity
         implements AdapterView.OnItemClickListener, LoaderManager.LoaderCallbacks<Cursor> {
     private final int LOAD_FAV_MOVIES_ID = 1;
+    @Nullable
     @BindView(R.id.lv_movies)
     ListView lv_movies;
     private FavoriteMovieAdapter favoriteMovieAdapter;
-    private MovieItem movieItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         favoriteMovieAdapter = new FavoriteMovieAdapter(this, null, true);
-        lv_movies.setAdapter(favoriteMovieAdapter);
+        Objects.requireNonNull(lv_movies).setAdapter(favoriteMovieAdapter);
         lv_movies.setOnItemClickListener(this);
 
         ContentResolver cr = getContentResolver();
@@ -56,15 +55,15 @@ public class MainActivity extends AppCompatActivity
             return;
         }
         if (cursor.moveToFirst()) {
-            movieItem = new MovieItem(cursor);
+            MovieItem movieItem = new MovieItem(cursor);
         }
         cursor.close();
     }
 
 
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        TextView myTextView = (TextView) view.findViewById(R.id.movie_title);
+    public void onItemClick(@NonNull AdapterView<?> adapterView, @NonNull View view, int i, long l) {
+        TextView myTextView = view.findViewById(R.id.movie_title);
         Snackbar.make(adapterView, myTextView.getText().toString(), Snackbar.LENGTH_LONG).show();
     }
 

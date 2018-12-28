@@ -2,6 +2,8 @@ package com.sleepybear.mymoviecatalogue.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -24,6 +26,7 @@ import com.sleepybear.mymoviecatalogue.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,12 +37,16 @@ import retrofit2.Response;
 
 public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private static final String STATE_SAVE = "state_save";
-    MovieAdapter mAdapter;
+    @Nullable
     @BindView(R.id.rv_recycler_view)
     RecyclerView recyclerView;
+    @Nullable
     @BindView(R.id.swipe_refresh_container)
     SwipeRefreshLayout swipeRefreshLayout;
+    private MovieAdapter mAdapter;
+    @Nullable
     private String searchQuery;
+    @Nullable
     private ArrayList<Result> list = new ArrayList<>();
 
     public SearchFragment() {
@@ -47,82 +54,66 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        searchQuery = this.getArguments().getString("search_query");
+        searchQuery = Objects.requireNonNull(this.getArguments()).getString("search_query");
         View view = inflater.inflate(R.layout.fragment_movie, container, false);
         ButterKnife.bind(this, view);
         mAdapter = new MovieAdapter();
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
-        recyclerView.setLayoutManager(mLayoutManager);
+        Objects.requireNonNull(recyclerView).setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(mAdapter);
         recyclerView.setNestedScrollingEnabled(false);
 
-        swipeRefreshLayout.setOnRefreshListener(this);
+        Objects.requireNonNull(swipeRefreshLayout).setOnRefreshListener(this);
 
         if (savedInstanceState != null) {
             list = savedInstanceState.getParcelableArrayList(STATE_SAVE);
-            mAdapter.updateData(list);
+            mAdapter.updateData(Objects.requireNonNull(list));
         } else {
-            swipeRefreshLayout.post(new Runnable() {
-                @Override
-                public void run() {
-                    swipeRefreshLayout.setRefreshing(true);
-                    fetchSearchMovieItems();
-                }
+            swipeRefreshLayout.post(() -> {
+                swipeRefreshLayout.setRefreshing(true);
+                fetchSearchMovieItems();
             });
         }
 
 
-        recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new RecycleTouchListener.ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                Result obj = list.get(position);
-                Intent intent = new Intent(getActivity(), MovieDetail.class);
-                intent.putExtra(MovieDetail.MOVIE_RESULT, new Gson().toJson(obj));
-                startActivity(intent);
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
+        recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), position -> {
+            Result obj = list.get(position);
+            Intent intent = new Intent(getActivity(), MovieDetail.class);
+            intent.putExtra(MovieDetail.MOVIE_RESULT, new Gson().toJson(obj));
+            startActivity(intent);
         }));
         return view;
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(STATE_SAVE, list);
     }
 
     private void fetchSearchMovieItems() {
-        swipeRefreshLayout.setRefreshing(true);
+        Objects.requireNonNull(swipeRefreshLayout).setRefreshing(true);
         APIService service = NetworkInstance.getRetrofitInstance().create(APIService.class);
         String currentLanguage = Utils.getDeviceLang(Locale.getDefault().getDisplayLanguage());
         Call<SearchMovieModel> searchMovieModelCall = service.searchMovie(searchQuery, currentLanguage);
         searchMovieModelCall.enqueue(new Callback<SearchMovieModel>() {
             @Override
-            public void onResponse(Call<SearchMovieModel> call, Response<SearchMovieModel> response) {
+            public void onResponse(@NonNull Call<SearchMovieModel> call, @NonNull Response<SearchMovieModel> response) {
                 if (response.isSuccessful()) {
-                    List<Result> items = response.body().getSearchResults();
-                    list.addAll(items);
+                    List<Result> items = Objects.requireNonNull(response.body()).getSearchResults();
+                    Objects.requireNonNull(list).addAll(items);
                     mAdapter.clearAll();
-                    mAdapter.updateData(items);
+                    mAdapter.updateData(Objects.requireNonNull(items));
                     swipeRefreshLayout.setRefreshing(false);
                 }
             }
 
             @Override
-            public void onFailure(Call<SearchMovieModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<SearchMovieModel> call, @NonNull Throwable t) {
 
             }
         });

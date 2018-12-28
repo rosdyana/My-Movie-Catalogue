@@ -6,4 +6,4 @@
     android:minHeight="110dp"
     android:previewImage="@drawable/example_appwidget_preview"
     android:updatePeriodMillis="0"
-    android:widgetCategory="home_screen"></appwidget-provider>
+    android:widgetCategory="home_screen" />

@@ -3,7 +3,7 @@ package com.sleepybear.mymoviecatalogue.models.nowplaying;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Dates {
+class Dates {
 
     @SerializedName("maximum")
     @Expose

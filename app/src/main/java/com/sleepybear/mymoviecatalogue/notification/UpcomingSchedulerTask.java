@@ -7,7 +7,7 @@ import com.google.android.gms.gcm.PeriodicTask;
 import com.google.android.gms.gcm.Task;
 
 public class UpcomingSchedulerTask {
-    private GcmNetworkManager gcmNetworkManager;
+    private final GcmNetworkManager gcmNetworkManager;
 
     public UpcomingSchedulerTask(Context context) {
         gcmNetworkManager = GcmNetworkManager.getInstance(context);

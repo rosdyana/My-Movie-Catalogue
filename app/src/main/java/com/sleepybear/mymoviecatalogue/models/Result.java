@@ -3,6 +3,8 @@ package com.sleepybear.mymoviecatalogue.models;
 import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -14,7 +16,7 @@ public class Result implements Parcelable {
 
     public static final Parcelable.Creator<Result> CREATOR = new Parcelable.Creator<Result>() {
         @Override
-        public Result createFromParcel(Parcel source) {
+        public Result createFromParcel(@NonNull Parcel source) {
             return new Result(source);
         }
 
@@ -50,6 +52,7 @@ public class Result implements Parcelable {
     @SerializedName("original_title")
     @Expose
     private String originalTitle;
+    @Nullable
     @SerializedName("genre_ids")
     @Expose
     private ArrayList<Integer> genreIds = null;
@@ -69,7 +72,7 @@ public class Result implements Parcelable {
     public Result() {
     }
 
-    public Result(Cursor cursor) {
+    public Result(@NonNull Cursor cursor) {
         this.id = DbContract.getColumnInt(cursor, DbContract.FavoriteColumns.COL_MOVIE_ID);
         this.title = DbContract.getColumnString(cursor, DbContract.FavoriteColumns.COL_NAME);
         this.backdropPath = DbContract.getColumnString(cursor, DbContract.FavoriteColumns.COL_BACKDROP_PATH);
@@ -89,20 +92,12 @@ public class Result implements Parcelable {
         this.posterPath = in.readString();
         this.originalLanguage = in.readString();
         this.originalTitle = in.readString();
-        this.genreIds = new ArrayList<Integer>();
+        this.genreIds = new ArrayList<>();
         in.readList(this.genreIds, Integer.class.getClassLoader());
         this.backdropPath = in.readString();
         this.adult = (Boolean) in.readValue(Boolean.class.getClassLoader());
         this.overview = in.readString();
         this.releaseDate = in.readString();
-    }
-
-    public Integer getVoteCount() {
-        return voteCount;
-    }
-
-    public void setVoteCount(Integer voteCount) {
-        this.voteCount = voteCount;
     }
 
     public Integer getId() {
@@ -113,36 +108,12 @@ public class Result implements Parcelable {
         this.id = id;
     }
 
-    public Boolean getVideo() {
-        return video;
-    }
-
-    public void setVideo(Boolean video) {
-        this.video = video;
-    }
-
     public Double getVoteAverage() {
         return voteAverage;
     }
 
     public void setVoteAverage(Double voteAverage) {
         this.voteAverage = voteAverage;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Double getPopularity() {
-        return popularity;
-    }
-
-    public void setPopularity(Double popularity) {
-        this.popularity = popularity;
     }
 
     public String getPosterPath() {
@@ -153,14 +124,6 @@ public class Result implements Parcelable {
         this.posterPath = posterPath;
     }
 
-    public String getOriginalLanguage() {
-        return originalLanguage;
-    }
-
-    public void setOriginalLanguage(String originalLanguage) {
-        this.originalLanguage = originalLanguage;
-    }
-
     public String getOriginalTitle() {
         return originalTitle;
     }
@@ -169,28 +132,12 @@ public class Result implements Parcelable {
         this.originalTitle = originalTitle;
     }
 
-    public ArrayList<Integer> getGenreIds() {
-        return genreIds;
-    }
-
-    public void setGenreIds(ArrayList<Integer> genreIds) {
-        this.genreIds = genreIds;
-    }
-
     public String getBackdropPath() {
         return backdropPath;
     }
 
     public void setBackdropPath(String backdropPath) {
         this.backdropPath = backdropPath;
-    }
-
-    public Boolean getAdult() {
-        return adult;
-    }
-
-    public void setAdult(Boolean adult) {
-        this.adult = adult;
     }
 
     public String getOverview() {
@@ -215,7 +162,7 @@ public class Result implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeValue(this.voteCount);
         dest.writeValue(this.id);
         dest.writeValue(this.video);
@@ -232,6 +179,7 @@ public class Result implements Parcelable {
         dest.writeString(this.releaseDate);
     }
 
+    @NonNull
     public String toString() {
         return "\nId : " + id + "\noriginalTitle : " + originalTitle;
     }

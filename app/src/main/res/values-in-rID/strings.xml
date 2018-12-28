@@ -22,7 +22,6 @@
     <string name="title_activity_settings">Pengaturan</string>
     <string name="pref_header_general">Umum</string>
     <string name="pref_header_notifications">Notifikasi</string>
-    <string name="pref_ringtone_silent">Silent</string>
     <string name="upcoming_reminder_text">%1$s telah dirilis hari ini!</string>
     <string name="upcoming_movie_reminder_enable">Notifikasi film yang akan tayang diaktifkan.</string>
     <string name="upcoming_movie_reminder_disable">Notifikasi film yang akan tayang dimatikan.</string>

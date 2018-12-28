@@ -1,7 +1,5 @@
 package com.sleepybear.mymoviecatalogue.utils;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -15,18 +13,10 @@ public class Utils {
         return "en-US";
     }
 
-    public static String urlEncode(String s) {
-        try {
-            return URLEncoder.encode(s, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            return "";
-        }
-    }
-
     public static String getCurrentDate() {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd ", Locale.getDefault());
-        return  mdformat.format(calendar.getTime());
+        return mdformat.format(calendar.getTime());
     }
 
 }

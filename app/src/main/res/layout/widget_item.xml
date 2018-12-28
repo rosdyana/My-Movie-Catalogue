@@ -12,7 +12,8 @@
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
-        app:srcCompat="@drawable/ic_image_gray_24dp" />
+        app:srcCompat="@drawable/ic_image_gray_24dp"
+        android:contentDescription="Image backdrop" />
 
     <TextView
         android:id="@+id/tv_movie_title"

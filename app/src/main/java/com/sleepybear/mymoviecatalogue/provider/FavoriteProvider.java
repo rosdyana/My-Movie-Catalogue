@@ -11,6 +11,8 @@ import android.support.annotation.Nullable;
 import com.sleepybear.mymoviecatalogue.db.DbContract;
 import com.sleepybear.mymoviecatalogue.db.MovieDBHelper;
 
+import java.util.Objects;
+
 public class FavoriteProvider extends ContentProvider {
     private static final int MOVIE_FAVORITE_ID = 1;
     private static final int MOVIE_FAVORITE = 2;
@@ -21,6 +23,7 @@ public class FavoriteProvider extends ContentProvider {
         uriMatcher.addURI(DbContract.CONTENT_AUTHORITY, DbContract.TABLE_FAVORITE + "/#", MOVIE_FAVORITE_ID);
     }
 
+    @Nullable
     private MovieDBHelper movieDBHelper;
 
     @Override
@@ -36,10 +39,10 @@ public class FavoriteProvider extends ContentProvider {
         Cursor cursor;
         switch (uriMatcher.match(uri)) {
             case MOVIE_FAVORITE_ID:
-                cursor = movieDBHelper.queryByIdProvider(uri.getLastPathSegment());
+                cursor = Objects.requireNonNull(movieDBHelper).queryByIdProvider(uri.getLastPathSegment());
                 break;
             case MOVIE_FAVORITE:
-                cursor = movieDBHelper.queryProvider();
+                cursor = Objects.requireNonNull(movieDBHelper).queryProvider();
                 break;
             default:
                 cursor = null;
@@ -67,7 +70,7 @@ public class FavoriteProvider extends ContentProvider {
 
         switch (uriMatcher.match(uri)) {
             case MOVIE_FAVORITE:
-                addedUri = movieDBHelper.insertProvider(contentValues);
+                addedUri = Objects.requireNonNull(movieDBHelper).insertProvider(contentValues);
                 break;
             default:
                 addedUri = 0;
@@ -89,7 +92,7 @@ public class FavoriteProvider extends ContentProvider {
         int deletedUri;
         switch (uriMatcher.match(uri)) {
             case MOVIE_FAVORITE_ID:
-                deletedUri = movieDBHelper.deleteProvider(uri.getLastPathSegment());
+                deletedUri = Objects.requireNonNull(movieDBHelper).deleteProvider(uri.getLastPathSegment());
                 break;
             default:
                 deletedUri = 0;
@@ -110,7 +113,7 @@ public class FavoriteProvider extends ContentProvider {
         int updatedUri;
         switch (uriMatcher.match(uri)) {
             case MOVIE_FAVORITE_ID:
-                updatedUri = movieDBHelper.updateProvider(uri.getLastPathSegment(), contentValues);
+                updatedUri = Objects.requireNonNull(movieDBHelper).updateProvider(uri.getLastPathSegment(), contentValues);
                 break;
             default:
                 updatedUri = 0;

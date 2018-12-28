@@ -1,5 +1,6 @@
 package com.sleepybear.mymoviecatalogue.adapter;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -11,13 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieViewHolder> {
-    private List<Result> resultList = new ArrayList<>();
+    private final List<Result> resultList = new ArrayList<>();
 
     public MovieAdapter() {
 
     }
 
-    public void updateData(List<Result> items) {
+    public void updateData(@NonNull List<Result> items) {
         resultList.addAll(items);
         notifyDataSetChanged();
     }
@@ -27,14 +28,15 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieViewHolder> {
         notifyDataSetChanged();
     }
 
+    @NonNull
     @Override
-    public MovieViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         return new MovieViewHolder(LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.movie_item_row, viewGroup, false));
     }
 
     @Override
-    public void onBindViewHolder(MovieViewHolder movieViewHolder, int i) {
+    public void onBindViewHolder(@NonNull MovieViewHolder movieViewHolder, int i) {
         movieViewHolder.bind(resultList.get(i));
     }
 

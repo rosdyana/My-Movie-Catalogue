@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -14,19 +15,17 @@ import com.sleepybear.mymoviecatalogue.MovieDetail;
 import com.sleepybear.mymoviecatalogue.R;
 import com.sleepybear.mymoviecatalogue.models.Result;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
 /**
  * Implementation of App Widget functionality.
  */
 public class FavoriteMoviesWidget extends AppWidgetProvider {
-    public static final String TOAST_ACTION = "com.sleepybear.mymoviecatalogue.TOAST_ACTION";
-    private List<Result> list = new ArrayList<>();
-    private Gson gson = new Gson();
+    private static final String TOAST_ACTION = "com.sleepybear.mymoviecatalogue.TOAST_ACTION";
+    private final Gson gson = new Gson();
 
-    void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                         int appWidgetId) {
+    private void updateAppWidget(@NonNull Context context, AppWidgetManager appWidgetManager,
+                                 int appWidgetId) {
         Intent intent = new Intent(context, StackWidgetService.class);
 
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
@@ -55,7 +54,7 @@ public class FavoriteMoviesWidget extends AppWidgetProvider {
     }
 
     @Override
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+    public void onUpdate(@NonNull Context context, @NonNull AppWidgetManager appWidgetManager, @NonNull int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
@@ -73,8 +72,8 @@ public class FavoriteMoviesWidget extends AppWidgetProvider {
     }
 
     @Override
-    public void onReceive(Context context, Intent intent) {
-        if (intent.getAction().equals(TOAST_ACTION)) {
+    public void onReceive(@NonNull Context context, @NonNull Intent intent) {
+        if (Objects.requireNonNull(intent.getAction()).equals(TOAST_ACTION)) {
             String json = intent.getStringExtra(MovieDetail.MOVIE_RESULT);
             Result result = gson.fromJson(json, Result.class);
             String movieName = result.getOriginalTitle();

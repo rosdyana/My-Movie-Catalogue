@@ -10,7 +10,8 @@
         android:layout_height="92dp"
         android:layout_alignParentLeft="true"
         android:layout_margin="5dp"
-        tools:src="@drawable/ic_image_black_24dp" />
+        tools:src="@drawable/ic_image_black_24dp"
+        android:contentDescription="Image poster" />
 
     <TextView
         android:id="@+id/movie_title"
