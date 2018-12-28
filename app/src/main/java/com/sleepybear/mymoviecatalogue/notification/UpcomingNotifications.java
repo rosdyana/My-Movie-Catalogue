@@ -58,6 +58,7 @@ public class UpcomingNotifications extends BroadcastReceiver {
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         Intent intent = new Intent(context, cls);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra(MovieDetail.MOVIE_RESULT, new Gson().toJson(result));
         PendingIntent pendingIntent = PendingIntent.getActivity(context, UPCOMING_MOVIE_REMINDER_REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
