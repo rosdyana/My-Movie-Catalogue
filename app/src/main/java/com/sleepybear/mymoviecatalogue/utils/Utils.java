@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class Utils {
     public static String getDeviceLang(String country) {
@@ -24,9 +25,8 @@ public class Utils {
 
     public static String getCurrentDate() {
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd ");
-        String strDate = mdformat.format(calendar.getTime());
-        return strDate;
+        SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd ", Locale.getDefault());
+        return  mdformat.format(calendar.getTime());
     }
 
 }
